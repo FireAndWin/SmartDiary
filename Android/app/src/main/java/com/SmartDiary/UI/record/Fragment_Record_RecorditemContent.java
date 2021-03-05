@@ -38,31 +38,18 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_RecordEntry_id = "RecordEntry_id";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String recordEntry_id;
 
     public Fragment_Record_RecorditemContent() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_m3_Record_RecorditemContent.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Fragment_Record_RecorditemContent newInstance(String param1, String param2) {
+    public static Fragment_Record_RecorditemContent newInstance(String recordEntry_id) {
         Fragment_Record_RecorditemContent fragment = new Fragment_Record_RecorditemContent();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_RecordEntry_id, recordEntry_id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,8 +58,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            recordEntry_id = getArguments().getString(ARG_RecordEntry_id);
         }
     }
 
@@ -133,6 +119,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         viewPager_itemData_multiDisplay=view.findViewById(R.id.viewPager_itemData_multiDisplay);
         image_itemIcon=view.findViewById(R.id.image_itemIcon);
         text_itemName=view.findViewById(R.id.text_itemName);
+        text_itemName.setText(recordEntry_id);
         text_itemComment=view.findViewById(R.id.text_itemComment);
         btn_itemInfo_edit=view.findViewById(R.id.btn_itemInfo_edit);
         radioGroup_viewChoose=view.findViewById(R.id.radioGroup_viewChoose);

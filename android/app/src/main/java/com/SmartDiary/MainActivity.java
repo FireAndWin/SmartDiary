@@ -15,6 +15,9 @@ import com.SmartDiary.UI.check.Fragment_Check_OutFrame;
 import com.SmartDiary.UI.record.Fragment_Record_OutFrame;
 import com.SmartDiary.UI.record.Fragment_Record_RecorditemContent;
 import com.SmartDiary.UI.start.Fragment_start_outFrame;
+import com.SmartDiary.service.pojoService.DayEntryService;
+import com.SmartDiary.service.pojoService.RecordEntryService;
+import com.SmartDiary.service.pojoService.RecordTemplateService;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         init_view();
     }
 
+    //================service层相关对象=============
+    public DayEntryService dayEntryService;
+    public RecordEntryService recordEntryService;
+    public RecordTemplateService recordTemplateService;
 
     //================UI相关成员======================
     ViewPager viewPager_main;
@@ -44,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         //初始化标签
         init_tab();
+        //初始化pojoService层的相关对象
+        init_pojoService();
     }
+
+
     /*初始化标签*/
     public void init_tab(){
 
@@ -59,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab me_tab=tabLayout_main.getTabAt(3);
         me_tab.setText("我");
     }
+
+
+    public void init_pojoService(){
+        dayEntryService=new DayEntryService();
+        recordEntryService=new RecordEntryService();
+        recordTemplateService=new RecordTemplateService();
+    }
     //=================自定义内部类==========================
     class Adapter_viewPager_main extends FragmentPagerAdapter {
-
-
-
         public Adapter_viewPager_main(@NonNull FragmentManager fm) {
             super(fm);
         }
@@ -74,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return Fragment_start_outFrame.newInstance("","");
                 case 1:
-                    return Fragment_Record_OutFrame.newInstance("","");
+                    return Fragment_Record_OutFrame.newInstance();
                 case 2:
                     return Fragment_Check_OutFrame.newInstance("","");
             }
