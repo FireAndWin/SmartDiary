@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.SmartDiary.UI.record.Fragment_Record_OutFrame"
+
+    android:background="@android:color/background_light"
+    >
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+       <com.androidkun.xtablayout.XTabLayout
+           android:id="@+id/tablayout_m3Record_RecordItemChoose"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           />
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager_m3Record_fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@android:color/background_light"/>
+
+   </LinearLayout>
+
+</FrameLayout>

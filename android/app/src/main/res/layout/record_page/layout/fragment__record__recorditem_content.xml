@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.SmartDiary.UI.record.Fragment_Record_RecorditemContent"
+    >
+    <!--    android:background="@color/colorAccent"-->
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--    <TextView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:text="@string/hello_blank_fragment" />-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_itemIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_launcher_background"
+            android:background="@android:color/holo_blue_light"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/text_itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:text="日记"
+            android:textFontWeight="@android:integer/config_mediumAnimTime"
+            android:background="@android:color/holo_orange_dark"
+            app:layout_constraintLeft_toRightOf="@+id/image_itemIcon"
+            app:layout_constraintTop_toTopOf="@+id/image_itemIcon">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/text_itemComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记录生活感动瞬间"
+            android:textFontWeight="@android:integer/config_mediumAnimTime"
+            android:textSize="25sp"
+            android:background="@android:color/holo_red_light"
+            app:layout_constraintLeft_toRightOf="@+id/image_itemIcon"
+            app:layout_constraintTop_toBottomOf="@+id/text_itemName"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btn_itemInfo_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/image_itemIcon"
+            app:layout_constraintLeft_toRightOf="@+id/text_itemComment"
+            android:text="编辑"
+            android:background="#2196F3"
+            >
+
+        </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/secondary_text_light"
+        android:id="@+id/study_edit_test1"
+        android:textAlignment="gravity"
+        android:layout_marginTop="18dp"
+        android:text="今天天气真不错，适合出去钓鱼以及在家打垃圾游戏王者荣耀，傻逼王者荣耀，马化腾是个丑陋的资本家，马云也是。哈哈哈，这是一个text，just so so！">
+
+    </EditText>
+
+    <RadioGroup
+        android:id="@+id/radioGroup_viewChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+
+        tools:ignore="RtlCompat">
+
+        <RadioButton
+            android:id="@+id/radioBtn_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2196F3"
+            android:layout_weight="1"
+            android:checked="true"
+
+            android:gravity="center"
+            android:text="数据"
+            android:textColor="@android:color/black"
+            android:textFontWeight="@android:integer/config_longAnimTime"
+            android:textIsSelectable="true">
+
+        </RadioButton>
+        <!--        android:background="@android:drawable/btn_radio"-->
+        <RadioButton
+            android:id="@+id/radioBtn_chart"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:background="#2196F3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="统计结果"
+            android:textColor="@android:color/black"
+            android:textFontWeight="@android:integer/config_longAnimTime"
+            android:textIsSelectable="true">
+
+        </RadioButton>
+
+    </RadioGroup>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager_itemData_multiDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

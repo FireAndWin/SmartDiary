@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.SmartDiary.UI.check.Fragment_Check_OutFrame">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- TODO: Update blank fragment layout -->
+    <RadioGroup
+        android:id="@+id/radioGroup_check_chooseContent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioBtn_check_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+
+            android:gravity="center"
+            android:text="数据"
+            android:textColor="@android:color/black"
+            android:textFontWeight="@android:integer/config_longAnimTime"
+            android:textIsSelectable="true">
+
+        </RadioButton>
+        <!--        android:background="@android:drawable/btn_radio"-->
+        <RadioButton
+            android:id="@+id/radioBtn_check_analysis"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="统计结果"
+            android:textColor="@android:color/black"
+            android:textFontWeight="@android:integer/config_longAnimTime"
+            android:textIsSelectable="true">
+
+        </RadioButton>
+    </RadioGroup>
+
+    <androidx.viewpager.widget.ViewPager
+        app:layout_constraintTop_toBottomOf="@id/radioGroup_check_chooseContent"
+        android:id="@+id/viewPager_check_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
