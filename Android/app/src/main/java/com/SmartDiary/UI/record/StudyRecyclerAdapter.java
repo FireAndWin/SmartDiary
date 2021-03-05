@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.SmartDiary.R;
+import com.SmartDiary.pojo.DayEntry;
+import com.SmartDiary.service.pojoService.DayEntryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,12 @@ import java.util.List;
 public class StudyRecyclerAdapter extends RecyclerView.Adapter<com.SmartDiary.UI.record.StudyRecyclerAdapter.ViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
     private List<Item>myList=new ArrayList<>();
+    private List<DayEntry> entryList;
+    private DayEntryService dayEntryService;
     public Context myContext;
 
-    public StudyRecyclerAdapter(List<Item> myList, Context myContext) {
+    public StudyRecyclerAdapter(List<Item> myList, Context myContext,DayEntryService dayEntryService) {
+        this.dayEntryService=dayEntryService;
         this.myList = myList;
         this.myContext = myContext;
     }

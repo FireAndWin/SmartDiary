@@ -1,4 +1,5 @@
 package com.SmartDiary.UI.record;
+import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 
 
@@ -24,6 +25,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.SmartDiary.UI.record.StudyRecyclerAdapter;
+import com.SmartDiary.pojo.RecordEntry;
+import com.SmartDiary.service.pojoService.DayEntryService;
+import com.SmartDiary.service.pojoService.RecordEntryService;
+import com.SmartDiary.service.pojoService.RecordTemplateService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +41,11 @@ import java.util.zip.Inflater;
  */
 public class Fragment_Record_RecorditemContent extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //===================构造相关,这么多代码就是为了获取记录项的id,可以直接跳过===========
     private static final String ARG_RecordEntry_id = "RecordEntry_id";
-
-    // TODO: Rename and change types of parameters
     private String recordEntry_id;
-
     public Fragment_Record_RecorditemContent() {
     }
-
     public static Fragment_Record_RecorditemContent newInstance(String recordEntry_id) {
         Fragment_Record_RecorditemContent fragment = new Fragment_Record_RecorditemContent();
         Bundle args = new Bundle();
@@ -53,7 +53,6 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +61,9 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         }
     }
 
+
+
+    //=========================重写方法===============================
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         /*RecyclerView recycler = view.findViewById(R.id.recyclerView_table);
         ;*/
 
+        init_pojoService();
         load_data();
         find_views(view);
         views_load_data();
@@ -80,6 +83,10 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //++++++++++++++++++++++++数据成员++++++++++++++++++++++++++++++++++
     //========非UI成员==============
+    //---------1.0.pojoService相关成员---
+    DayEntryService dayEntryService;
+    RecordEntryService recordEntryService;
+    RecordTemplateService recordTemplateService;
     //========控件,及其adapter=======
     //就是用来进行 数据/统计结果 换页的ViewPager
     ViewPager viewPager_itemData_multiDisplay;
@@ -110,7 +117,13 @@ public class Fragment_Record_RecorditemContent extends Fragment {
      * 4.处理复杂控件,还有创建各种adapter并初始化,主要是那个Recyclerview,在这里创建Adapter;
      *
      * 5.绑定控件事件,就是那个编辑按钮,还有Recyclerview的点击事件,还有Radio的切换页面,都在这里实现*/
-
+    /*初始化pojoService层的对象*/
+    public void init_pojoService() {
+        MainActivity mainActivity=(MainActivity) getActivity();
+        dayEntryService=mainActivity.dayEntryService;
+        recordEntryService=mainActivity.recordEntryService;
+        recordTemplateService=mainActivity.recordTemplateService;
+    }
     //1.加载数据(要显示的数据成员,比如List,Map之类的,和控件无关);
     public void load_data(){}
 
@@ -127,30 +140,42 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //3.向简单控件中加载数据,比如记录项的名称,备注(描述),以及图标
     public void views_load_data(){
+        RecordEntry entry=recordEntryService.getObject_ById(recordEntry_id);
+        text_itemName.setText(entry.getName());
+        text_itemComment.setText(entry.getInfo());
+    }
+
+    //4.处理复杂控件,还有创建各种adapter并初始化,主要是那个Recyclerview,在这里创建Adapter;
+    public void init_adapters(){
+        //这里是创建ViewPager的Adapter;
+        adapter_viewPager=new Adapter_ViewPager();
+        viewPager_itemData_multiDisplay.setAdapter(adapter_viewPager);
+
+        //从ViewPager的Adapter获取到recyclerView
+        recyclerView_table= adapter_viewPager.table.findViewById(R.id.recyclerView_table);
+        //这里还是调用tls写的adapter
+        StudyRecyclerAdapter.Item[]itemArray=new StudyRecyclerAdapter.Item[20];
+        List<StudyRecyclerAdapter.Item> list=new ArrayList<>();
+        for(int i=0;i<itemArray.length;++i){
+            itemArray[i]=new StudyRecyclerAdapter.Item("2020年2月8日","今天很nice哦！");
+            list.add(itemArray[i]);
+        }
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false);
+        recyclerView_table.setLayoutManager(linearLayoutManager);
+        StudyRecyclerAdapter adapter=new StudyRecyclerAdapter(list,this.getContext(),dayEntryService);
+        recyclerView_table.setAdapter(adapter);
+    }
+
+    //5.绑定控件事件,就是那个编辑按钮,还有Recyclerview的点击事件,还有Radio的切换页面,都在这里实现
+    public void bind_event(){
 
         //1.给viewPager_itemData_multiDisplay绑定当页面滑动的时候对应的RadioButton被选中
         viewPager_itemData_multiDisplay.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
-
-            /**
-             * This method will be invoked when the current page is scrolled, either as part
-             * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-             *
-             * @param position             Position index of the first page currently being displayed.
-             *                             Page position+1 will be visible if positionOffset is nonzero.
-             * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
-             * @param positionOffsetPixels Value in pixels indicating the offset from position.
-             */
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
-            /**
-             * This method will be invoked when a new page becomes selected. Animation is not
-             * necessarily complete.
-             *
-             * @param position Position index of the new selected page.
-             */
             @Override
             //在这个函数里面实现了滑动页面对应的RadioButton被选中，但是这里不能实现点击RadioButton对应View切换，这在
             //方法    里面实现
@@ -168,16 +193,6 @@ public class Fragment_Record_RecorditemContent extends Fragment {
                 return;
             }
 
-            /**
-             * Called when the scroll state changes. Useful for discovering when the user
-             * begins dragging, when the pager is automatically settling to the current page,
-             * or when it is fully stopped/idle.
-             *
-             * @param state The new scroll state.
-             * @see ViewPager#SCROLL_STATE_IDLE
-             * @see ViewPager#SCROLL_STATE_DRAGGING
-             * @see ViewPager#SCROLL_STATE_SETTLING
-             */
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -201,32 +216,6 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
         //3.默认设置viewPager_itemData_multiDisplay是在table页，并且默认是"数据"RadioButton被选中
         viewPager_itemData_multiDisplay.setCurrentItem(0);
-    }
-
-    //4.处理复杂控件,还有创建各种adapter并初始化,主要是那个Recyclerview,在这里创建Adapter;
-    public void init_adapters(){
-        //这里是创建ViewPager的Adapter;
-        adapter_viewPager=new Adapter_ViewPager();
-        viewPager_itemData_multiDisplay.setAdapter(adapter_viewPager);
-
-        //从ViewPager的Adapter获取到recyclerView
-        recyclerView_table= adapter_viewPager.table.findViewById(R.id.recyclerView_table);
-        //这里还是调用tls写的adapter
-        StudyRecyclerAdapter.Item[]itemArray=new StudyRecyclerAdapter.Item[20];
-        List<StudyRecyclerAdapter.Item> list=new ArrayList<>();
-        for(int i=0;i<itemArray.length;++i){
-            itemArray[i]=new StudyRecyclerAdapter.Item("2020年2月8日","今天很nice哦！");
-            list.add(itemArray[i]);
-        }
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false);
-        recyclerView_table.setLayoutManager(linearLayoutManager);
-        StudyRecyclerAdapter adapter=new StudyRecyclerAdapter(list,this.getContext());
-        recyclerView_table.setAdapter(adapter);
-    }
-
-    //5.绑定控件事件,就是那个编辑按钮,还有Recyclerview的点击事件,还有Radio的切换页面,都在这里实现
-    public void bind_event(){
-
     }
     //++++++++++++++++++++++内部类,主要是各种Adapter+++++++++++++++++++++
     class Adapter_ViewPager extends PagerAdapter {

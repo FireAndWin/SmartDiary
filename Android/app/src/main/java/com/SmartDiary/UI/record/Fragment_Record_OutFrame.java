@@ -74,7 +74,7 @@ public class Fragment_Record_OutFrame extends Fragment {
     //lyh:viewPager_m3Record_fragmentContainer的适配器
     Adapter_viewPager_m3Record_fragmentContainer adapter;
 
-    
+
 
     //############################2.自定义函数##########################
 
