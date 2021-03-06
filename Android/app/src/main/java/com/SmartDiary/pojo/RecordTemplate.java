@@ -11,6 +11,8 @@ public class RecordTemplate {
     public String edit_view;
     //编辑视图,就是记录项具体的记录视图
     public String record_view;
+    //用来分析数据的js代码;
+    public String analysis_code;
     //展示类的视图,但是只用来展示一天的数据
     public String single_display_view;
     //也是展示类的视图,用来做总的可视化,可选

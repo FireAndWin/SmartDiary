@@ -65,16 +65,10 @@
         </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
+    <WebView
+        android:id="@+id/webView_record_recordData"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/secondary_text_light"
-        android:id="@+id/study_edit_test1"
-        android:textAlignment="gravity"
-        android:layout_marginTop="18dp"
-        android:text="今天天气真不错，适合出去钓鱼以及在家打垃圾游戏王者荣耀，傻逼王者荣耀，马化腾是个丑陋的资本家，马云也是。哈哈哈，这是一个text，just so so！">
-
-    </EditText>
+        android:layout_height="wrap_content"/>
 
     <RadioGroup
         android:id="@+id/radioGroup_viewChoose"
