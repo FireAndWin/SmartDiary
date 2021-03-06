@@ -6,20 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
+import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
 
 
-public class Fragment_start_outFrame extends Fragment {
+public class Fragment_start_outFrame extends Fragment implements On_RecordEntry_Edit_Listener {
 
     public Fragment_start_outFrame() { }
 
@@ -33,12 +34,11 @@ public class Fragment_start_outFrame extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_start_out_frame, container, false);
+        findView(view);
+        bindView();
         init_ViewPager(view);
         return view;
     }
-
-
-
 
     //========================自定义成员====================
     //---------1.0.pojoService相关成员---
@@ -47,6 +47,22 @@ public class Fragment_start_outFrame extends Fragment {
     RecordTemplateService recordTemplateService;
     //---------1.1.UI相关成员----------------
     RecyclerView recyclerView_start;
+    //添加记录项按钮
+    Button btn_start_add;
+
+    private void findView(View view) {
+        btn_start_add=view.findViewById(R.id.btn_start_add);
+    }
+
+    private void bindView() {
+        //这里对于添加按钮绑定的时间是暂时的
+        btn_start_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog_start_chooseTemplate dialog_edit_recordEntry=new Dialog_start_chooseTemplate(getContext(), Fragment_start_outFrame.this);
+            }
+        });
+    }
 
     private void init_ViewPager(View view) {
         recyclerView_start=view.findViewById(R.id.recyclerView_start);
@@ -60,4 +76,11 @@ public class Fragment_start_outFrame extends Fragment {
         recyclerView_start.setAdapter(adapter_start);
     }
 
+    /*当新建了一个记录项后就会调用此方法,参数就是创建好的记录项
+    * 含有模板id,模板格式,
+    * 以及记录项的名称,描述和图标,*/
+    @Override
+    public void edit_recordEntry_done(RecordEntry newEntry) {
+
+    }
 }
