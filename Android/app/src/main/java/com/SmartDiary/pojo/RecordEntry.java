@@ -11,6 +11,19 @@ public class RecordEntry {
     public String icon_path;
     //最近记录时间
     public long latest;
+    //上次分析得到的结果
+    public String analysis_result;
+    //--------拓展功能-------
+    //记录频次,单位是天,默认是每天
+    public int frequency;
+    //是否被密码保护,因为布尔值好像是根据int储存的,直接就写成int了
+    public int locked;
+    //提醒时间设置,可以直接写成一个json节省地方
+    public String alarm;
+    //备用参数1
+    public String arg1;
+    //备用参数2
+    public String arg2;
 
 
     //和模板相关的变量

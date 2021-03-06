@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imageView_startItem_icon"
@@ -37,7 +37,7 @@
         android:background="@color/black"/>
 
     <CheckBox
-        android:id="@+id/chekcbox_startItem_done"
+        android:id="@+id/checkbox_startItem_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -47,7 +47,7 @@
         android:id="@+id/textView_startItem_latest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="今天"
-        app:layout_constraintLeft_toRightOf="@id/chekcbox_startItem_done"
+        android:text="最近记录时间"
+        app:layout_constraintLeft_toRightOf="@id/checkbox_startItem_done"
         app:layout_constraintTop_toBottomOf="@id/view_startItem_recent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

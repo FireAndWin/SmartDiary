@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int i) {
             switch (i){
                 case 0:
-                    return Fragment_start_outFrame.newInstance("","");
+                    return new Fragment_start_outFrame();
                 case 1:
                     return Fragment_Record_OutFrame.newInstance();
                 case 2:

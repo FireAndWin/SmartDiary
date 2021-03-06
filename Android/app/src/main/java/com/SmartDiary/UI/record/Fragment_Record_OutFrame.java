@@ -96,13 +96,10 @@ public class Fragment_Record_OutFrame extends Fragment {
     }
 
     private void init_tabLayout(View view) {
-        //1.从View中初始化控件
+        //从View中初始化控件
         tablayout_m3Record_RecordItemChoose=view.findViewById(R.id.tablayout_m3Record_RecordItemChoose);
-
-
-        //4.关联标签栏和ViewPager
+        //关联标签栏和ViewPager
         tablayout_m3Record_RecordItemChoose.setupWithViewPager(viewPager_m3Record_fragmentContainer);
-
         List<RecordEntry> recordEntryList=recordEntryService.getAll();
         for(int i=0;i<recordEntryList.size();i++){
             XTabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);

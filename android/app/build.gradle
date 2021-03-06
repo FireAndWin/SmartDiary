@@ -27,18 +27,12 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res',
                             'src/main/res/drawable',
-                            'src/main/res/drawable/test',
-                            'src/main/res/drawable/start/tab',
-                            'src/main/res/drawable/start/',
-                            'src/main/res/drawable/start/alarmItem',
-                            'src/main/res/drawable/utility/',
-                            'src/main/res/drawable/utility/switch',
                             'src/main/res/layout',
                             'src/main/res/layout/check_page',
                             'src/main/res/layout/record_page',
                             'src/main/res/layout/start_page',
-                            'src/main/res'
                     ]
         }
     }
