@@ -17,6 +17,7 @@ import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
 import com.androidkun.xtablayout.XTabLayout;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Fragment_Record_OutFrame extends Fragment {
     RecordTemplateService recordTemplateService;
     // ---------1.1.和控件相关的-----------
     //lyh:就是记录页面上面那个可以切换记录项的标签栏
-    XTabLayout tablayout_m3Record_RecordItemChoose;
+    TabLayout tablayout_m3Record_RecordItemChoose;
     //lyh:标签栏下方实际盛放内容Fragment的ViewPager,会和标签栏联动,下面滑上面也动
     ViewPager viewPager_m3Record_fragmentContainer;
     //lyh:viewPager_m3Record_fragmentContainer的适配器
@@ -102,7 +103,7 @@ public class Fragment_Record_OutFrame extends Fragment {
         tablayout_m3Record_RecordItemChoose.setupWithViewPager(viewPager_m3Record_fragmentContainer);
         List<RecordEntry> recordEntryList=recordEntryService.getAll();
         for(int i=0;i<recordEntryList.size();i++){
-            XTabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
+            TabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
             tab.setText(recordEntryList.get(i).getName());
         }
     }

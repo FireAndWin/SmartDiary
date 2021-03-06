@@ -10,10 +10,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <com.google.android.material.tabs.TabLayout
-            android:background="#FFEB3B"
+            android:background="#03A9F4"
             app:tabTextColor="@color/black"
             android:id="@+id/tabLayout_main"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
+            app:tabPaddingStart="-1dp"
+            app:tabPaddingEnd="-1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <androidx.viewpager.widget.ViewPager

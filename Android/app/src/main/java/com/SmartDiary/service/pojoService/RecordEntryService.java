@@ -13,9 +13,15 @@ public class RecordEntryService {
     public RecordEntryService() {
         test_list=new ArrayList<>();
         test_list.add(new RecordEntry("日记","记日记","1"));
-        test_list.add(new RecordEntry("锻炼身体","记日记","2"));
-        test_list.add(new RecordEntry("体重","记日记","3"));
-        test_list.add(new RecordEntry("学习情况","记日记","4"));
+        test_list.add(new RecordEntry("锻炼身体","年轻人要多锻炼身体","2"));
+        test_list.add(new RecordEntry("体重","要好好吃饭","3"));
+        test_list.add(new RecordEntry("学习情况","记录学习时间内容分布","4"));
+        test_list.add(new RecordEntry("记账","花了多少钱,花在哪里","5"));
+        test_list.add(new RecordEntry("娱乐app使用时长","不要老是玩手机","6"));
+        test_list.add(new RecordEntry("待办事项","TODO list","7"));
+        test_list.add(new RecordEntry("痘痘情况","脸上痘痘的情况","8"));
+        test_list.add(new RecordEntry("雏雁计划日志","进度怎么样","9"));
+        test_list.add(new RecordEntry("心情","心情怎么样","10"));
     }
 
     //=================get(读取相关)方法======================
