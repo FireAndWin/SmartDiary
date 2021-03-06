@@ -16,8 +16,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <com.google.android.material.tabs.TabLayout
-            android:background="#03A9F4"
+            android:background="#F0F5F8"
             app:tabTextColor="@color/black"
+            app:tabIndicatorHeight="0dp"
             android:id="@+id/tabLayout_main"
             app:tabMode="fixed"
             app:tabPaddingStart="-1dp"
