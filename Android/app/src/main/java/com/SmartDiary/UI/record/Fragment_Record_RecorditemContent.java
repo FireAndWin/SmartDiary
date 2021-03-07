@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.SmartDiary.UI.record.StudyRecyclerAdapter;
 import com.SmartDiary.pojo.RecordEntry;
+import com.SmartDiary.pojo.RecordTemplate;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
@@ -76,6 +78,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         load_data();
         find_views(view);
         views_load_data();
+        init_recordView();
         init_adapters();
         bind_event();
         return view;
@@ -100,6 +103,8 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     TextView text_itemName;
     //显示记录项的备注,描述
     TextView text_itemComment;
+    //实际的记录控件
+    WebView webView_record_recordData;
     //对记录项的信息进行编辑的按钮
     Button btn_itemInfo_edit;
     //在 数据/统计图标 之间进行切换的 单选按钮
@@ -135,6 +140,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         text_itemName.setText(recordEntry_id);
         text_itemComment=view.findViewById(R.id.text_itemComment);
         btn_itemInfo_edit=view.findViewById(R.id.btn_itemInfo_edit);
+        webView_record_recordData=view.findViewById(R.id.webView_record_recordData);
         radioGroup_viewChoose=view.findViewById(R.id.radioGroup_viewChoose);
     }
 
@@ -143,6 +149,18 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         RecordEntry entry=recordEntryService.getObject_ById(recordEntry_id);
         text_itemName.setText(entry.getName());
         text_itemComment.setText(entry.getInfo());
+    }
+
+    //初始化那个webview的实际记录控件
+    public void init_recordView(){
+        RecordTemplate template=recordTemplateService.getObject_byID(recordEntry_id);
+        String recordView=template.getRecord_view();
+
+        webView_record_recordData.getSettings().setDefaultTextEncodingName("utf-8") ;
+        webView_record_recordData.getSettings().setJavaScriptEnabled(true);
+        webView_record_recordData.loadDataWithBaseURL(null, recordView, "text/html", "utf-8", null);
+
+
     }
 
     //4.处理复杂控件,还有创建各种adapter并初始化,主要是那个Recyclerview,在这里创建Adapter;
