@@ -32,7 +32,6 @@ public class RecordEntry {
     //这个记录项的模板id
     public String template_id;
 
-
     public String getName() {
         return name;
     }

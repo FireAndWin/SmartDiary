@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='div1' style="background-color: aqua;">
+    
+    </div>
+    <button style="width:100%" id="btn_new">新建选择</button>
+    <br>
+
+    <input type="radio" name="radio1" id="rbtn1">单选
+    <br>
+    <input type="radio" name="radio1" id="rbtn2">多选
+    <script>
+        // const getObj=window.androidObject.getAndroidFormat();
+        // let realObj=JSON.parse(getObj);
+        const obj={
+            choice:{
+                "11":"睡得很早",
+                "22":"11.30左右",
+                "33":"1点左右",
+                "44":"没有睡觉"
+            },
+            choiceType:"1"
+        };
+        let jsonStr=JSON.stringify(obj);
+        let jsonObj=JSON.parse(jsonStr);//json字符串转对象
+        console.log(obj);
+        let div1=document.getElementById("div1");
+        for(let i in jsonObj["choice"]){
+            console.log(i);
+           let ele= document.createElement("div");
+           let input=document.createElement("input");
+           input.setAttribute("type","text");
+           input.value=jsonObj["choice"][i];
+           let button2=document.createElement("button");
+           button2.textContent="删除";
+            //先给input添加onchange事件
+            input.onchange=function(){
+                jsonObj["choice"][i]=input.value;
+                // console.log(jsonObj);
+            }
+            button2.onclick=function(){
+                ele.parentNode.removeChild(ele);
+                delete jsonObj["choice"][i];
+                // console.log(ele);
+                // console.log(jsonObj);
+            }
+           ele.append(input);
+           ele.append(button2);
+           div1.appendChild(ele);
+        }
+        let rbtn1=document.getElementById("rbtn1");
+        let rbtn2=document.getElementById("rbtn2");
+        if(jsonObj["choiceType"]==="1"){
+            rbtn1.checked=true;
+        }
+        else{
+            rbtn2.checked=true;
+        }
+        rbtn1.onclick=function(){
+            if(rbtn1.checked==true)
+                jsonObj["choiceType"]="1";
+            else
+                jsonObj["choiceType"]="2";
+                // console.log(jsonObj);
+        }
+        rbtn2.onclick=function(){
+            if(rbtn1.checked==true)
+                jsonObj["choiceType"]="1";
+            else
+                jsonObj["choiceType"]="2";
+                // console.log(jsonObj);
+        }
+        let btnNew=document.querySelector("#btn_new");
+        btnNew.addEventListener("click",function(){
+            let ele= document.createElement("div");
+           let input=document.createElement("input");
+           input.setAttribute("type","text");
+           input.value="新建选择";
+           let button2=document.createElement("button");
+           button2.textContent="删除";
+           ele.append(input);
+           ele.append(button2);
+           div1.appendChild(ele);
+           let lastIndex=Object.keys(jsonObj["choice"]).length-1;
+           let key=Object.keys(jsonObj["choice"])[lastIndex];
+           let index=parseInt(key)+1;
+           let lastKey=index+"";
+            //给两个按钮加上点击事件
+            button2.onclick=function(){
+                ele.parentNode.removeChild(ele);
+                delete jsonObj["choice"][lastKey];
+                // console.log(ele);
+                // console.log(jsonObj);
+            }
+            //先给input添加onchange事件
+            input.onchange=function(){
+                jsonObj["choice"][lastKey]=input.value;
+                // console.log(jsonObj);
+            }
+           jsonObj["choice"][lastKey]="新建选择";
+        //    console.log(jsonObj);
+        });
+            window.getFormat=function(){
+                return JSON.stringify(jsonObj);
+            };
+            // console.log(getFormat());
+    </script>
+</body>
+</html>
