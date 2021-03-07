@@ -80,7 +80,7 @@
                 android:id="@+id/textView_editRecordEntry_format"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="记录项图标"/>
+                android:text="编辑模板"/>
 
             <WebView
                 android:id="@+id/webView_editRecordEntry_format"

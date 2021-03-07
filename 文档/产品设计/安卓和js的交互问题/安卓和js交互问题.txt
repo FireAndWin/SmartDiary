@@ -1,3 +1,84 @@
+js如何调用安卓代码:
+	
+	//1.安卓WebView加载基本的html字符串
+	webView.loadDataWithBaseURL(null, recordView, "text/html", "utf-8", null);
+	
+	//2.准备好一个桥接的对象
+	class AndroidObject{
+		
+		@JavascriptInterface
+		public String getAndroidData() {
+			return androidData;
+		}
+	}
+	
+	//3.安卓的webview把这个桥接对象给了js
+	AndroidObject ao=new AndroidObject();
+	webView.addJavascriptInterface(ao,"androidBridge");
+	
+	
+	//4.js找到桥接对象,调用方法,同时获得返回值
+	js:
+	var ao=window.androidBridge;
+	var result=ao.getAndroidData();
+
+
+本项目的实现方法:
+	1.需求:
+		有不同的js(html)页面,每个页面需要的数据也不全相同:
+			编辑页面:格式(get_androidFormat);
+			记录页面:格式+一个记录项某天的数据(get_androidCellEntry);
+			分别展示界面:格式+一个记录项很多天的数据(get_androidCellEntryList)+分析结果(get_androidAnalysis);
+			连续展示页面:格式+一个记录项很多天的数据+分析结果;
+			总体展示页面:很多记录项很多天的数据+所有格式;
+	
+	2.要求:
+			1.统一,统一数据在js里的androidBridge应用名称,便于js编写;
+			2.简单
+	
+	3.思路:
+			发现webview只需要知道要给js的数据是什么就行,可以忽略掉中间过程;
+			webView.setFormat("{a:dedei;b:xduu}")
+			webView.setCellEntry(new CellEntry(ede,"dede"))
+			webView.setCellEntryList()
+
+	3.实现方法:
+			1.按照上面的方法,每次都新建一个对象,设置返回值,然后给了各自的WebView;
+			
+			
+			window.androidBridge.get_androidFormat();
+			
+			2.我那个方法;
+				JsDataLoader js=new JsDataLoader(webView);
+				js.add_androidFormat("");
+				js.add_androidSystemData();
+				
+			class JsDataLoader{
+			
+				WebView webView;
+				String format;
+				public JsDataLoader(WebView webView){
+					this.webView=webView;
+					webView.addJavascriptInterface(this,"androidBridge");
+				}
+				
+				public void setFormat(String format){
+					this.format=format;
+				}
+				
+				@JavascriptInterface
+				public String get_androidFormat(){
+					return format;
+				}
+			}
+
+
+
+
+
+
+
+
 
 首先分析一下有哪些地方要用到js,用到的地方详细是怎么回事:
 
@@ -8,6 +89,11 @@
 		原来的模板格式:原来的选择有哪些,在这个基础上编辑;
 		模板的js代码:这个就是基础,比如添加按钮,具体选择的html元素显示,还有处理控件的事件,都是这个在做;
 		!可能还需要一些安卓的系统数据,比如应用列表;
+		
+		1.loadDataWithBaseURL
+		2. JsDataLoader js=new JsDataLoader();
+		2. js.add_androidFormat("");
+		3. js.add_androidSystemData();
 		
 	执行流程:
 		安卓端准备好数据,然后加载js,然后js调用安卓的方法获取需要的数据,然后绘制界面,
