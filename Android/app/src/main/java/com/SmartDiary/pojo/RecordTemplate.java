@@ -12,9 +12,9 @@ public class RecordTemplate {
     //编辑视图,就是记录项具体的记录视图
     public String record_view;
     //用来分析数据的js代码;
-    public String analysis_code;
+    public String analysis_js;
     //展示类的视图,但是只用来展示一天的数据
-    public String separated_view;
+    public String separate_js;
     //也是展示类的视图,用来做总的可视化,可选
     public String continuous_view;
     //类型信息,方便可视化
@@ -39,15 +39,6 @@ public class RecordTemplate {
 
     public String getRecord_view() {
         return record_view;
-    }
-
-    public String getAnalysis_code() {
-        return analysis_code;
-    }
-
-
-    public String getSeparated_view() {
-        return separated_view;
     }
 
     public String getContinuous_view() {
@@ -79,16 +70,8 @@ public class RecordTemplate {
         this.record_view = record_view;
     }
 
-    public void setAnalysis_code(String analysis_code) {
-        this.analysis_code = analysis_code;
-    }
-
     public void setTemplate_class(String template_class) {
         this.template_class = template_class;
-    }
-
-    public void setSeparated_view(String separated_view) {
-        this.separated_view = separated_view;
     }
 
     public void setContinuous_view(String continuous_view) {
