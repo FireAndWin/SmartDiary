@@ -6,6 +6,7 @@ import com.SmartDiary.R;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,9 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -80,9 +83,11 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         views_load_data();
         init_recordView();
         init_adapters();
+        init_tableView();
         bind_event();
         return view;
     }
+
 
     //++++++++++++++++++++++++数据成员++++++++++++++++++++++++++++++++++
     //========非UI成员==============
@@ -105,6 +110,8 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     TextView text_itemComment;
     //实际的记录控件
     WebView webView_record_recordData;
+    //底部通过表格方显示数据的webview
+    WebView webView_record_table;
     //对记录项的信息进行编辑的按钮
     Button btn_itemInfo_edit;
     //在 数据/统计图标 之间进行切换的 单选按钮
@@ -162,6 +169,42 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
 
     }
+
+    private void init_tableView() {
+        webView_record_table=adapter_viewPager.table.findViewById(R.id.webView_record_table);
+        String table_view="<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=\n" +
+                "    , initial-scale=1.0\">\n" +
+                "    <title>Document</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    \n" +
+                "    <div id=\"div1\">我还没有被改过</div>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html>";
+        String separate_js="let div_1=document.getElementById(\"div1\");\n" +
+                "            div_1.innerHTML=\"我被改了\";";
+
+        webView_record_table.getSettings().setDefaultTextEncodingName("utf-8") ;
+        webView_record_table.getSettings().setJavaScriptEnabled(true);
+        webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
+        webView_record_table.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                webView_record_table.evaluateJavascript(separate_js, new ValueCallback<String>() {
+                    @Override public void onReceiveValue(String value) {//js与native交互的回调函数
+                    }
+                });
+            }
+        });
+
+    }
+
 
     //4.处理复杂控件,还有创建各种adapter并初始化,主要是那个Recyclerview,在这里创建Adapter;
     public void init_adapters(){

@@ -1,0 +1,14 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "name": "Open edit_view.html",
+            "file": "d:\\SmartDiary\\文档\\产品设计\\安卓和js的交互问题\\模板\\选择模板\\table_view.html"
+        }
+    ]
+}
