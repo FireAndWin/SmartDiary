@@ -1,19 +1,19 @@
 package com.SmartDiary.UI.check;
 import com.SmartDiary.R;
+import com.SmartDiary.UI.record.Adapter_record_tableView;
+import com.SmartDiary.pojo.DayEntry;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +123,48 @@ public class Fragment_Check_OutFrame extends Fragment {
     }
 
     //===================================================================
+
+    class Adapter_Inner_ViewPager extends PagerAdapter {
+
+        Map<Integer,View> view_check_content_dailyMap;
+        List<DayEntry> dayEntryList;
+
+        //构造函数,主要是初始化这两个View
+        public Adapter_Inner_ViewPager(){
+            view_check_content_dailyMap=new HashMap<>();
+            dayEntryList=new ArrayList<>();
+
+            //这里是为了开发随便加几个数据就完事
+            dayEntryList.add(new DayEntry());
+            dayEntryList.add(new DayEntry());
+        }
+
+        @Override
+        public int getCount() {
+            return dayEntryList.size();
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View view=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_check_content_daily,null);
+            new Adapter_check_dayEntry2webView(view,dayEntryList.get(position));
+            container.addView(view);
+            view_check_content_dailyMap.put(position,view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(view_check_content_dailyMap.get(position));
+            view_check_content_dailyMap.remove(position);
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view==object;
+        }
+    }
+
     class Adapter_Out_ViewPager extends PagerAdapter {
 
         //第一页,用表格显示数据
@@ -159,50 +201,6 @@ public class Fragment_Check_OutFrame extends Fragment {
             } else {
                 container.removeView(analysis);
             }
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view==object;
-        }
-    }
-
-
-
-    class Adapter_Inner_ViewPager extends PagerAdapter {
-
-        List<View> table_content;
-
-        public void inti_recyclerView_table(View view){
-            RecyclerView table=view.findViewById(R.id.recyclerView_check_table);
-
-
-        }
-
-        //构造函数,主要是初始化这两个View
-        public Adapter_Inner_ViewPager(){
-            table_content=new ArrayList<>();
-            for(Test_Daily_Data data:test_data_list){
-                View view=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_checkcontent_table,null);
-                inti_recyclerView_table(view);
-                table_content.add(view);
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return table_content.size();
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(table_content.get(position));
-            return table_content.get(position);
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(table_content.get(position));
         }
 
         @Override

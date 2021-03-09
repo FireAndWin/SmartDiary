@@ -1,0 +1,91 @@
+安卓有三个固定界面:
+这里我们先写两个:
+
+1.table_view:
+	就是显示一个记录项不同日期的值,
+	只要给了足够的CellEntry就好;
+	还要给format,template_id,analysis_result,
+	给的数据有两部分:
+	第一部分是个大的列表,列表的元素长这样:
+	[date,record_value].
+	第二部分就是几个值,
+	template_id,format,analysis_result
+	对应到安卓的数据就是:
+	一个RecordEntry对象,
+	很多的CellEntry.
+	json格式:
+	{
+		recordEntry:{
+			"id":"记录项本身的id",
+			"format":"格式的json字符串",
+			"template_id": "记录模板的id是个字符串",
+			"analysis_result": "分析结果是个字符串",	
+		},
+		
+		cellEntryList: [
+			{
+				date: 毫秒值,
+				value:"字符串",
+			},
+			{
+				date: 毫秒值,
+				value:"字符串",
+			},
+		],
+	}
+	
+	然后提供两个接口:
+	getFormat(String template_id);
+	getAnalysis(String template_id);
+	给动态注入的js使用;
+	
+	此外,这个页面还要调用安卓的函数,切换时间,还有就是对记录值进行编辑;
+
+	后期还有动态添加新数据的功能待实现.
+	
+2.check_view:
+	显示一天中不同记录项的值,
+	给一个DayEntry就好,
+	(不够呀,要有一下信息:template_id,记录项的名称
+	还要给每个记录项的format,analysis_result,不用给template_id了.
+	就是一个大的列表,列表的元素还是个列表,长这样:
+	[template_id,recordEntry_name,format,analysis_result,record_value],都可以根据记录项的id获取到.
+	对应的数据就是:
+	很多的[RecordEntry,record_value],
+	还有一个date时间.
+	json格式如下:
+	{
+		date: ,
+		value_map:[
+			{	recordEntry:{
+					template_id: ,
+					name: ,
+					id: ,
+					analysis_result: ,
+					format: ,
+					},
+					
+				value: ,
+				}
+			},
+			{	recordEntry:{
+					template_id: ,
+					name: ,
+					id: ,
+					analysis_result: ,
+					format: ,
+					},
+					
+				value: ,
+				}
+			},
+		],
+	}
+	
+	然后还是提供两个接口:
+	getFormat(String template_id);
+	getAnalysis(String template_id);
+	给动态注入的js使用;
+	
+	此外,这个页面还要调用安卓的函数,记录具体记录项,还有就是对记录值进行编辑;
+	

@@ -172,37 +172,12 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     private void init_tableView() {
         webView_record_table=adapter_viewPager.table.findViewById(R.id.webView_record_table);
-        String table_view="<!DOCTYPE html>\n" +
-                "<html lang=\"en\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <meta name=\"viewport\" content=\"width=\n" +
-                "    , initial-scale=1.0\">\n" +
-                "    <title>Document</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    \n" +
-                "    <div id=\"div1\">我还没有被改过</div>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>";
-        String separate_js="let div_1=document.getElementById(\"div1\");\n" +
-                "            div_1.innerHTML=\"我被改了\";";
-
-        webView_record_table.getSettings().setDefaultTextEncodingName("utf-8") ;
-        webView_record_table.getSettings().setJavaScriptEnabled(true);
-        webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
-        webView_record_table.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                webView_record_table.evaluateJavascript(separate_js, new ValueCallback<String>() {
-                    @Override public void onReceiveValue(String value) {//js与native交互的回调函数
-                    }
-                });
-            }
-        });
-
+        Adapter_record_tableView adapter_record_tableView=new Adapter_record_tableView(
+                webView_record_table,
+                recordEntry_id,
+                recordEntryService,
+                recordTemplateService
+        );
     }
 
 

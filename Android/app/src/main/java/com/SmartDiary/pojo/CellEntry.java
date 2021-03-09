@@ -4,4 +4,9 @@ package com.SmartDiary.pojo;
 public class CellEntry {
     public long date;
     public String value;
+
+    public CellEntry(long date, String value) {
+        this.date = date;
+        this.value = value;
+    }
 }

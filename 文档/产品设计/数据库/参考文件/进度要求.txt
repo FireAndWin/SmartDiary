@@ -1,0 +1,29 @@
+
+奇数-瑞海写模板;
+
+1.写好建表语句;
+
+2.SQLiteOpenHelper;
+
+3.pojoService读取数据表加载;
+
+!调试问题:
+	database路径:
+	/data/data/包名/databases/.db
+	用软件:
+	SQLyog
+	
+	
+4.提供给UI的接口:
+	增加;
+	删除;(模板类不需要);
+	修改;(模板也不需要);
+	查询;
+		getAll();
+		getObject_byId();
+	
+5.跟实际数据库操作的
+    查询(就是步骤3)	
+	增加;
+	删除;(模板类不需要);
+	修改;(模板也不需要);

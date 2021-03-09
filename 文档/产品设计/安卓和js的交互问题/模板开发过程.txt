@@ -1,0 +1,44 @@
+tls:
+1.获取formatJson,进行渲染;
+2.用户做选择,事件绑定,把结果存储到对象里面;
+3.转成json返回就好;
+
+食品支出:
+
+
+fomat{
+
+	template_id:
+	
+	choice:{}
+	
+	key_value:{}
+	
+	
+}
+
+lyh:
+1.edit_view:
+	核心是formatJson;
+	功能:
+		设置记录方面和东西;
+		获取格式;
+		把格式显示控件上;
+		还可以记录记录方式(单选多选,slider/button/input/);
+2.record_view:
+	核心是记录数据;
+	功能:
+		获取formatJson;
+		获取CellEntryJson;
+		根据formatJson来设置记录控件;
+		把CellEntryJson填充上去;
+		把事件写好;
+		提供好给安卓的借口;
+3.seperate_js:
+	核心就是分别渲染数据;
+	在两个地方用到;
+	需要数据:
+		1.根据ClassName(template_id)获取所有div元素;
+		2.formatJson;
+4.continous_js:
+5.analysis_js:

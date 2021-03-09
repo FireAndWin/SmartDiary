@@ -4,6 +4,15 @@ import com.SmartDiary.pojo.RecordTemplate;
 
 public class RecordTemplateService {
 
+    private static RecordTemplateService singleRecordTemplateService;
+    public static  RecordTemplateService newInstance() {
+        if(singleRecordTemplateService==null){
+            singleRecordTemplateService=new RecordTemplateService();
+        }
+        return singleRecordTemplateService;
+    }
+
+
     //根据记录项id获取到该记录项的模板对象
     public RecordTemplate getObject_byID(String template_id){
         RecordTemplate recordTemplate= new RecordTemplate();

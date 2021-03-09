@@ -1,5 +1,7 @@
 package com.SmartDiary.service.pojoService;
 
+import android.os.Bundle;
+
 import com.SmartDiary.pojo.RecordEntry;
 
 import java.util.ArrayList;
@@ -7,9 +9,17 @@ import java.util.List;
 
 public class RecordEntryService {
 
+    private static RecordEntryService singleRecordEntryService;
+    public static  RecordEntryService newInstance() {
+        if(singleRecordEntryService==null){
+            singleRecordEntryService=new RecordEntryService();
+        }
+        return singleRecordEntryService;
+    }
+
     //测试时使用的只存在于内存中的数据
     List<RecordEntry> test_list;
-
+    List<RecordEntry> recordEntryList;
     public RecordEntryService() {
         test_list=new ArrayList<>();
         test_list.add(new RecordEntry("日记","记日记","1"));
@@ -22,6 +32,8 @@ public class RecordEntryService {
         test_list.add(new RecordEntry("痘痘情况","脸上痘痘的情况","8"));
         test_list.add(new RecordEntry("雏雁计划日志","进度怎么样","9"));
         test_list.add(new RecordEntry("心情","心情怎么样","10"));
+
+
     }
 
     //=================get(读取相关)方法======================

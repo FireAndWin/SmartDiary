@@ -2,7 +2,6 @@ package com.SmartDiary.pojo;
 
 public class RecordTemplate {
     public String id;
-
     //模板名称
     public String name;
     //模板备注信息
@@ -76,5 +75,13 @@ public class RecordTemplate {
 
     public void setContinuous_view(String continuous_view) {
         this.continuous_view = continuous_view;
+    }
+
+    public String getAnalysis_js() {
+        return analysis_js;
+    }
+
+    public String getSeparate_js() {
+        return separate_js;
     }
 }

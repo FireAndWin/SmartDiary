@@ -1,0 +1,16 @@
+这几个文件和咱的项目对应如下:
+
+1:
+AlarmItem.java是一个pojo类,对应于咱们项目的RecordEntry和RecordTemplate
+
+2.
+DataManager.java是一个service对象,对应咱们项目的pojoService;
+
+3:
+AlarmItemSQL.java是一个单纯的数据库打开对象,咱也要各自新建一个;
+
+4:
+Activity_Test_DB.java就是测试的界面逻辑,
+activity__test__d_b.xml就是这个页面的布局文件.
+
+5.记得更新SmartDiary项目,有几个变量名称变了.

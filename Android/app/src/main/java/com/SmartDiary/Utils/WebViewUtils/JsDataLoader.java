@@ -63,7 +63,7 @@ public class JsDataLoader {
     }
 
     @JavascriptInterface
-    public String getAndroidAnalysis() {
+    public String getJSAnalysisResult() {
         return androidAnalysis;
     }
 

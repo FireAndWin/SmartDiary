@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dataBase.Activity_Test_DB">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="number" />
+        <Button
+            android:id="@+id/create_table"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="create table"
+            />
+        <Button
+            android:id="@+id/add_item"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="add item"
+            />
+        <Button
+            android:id="@+id/delete_item"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="delete item"/>
+        <Button
+            android:id="@+id/query_one"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="query one"/>
+        <Button
+            android:id="@+id/query_all"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="query all"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

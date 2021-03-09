@@ -13,6 +13,11 @@ public class RecordEntry {
     public long latest;
     //上次分析得到的结果
     public String analysis_result;
+    //和模板相关的变量
+    //格式字符串,将这个交给模板的record_view生成具体的编辑控件
+    public String format;
+    //这个记录项的模板id
+    public String template_id;
     //--------拓展功能-------
     //记录频次,单位是天,默认是每天
     public int frequency;
@@ -26,11 +31,82 @@ public class RecordEntry {
     public String arg2;
 
 
-    //和模板相关的变量
-    //格式字符串,将这个交给模板的record_view生成具体的编辑控件
-    public String format;
-    //这个记录项的模板id
-    public String template_id;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIcon_path(String icon_path) {
+        this.icon_path = icon_path;
+    }
+
+    public void setLatest(long latest) {
+        this.latest = latest;
+    }
+
+    public String getAnalysis_result() {
+        return analysis_result;
+    }
+
+    public void setAnalysis_result(String analysis_result) {
+        this.analysis_result = analysis_result;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
+    }
+
+    public String getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(String alarm) {
+        this.alarm = alarm;
+    }
+
+    public String getArg1() {
+        return arg1;
+    }
+
+    public void setArg1(String arg1) {
+        this.arg1 = arg1;
+    }
+
+    public String getArg2() {
+        return arg2;
+    }
+
+    public void setArg2(String arg2) {
+        this.arg2 = arg2;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setTemplate_id(String template_id) {
+        this.template_id = template_id;
+    }
 
     public String getName() {
         return name;
