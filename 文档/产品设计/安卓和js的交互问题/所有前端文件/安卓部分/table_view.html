@@ -8,9 +8,11 @@
 <body>
     <div id="android_data">安卓传过来的数据</div>
     <div id="cellEntry_table">表格div</div>
-    <div id="my_interface"><</div>
+    <div id="my_interface"></div>
     <script>
-        //获取该页面要展示的记录项Json:
+
+        //第一步要获得所有数据
+            //获取该页面要展示的记录项Json:
         let recordEntryJson=window.androidObject.getAndroidRecordEntry();
         //recordEntryJson="{\"id\":\"idString\",\"name\":\"记录项名称,比如学习情况\",\"template_id\":\"模板idString\",\"analysis_result\":\"分析结果String\",\"format\":\"格式String\"}";
         let recordEntry=JSON.parse(recordEntryJson);
@@ -19,6 +21,8 @@
         //cellEntryListJson="[{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"}]";
         let cellEntryList=JSON.parse(cellEntryListJson);
 
+
+        //第二部准备好给separate_js准备的函数
         window.getFormat=function(template_id){
             return recordEntry.format;
         };
@@ -28,11 +32,10 @@
         let my_interface=document.getElementById("my_interface");
         my_interface.innerHTML="格式json为:"+window.getFormat()+"\n"+"分析结果为:"+window.getAnalysisResult();
 
-        // console.log(JSON.stringify(recordEntry));
-        // console.log(JSON.stringify(cellEntryList));
+
+        //第三步加载数据到dom元素中
         let div_android_data=document.getElementById("android_data");
         div_android_data.innerHTML=recordEntryJson+"\n"+cellEntryListJson;
-
         let div_table=document.getElementById("cellEntry_table");
         for (i in cellEntryList){
             cellEntry=cellEntryList[i];
@@ -40,9 +43,10 @@
             //放数据的整个格子
             let div_cell=document.createElement("div");
 
-            //日期按钮
-            let button_date=document.createElement("button");
-            button_date.textContent= new Date(cellEntry.date).toLocaleString();
+            //放日期的地方
+            let div_date=document.createElement("div");
+            div_date.textContent= new Date(cellEntry.date).toLocaleString();
+            div_date.style.backgroundColor="#03A9F4";
 
             //放数据的地方:
             let div_value=document.createElement("div");
@@ -50,7 +54,7 @@
             div_value.setAttribute("value",cellEntry.value);
             div_value.innerText=recordEntry.template_id+cellEntry.value;
 
-            div_cell.appendChild(button_date);
+            div_cell.appendChild(div_date);
             //div_cell.appendChild("<br>");
             div_cell.appendChild(div_value);
 

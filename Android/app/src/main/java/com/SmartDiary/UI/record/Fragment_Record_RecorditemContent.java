@@ -160,7 +160,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //初始化那个webview的实际记录控件
     public void init_recordView(){
-        RecordTemplate template=recordTemplateService.getObject_byID(recordEntry_id);
+        RecordTemplate template=recordTemplateService.getObject_byID("11");
         String recordView=template.getRecord_view();
 
         webView_record_recordData.getSettings().setDefaultTextEncodingName("utf-8") ;

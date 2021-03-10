@@ -50,9 +50,18 @@ public class Adapter_record_tableView {
         this.recordEntryService=recordEntryService;
         this.recordTemplateService=recordTemplateService;
 
+        //webView的一些设置
         webView_record_table.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView_record_table.getSettings().setJavaScriptEnabled(true);
+        webView_record_table.addJavascriptInterface(this,"androidObject");
 
+        //向WebView中添加基本的html代码
+        load_basicHTML(webView_record_table);
+        //向webView中动态注入js进行单个记录值的渲染绘制
+        load_separate_js(webView_record_table);
+    }
+
+    private void load_basicHTML(WebView webView_record_table) {
         String table_view="<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -63,9 +72,11 @@ public class Adapter_record_tableView {
                 "<body>\n" +
                 "    <div id=\"android_data\">安卓传过来的数据</div>\n" +
                 "    <div id=\"cellEntry_table\">表格div</div>\n" +
-                "    <div id=\"my_interface\"><</div>\n" +
+                "    <div id=\"my_interface\"></div>\n" +
                 "    <script>\n" +
-                "        //获取该页面要展示的记录项Json:\n" +
+                "\n" +
+                "        //第一步要获得所有数据\n" +
+                "            //获取该页面要展示的记录项Json:\n" +
                 "        let recordEntryJson=window.androidObject.getAndroidRecordEntry();\n" +
                 "        //recordEntryJson=\"{\\\"id\\\":\\\"idString\\\",\\\"name\\\":\\\"记录项名称,比如学习情况\\\",\\\"template_id\\\":\\\"模板idString\\\",\\\"analysis_result\\\":\\\"分析结果String\\\",\\\"format\\\":\\\"格式String\\\"}\";\n" +
                 "        let recordEntry=JSON.parse(recordEntryJson);\n" +
@@ -74,6 +85,8 @@ public class Adapter_record_tableView {
                 "        //cellEntryListJson=\"[{\\\"date\\\":1111100,\\\"value\\\":\\\"睡得很早\\\"},{\\\"date\\\":1111100,\\\"value\\\":\\\"睡得很早\\\"},{\\\"date\\\":1111100,\\\"value\\\":\\\"睡得很早\\\"},{\\\"date\\\":1111100,\\\"value\\\":\\\"睡得很早\\\"},{\\\"date\\\":1111100,\\\"value\\\":\\\"睡得很早\\\"}]\";\n" +
                 "        let cellEntryList=JSON.parse(cellEntryListJson);\n" +
                 "\n" +
+                "\n" +
+                "        //第二部准备好给separate_js准备的函数\n" +
                 "        window.getFormat=function(template_id){\n" +
                 "            return recordEntry.format;\n" +
                 "        };\n" +
@@ -83,11 +96,10 @@ public class Adapter_record_tableView {
                 "        let my_interface=document.getElementById(\"my_interface\");\n" +
                 "        my_interface.innerHTML=\"格式json为:\"+window.getFormat()+\"\\n\"+\"分析结果为:\"+window.getAnalysisResult();\n" +
                 "\n" +
-                "        // console.log(JSON.stringify(recordEntry));\n" +
-                "        // console.log(JSON.stringify(cellEntryList));\n" +
+                "\n" +
+                "        //第三步加载数据到dom元素中\n" +
                 "        let div_android_data=document.getElementById(\"android_data\");\n" +
                 "        div_android_data.innerHTML=recordEntryJson+\"\\n\"+cellEntryListJson;\n" +
-                "\n" +
                 "        let div_table=document.getElementById(\"cellEntry_table\");\n" +
                 "        for (i in cellEntryList){\n" +
                 "            cellEntry=cellEntryList[i];\n" +
@@ -95,9 +107,10 @@ public class Adapter_record_tableView {
                 "            //放数据的整个格子\n" +
                 "            let div_cell=document.createElement(\"div\");\n" +
                 "\n" +
-                "            //日期按钮\n" +
-                "            let button_date=document.createElement(\"button\");\n" +
-                "            button_date.textContent= new Date(cellEntry.date).toLocaleString();\n" +
+                "            //放日期的地方\n" +
+                "            let div_date=document.createElement(\"div\");\n" +
+                "            div_date.textContent= new Date(cellEntry.date).toLocaleString();\n" +
+                "            div_date.style.backgroundColor=\"#03A9F4\";\n" +
                 "\n" +
                 "            //放数据的地方:\n" +
                 "            let div_value=document.createElement(\"div\");\n" +
@@ -105,7 +118,7 @@ public class Adapter_record_tableView {
                 "            div_value.setAttribute(\"value\",cellEntry.value);\n" +
                 "            div_value.innerText=recordEntry.template_id+cellEntry.value;\n" +
                 "\n" +
-                "            div_cell.appendChild(button_date);\n" +
+                "            div_cell.appendChild(div_date);\n" +
                 "            //div_cell.appendChild(\"<br>\");\n" +
                 "            div_cell.appendChild(div_value);\n" +
                 "\n" +
@@ -115,8 +128,12 @@ public class Adapter_record_tableView {
                 "    </script>\n" +
                 "</body>\n" +
                 "</html>";
-        //webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
 
+        webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
+
+    }
+
+    private void load_separate_js(WebView webView_record_table) {
         //获取要动态注入的separate_js
         /*这个是正规写法
         RecordEntry entry=recordEntryService.getObject_ById(recordEntryID);
@@ -125,10 +142,6 @@ public class Adapter_record_tableView {
         String separate_js=template.getSeparate_js();*/
         String separate_js="let div_1=document.getElementById(\"div1\");\n" +
                 "            div_1.innerHTML=\"我被改了\";";
-
-        webView_record_table.addJavascriptInterface(this,"androidObject");
-        Log.d(TAG, "getAndroidRecordEntry: "+"添加了数据接口");
-        webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
 
         webView_record_table.setWebViewClient(new WebViewClient() {
             @Override
@@ -143,7 +156,6 @@ public class Adapter_record_tableView {
             }
         });
     }
-
 
     /*设置webView要显示的数据时段,也就是起止日期,还有就是时段*/
     public void setPeriod(long start_date,int day_count){

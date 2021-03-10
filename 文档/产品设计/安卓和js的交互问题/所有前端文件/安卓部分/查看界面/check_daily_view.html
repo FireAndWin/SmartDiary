@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="date">在这里显示时间</div>
+    <div id="dayEntry_table"></div>
+    <script>
+        //第一步要获得所有数据
+            //先获取所有要显示的记录项
+        let JsonRecordEntryList=window.androidObject.getAndroidRecordEntryList();
+        let recordEntryList=JSON.parse(JsonRecordEntryList);
+            //然后获得日期
+        let date=window.androidObject.getAndroidDate();
+
+
+        //第二部准备好给separate_js准备的函数
+
+        //第三步加载数据到dom元素中
+        let div_dayEntry_table=document.getElementById("dayEntry_table");
+        for(i in recordEntryList){
+            let recordEntry=recordEntryList[i];
+
+            //放数据的整个格子
+            let div_cell=document.createElement("div");
+
+
+            //记录项名称的地方
+            let div_name=document.createElement("div");
+            div_name.innerHTML=recordEntry.name;
+            div_name.style.backgroundColor="#03A9F4";
+
+            //放记录项数据的地方
+            let div_value=document.createElement("div");
+            div_value.setAttribute("template_id",recordEntry.template_id);
+            let record_value=window.androidObject.getAndroidRecordValue_byId(recordEntry.id);
+            div_value.setAttribute("value",record_value);
+            div_value.innerText=recordEntry.template_id+record_value;
+
+
+            //加入到父元素中
+            div_dayEntry_table.appendChild(div_cell);
+            div_cell.appendChild(div_name);
+            div_cell.appendChild(div_value);
+        }
+
+        //第四步修改时间显示
+        let div_date=document.getElementById("date");
+        let long_date=window.androidObject.getAndroidDate();
+        div_date.innerHTML= new Date(long_date).toLocaleString();
+    </script>
+    
+</body>
+</html>

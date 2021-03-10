@@ -141,4 +141,14 @@ public class RecordEntry {
         this.info = info;
         this.id = id;
     }
+
+    public RecordEntry(String name, String info, String id,String template_id) {
+        this.name = name;
+        this.info = info;
+        this.id = id;
+        setTemplate_id(template_id);
+        format="";
+        analysis_result="";
+    }
+
 }
