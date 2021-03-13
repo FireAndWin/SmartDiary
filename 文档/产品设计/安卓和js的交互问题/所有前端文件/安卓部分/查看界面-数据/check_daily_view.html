@@ -18,6 +18,22 @@
 
 
         //第二部准备好给separate_js准备的函数
+        window.getFormat=function(template_id){
+            for(i in recordEntryList){
+                let recordEntry=recordEntryList[i];
+                if(recordEntry.template_id===template_id){
+                    return recordEntry.format;
+                }
+            }
+        };
+	    window.getAnalysisResult=function(template_id){
+            for(i in recordEntryList){
+                let recordEntry=recordEntryList[i];
+                if(recordEntry.template_id===template_id){
+                    return recordEntry.analysis_result;
+                }
+            }
+        };
 
         //第三步加载数据到dom元素中
         let div_dayEntry_table=document.getElementById("dayEntry_table");
@@ -35,10 +51,11 @@
 
             //放记录项数据的地方
             let div_value=document.createElement("div");
-            div_value.setAttribute("template_id",recordEntry.template_id);
+            //div_value.setAttribute("template_id",recordEntry.template_id);
+            div_value.className="separateJS"+recordEntry.template_id;
             let record_value=window.androidObject.getAndroidRecordValue_byId(recordEntry.id);
             div_value.setAttribute("value",record_value);
-            div_value.innerText=recordEntry.template_id+record_value;
+            div_value.innerText="separateJS"+recordEntry.template_id;;
 
 
             //加入到父元素中

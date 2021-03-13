@@ -50,9 +50,10 @@
 
             //放数据的地方:
             let div_value=document.createElement("div");
-            div_value.setAttribute("template_id",recordEntry.template_id);
+            //div_value.setAttribute("template_id",recordEntry.template_id);
+            div_value.className="separateJS"+recordEntry.template_id;
             div_value.setAttribute("value",cellEntry.value);
-            div_value.innerText=recordEntry.template_id+cellEntry.value;
+            div_value.innerText="separateJS"+recordEntry.template_id;
 
             div_cell.appendChild(div_date);
             //div_cell.appendChild("<br>");

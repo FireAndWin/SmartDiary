@@ -3,10 +3,7 @@ import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 
 
-
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,16 +16,13 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.SmartDiary.UI.record.StudyRecyclerAdapter;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
 import com.SmartDiary.service.pojoService.DayEntryService;
@@ -37,7 +31,6 @@ import com.SmartDiary.service.pojoService.RecordTemplateService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -160,7 +153,8 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //初始化那个webview的实际记录控件
     public void init_recordView(){
-        RecordTemplate template=recordTemplateService.getObject_byID("11");
+        String template_id=RecordEntryService.newInstance().getObject_ById(recordEntry_id).getTemplate_id();
+        RecordTemplate template=recordTemplateService.getObject_byID(template_id);
         String recordView=template.getRecord_view();
 
         webView_record_recordData.getSettings().setDefaultTextEncodingName("utf-8") ;
@@ -172,7 +166,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     private void init_tableView() {
         webView_record_table=adapter_viewPager.table.findViewById(R.id.webView_record_table);
-        Adapter_record_tableView adapter_record_tableView=new Adapter_record_tableView(
+        Adapter4webView_record_table adapter_4webViewRecordtable =new Adapter4webView_record_table(
                 webView_record_table,
                 recordEntry_id,
                 recordEntryService,

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='root'>
+
+    </div>
+    <script>
+
+            
+        
+        
+        //const getJSObj=window.androidObject.getAndroidFormat();
+        //let JSObj=JSON.parse(getObj);
+
+		        //测试用的JSObj
+         JSObj={
+             template_id:1,//1,2,3
+             choice:{
+                 "1":"玩手机,王者荣耀",
+                 "2":"看小说",
+                 "3":"blibli",
+                 "4":"看电影",
+                 "5":"出去玩",
+                 "6":"聊天",
+                 "7":"运动",
+				},
+			choiceType:"checkbox",
+             };
+
+        //获取模板json，根据模板json渲染组件
+        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值
+        //const getAndroidObj=window.androidObject.getAndroidCellEntry();
+        //let AndroidObj=JSON.parse(getAndroidObj);
+
+        //测试用例
+         AndroidObj={
+             "1":true,
+             "2":true,
+             "3":true,
+             "4":true,
+			"5":false,
+			"6":false,
+			"7":false,
+         }
+
+        //要返回的json对象
+        const returnObj={};
+
+        //获取root div
+        const root=document.getElementById('root');
+
+        //index用于给inout标签设置id
+        let index=1;
+        //渲染组件
+        for(let i in JSObj['choice']){
+        console.log("输出结果为:"+i);
+
+            //第一步是获取key
+            let key=Object.keys(JSObj.choice)[i-1];
+            returnObj[key]=AndroidObj[key];
+            //returnObj[JSObj['choice'][i]]=AndroidObj[JSObj['choice'][i]];
+            let div1=document.createElement('div');
+            let btn1=document.createElement('input');
+            if(JSObj['choiceType']==='radio'){
+                btn1.setAttribute('type','radio');
+                btn1.onclick=function(){
+                for(let j in returnObj){
+                    returnObj[j]=false;
+                    }
+                //returnObj[JSObj['choice'][i]]=!returnObj[JSObj['choice'][i]];
+                returnObj[key]=true;
+                console.log(returnObj);
+                }
+            }
+            else{
+                btn1.setAttribute('type','checkbox');
+                // btn1.setAttribute('name','che');
+                btn1.onclick=function(){
+                //returnObj[JSObj['choice'][i]]=!returnObj[JSObj['choice'][i]];
+                returnObj[key]=!returnObj[key];
+                console.log(returnObj);
+            }
+            }
+            btn1.setAttribute('name','in');
+            btn1.setAttribute('id','label'+index);
+            let label1=document.createElement('label');
+            label1.textContent=JSObj['choice'][i];
+            label1.setAttribute('for','label'+index);
+            //btn1.checked=AndroidObj[JSObj['choice'][i]];
+            btn1.checked=AndroidObj[key];
+            div1.appendChild(label1);
+            div1.appendChild(btn1);
+            root.appendChild(div1);
+            ++index;
+            // console.log(returnObj);
+        } 
+
+
+        window.getJSRecordView=function(){
+            return JSON.stringify(returnObj);
+        }
+    </script>
+</body>
+</html>

@@ -9,4 +9,24 @@ public class CellEntry {
         this.date = date;
         this.value = value;
     }
+
+
+    public CellEntry() {
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

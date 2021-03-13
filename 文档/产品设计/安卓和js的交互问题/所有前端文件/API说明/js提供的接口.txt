@@ -1,0 +1,16 @@
+1.
+获取格式json:
+getJsFormat()没有参数.
+
+2.
+获取record_view的记录值:
+getJsRecordView()
+
+3.
+获取单一记录项多天的分析结果:
+getJsAnalysisResult(cellEntryList)
+参数为json,对应java对象List<CellEntry>
+返回值json字符串;
+
+4.
+

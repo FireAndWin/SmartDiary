@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+            label,textarea {
+            font-size: .8rem;
+            letter-spacing: 1px;
+        }
+        textarea {
+            padding: 1px;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+        }
+
+        label {
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <label for="story">请在下方输入文本:</label>
+        <br>
+        <textarea id="story" name="story"
+          rows="8" cols="30" autocomplete="on" placeholder="请输入文本" autofocus="true">
+        </textarea>
+    <script>
+        //获取模板json，根据模板json渲染组件
+        // const getJSObj=window.androidObject.getAndroidFormat();
+        // let JSObj=JSON.parse(getObj);
+
+        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值
+        const getAndroidObj=window.androidObject.getAndroidCellEntry();
+        let AndroidObj=JSON.parse(getAndroidObj);
+        // const AndroidObj={
+        //     value:`人生苦短，我用JavaScript;人生苦短，我用Java；人生苦短，我用Goland`
+        // }
+        //要返回的json对象
+        const returnObj={};
+
+        //获取root dtextarea
+        const root=document.getElementById('story');
+        root.value=AndroidObj['value'];
+        returnObj['value']=root.value;
+        console.log(returnObj);
+        root.onchange=function(){
+            returnObj['value']=root.value;
+            console.log(returnObj);
+        }
+        window.getJSRecordView=function(){
+            return JSON.stringify(returnObj);
+        }
+    </script>
+</body>
+</html>

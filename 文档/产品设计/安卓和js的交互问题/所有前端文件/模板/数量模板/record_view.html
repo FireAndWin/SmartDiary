@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='root'>
+
+    </div>
+    <script>
+           //测试用的JSObj
+         const JSObj={
+             data:{
+             '1':'饮食支出',
+             '2':'出行支出',
+             '3':'娱乐支出',
+             '4':'学习支出',
+             '5':'衣服支出',
+             
+            },
+            choiceType:'button',
+            step:2
+            
+         };
+        //测试用AndroidObj
+         const AndroidObj={
+             '1':'10',
+             '2':'20',
+             '3':'30',
+             '4':'40',
+             '5':'50',
+         }
+        
+        
+        
+        //从安卓获取数据
+        //获取模板json，根据模板json渲染组件
+        //const getJSObj=window.androidObject.getAndroidFormat();
+        //let JSObj=JSON.parse(getObj);
+
+        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值
+        //const getAndroidObj=window.androidObject.getAndroidCellEntry();
+        //let AndroidObj=JSON.parse(getAndroidObj);
+
+        //要返回的json对象
+        const returnObj={};
+
+        //获取root div
+        const root=document.getElementById('root');
+
+        //index用于给inout标签设置id
+        let index=1;
+        for(let i in JSObj['data']){
+            //returnObj[JSObj['data'][i]]=AndroidObj[JSObj['data'][i]];
+
+            //第一步是获取key
+            let key=Object.keys(JSObj.data)[i-1];
+
+            //设置数据名称
+            let div1=document.createElement('div');
+            let label1=document.createElement('label');
+            label1.textContent=JSObj['data'][i];
+
+            //添加输入框
+            let input=document.createElement('input');
+            input.setAttribute('type','number');
+            input.value=AndroidObj[key];
+            input.onchange=function(){
+                //returnObj[JSObj['data'][i]]=input.value;
+                returnObj[key]=input.value;
+                console.log(returnObj);
+            }
+
+            //创建底部的两个元素
+            let nextLine=document.createElement('br');
+            let btn1=document.createElement('button');
+            let btn2=document.createElement('button');
+            btn1.textContent='+';
+            btn2.textContent='-';
+            btn1.onclick=function(){
+                input.value=parseInt(input.value)+parseInt(JSObj['step']);
+                returnObj[key]=input.value;
+                console.log(returnObj);
+            }
+            btn2.onclick=function(){
+                input.value=parseInt(input.value)-parseInt(JSObj['step']);
+                returnObj[key]=input.value;
+                console.log(returnObj);
+            }
+            btn1.style.marginLeft="5px";
+            btn1.style.marginRight="5px";
+            div1.appendChild(label1);
+            div1.appendChild(input);
+            div1.appendChild(nextLine);
+            div1.appendChild(btn1);
+            div1.appendChild(btn2);
+            root.appendChild(div1);
+        }
+        console.log(returnObj);
+        window.getJSRecordView=function(){
+            return JSON.stringify(returnObj);
+        }
+
+    </script>
+</body>
+</html>

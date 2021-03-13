@@ -1,0 +1,51 @@
+1:
+安卓提供访问对象应用名称:
+androidObject
+
+2.:
+获取格式的json:
+androidObject.getAndroidFormat()
+无参数;
+返回值是json字符串,
+json对象里面有个属性叫template_id,
+还可以放别的值.
+
+2.5.
+获取一个CellEntry
+androidObject.getAndroidCellEntry()
+无参数;
+返回值是json字符串,
+{	recordEntry_id:"字符串",
+	date:时间戳,
+	value:"字符串,记录值,和模板html一致",
+}
+
+
+3.
+获取List<CellEntry>
+androidObject.getAndroidCellEntryList()
+无参数;
+返回值是json字符串,
+{ data:[{	recordEntry_id:"字符串",
+			date:时间戳,
+			value:"字符串,记录值,和模板html一致",
+		},{},{} ]
+}
+
+4.
+获取单一记录项多天的分析结果(是个json字符串).
+androidObject.getJSAnalysisResult()
+无参数;
+返回值是json字符串,
+{ average:12;
+  众数:12;
+  中位数:45;
+}和分析代码analysis_js一致;
+
+6.
+安卓系统数据.
+比如手机使用时长,位置信息,
+
+5.
+List<List<CellEntry>>
+

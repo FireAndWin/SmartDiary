@@ -1,36 +1,92 @@
 package com.SmartDiary.pojo;
 //代表一个具体的可以记录的记录项
 public class RecordEntry {
-    //记录项名称
-    public String name;
-    //记录项备注信息
-    public String info;
     //id
     public String id;
+    //记录项名称
+    public String name;
+    //记录项描述信息
+    public String info;
     //图标
-    public String icon_path;
+    public String icon;
     //最近记录时间
     public long latest;
     //上次分析得到的结果
     public String analysis_result;
+
+
     //和模板相关的变量
-    //格式字符串,将这个交给模板的record_view生成具体的编辑控件
-    public String format;
     //这个记录项的模板id
     public String template_id;
+    //格式字符串,将这个交给模板的record_view生成具体的编辑控件
+    public String format;
+    //进行编辑的视图,用来产生实际的记录项
+    public String edit_view;
+    //编辑视图,就是记录项具体的记录视图
+    public String record_view;
+    //展示类的视图,但是只用来展示一天的数据
+    public String separate_js;
+    //也是展示类的视图,用来做总的可视化,可选
+    public String continuous_view;
+
+
     //--------拓展功能-------
-    //记录频次,单位是天,默认是每天
-    public int frequency;
-    //是否被密码保护,因为布尔值好像是根据int储存的,直接就写成int了
-    public int locked;
-    //提醒时间设置,可以直接写成一个json节省地方
-    public String alarm;
-    //备用参数1
-    public String arg1;
-    //备用参数2
-    public String arg2;
+    //表示状态的变量
+    public int status;
+    //扩展参数
+    public String arg;
 
 
+    public RecordEntry() {
+    }
+
+    public String getEdit_view() {
+        return edit_view;
+    }
+
+    public void setEdit_view(String edit_view) {
+        this.edit_view = edit_view;
+    }
+
+    public String getRecord_view() {
+        return record_view;
+    }
+
+    public void setRecord_view(String record_view) {
+        this.record_view = record_view;
+    }
+
+    public String getSeparate_js() {
+        return separate_js;
+    }
+
+    public void setSeparate_js(String separate_js) {
+        this.separate_js = separate_js;
+    }
+
+    public String getContinuous_view() {
+        return continuous_view;
+    }
+
+    public void setContinuous_view(String continuous_view) {
+        this.continuous_view = continuous_view;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getArg() {
+        return arg;
+    }
+
+    public void setArg(String arg) {
+        this.arg = arg;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -42,10 +98,6 @@ public class RecordEntry {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setIcon_path(String icon_path) {
-        this.icon_path = icon_path;
     }
 
     public void setLatest(long latest) {
@@ -60,45 +112,7 @@ public class RecordEntry {
         this.analysis_result = analysis_result;
     }
 
-    public int getFrequency() {
-        return frequency;
-    }
 
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
-    }
-
-    public int getLocked() {
-        return locked;
-    }
-
-    public void setLocked(int locked) {
-        this.locked = locked;
-    }
-
-    public String getAlarm() {
-        return alarm;
-    }
-
-    public void setAlarm(String alarm) {
-        this.alarm = alarm;
-    }
-
-    public String getArg1() {
-        return arg1;
-    }
-
-    public void setArg1(String arg1) {
-        this.arg1 = arg1;
-    }
-
-    public String getArg2() {
-        return arg2;
-    }
-
-    public void setArg2(String arg2) {
-        this.arg2 = arg2;
-    }
 
     public void setFormat(String format) {
         this.format = format;
@@ -120,8 +134,12 @@ public class RecordEntry {
         return id;
     }
 
-    public String getIcon_path() {
-        return icon_path;
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public long getLatest() {

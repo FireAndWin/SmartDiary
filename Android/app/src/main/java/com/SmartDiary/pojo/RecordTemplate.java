@@ -84,4 +84,12 @@ public class RecordTemplate {
     public String getSeparate_js() {
         return separate_js;
     }
+
+    public void setAnalysis_js(String analysis_js) {
+        this.analysis_js = analysis_js;
+    }
+
+    public void setSeparate_js(String separate_js) {
+        this.separate_js = separate_js;
+    }
 }

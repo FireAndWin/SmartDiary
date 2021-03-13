@@ -1,6 +1,5 @@
 package com.SmartDiary.UI.check;
 import com.SmartDiary.R;
-import com.SmartDiary.UI.record.Adapter_record_tableView;
 import com.SmartDiary.pojo.DayEntry;
 
 import android.content.Context;

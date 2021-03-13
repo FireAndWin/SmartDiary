@@ -18,20 +18,19 @@
     <input type="radio" name="radio1" id="rbtn2">多选
     <script>
         // const getObj=window.androidObject.getAndroidFormat();
-        // let realObj=JSON.parse(getObj);
+        // let JSObj=JSON.parse(getObj);
         const obj={
             template_id:1,//1,2,3
             choice:{
-                "11":"睡得很早",
-                "22":"11.30左右",
-                "33":"1点左右",
-                "44":"没有睡觉"
+                "1":"睡得很早",
+                "2":"11.30左右",
+                "3":"1点左右",
+                "4":"没有睡觉"
             },
             step:5,
-            choiceType:"1"
+            choiceType:"radio"
             
         };
-
 
         let jsonStr=JSON.stringify(obj);
         let jsonObj=JSON.parse(jsonStr);//json字符串转对象
@@ -63,7 +62,7 @@
         }
         let rbtn1=document.getElementById("rbtn1");
         let rbtn2=document.getElementById("rbtn2");
-        if(jsonObj["choiceType"]==="1"){
+        if(jsonObj["choiceType"]==="radio"){
             rbtn1.checked=true;
         }
         else{
@@ -71,16 +70,16 @@
         }
         rbtn1.onclick=function(){
             if(rbtn1.checked==true)
-                jsonObj["choiceType"]="1";
+                jsonObj["choiceType"]="radio";
             else
-                jsonObj["choiceType"]="2";
+                jsonObj["choiceType"]="checkbox";
                 // console.log(jsonObj);
         }
         rbtn2.onclick=function(){
             if(rbtn1.checked==true)
-                jsonObj["choiceType"]="1";
+                jsonObj["choiceType"]="radio";
             else
-                jsonObj["choiceType"]="2";
+                jsonObj["choiceType"]="checkbox";
                 // console.log(jsonObj);
         }
         let btnNew=document.querySelector("#btn_new");
@@ -112,11 +111,13 @@
             }
            jsonObj["choice"][lastKey]="新建选择";
         //    console.log(jsonObj);
+        
+
         });
             window.getJsFormat=function(){
                 return JSON.stringify(jsonObj);
             };
-            // console.log(getFormat());
+            // console.log(jsonObj);
     </script>
 </body>
 </html>

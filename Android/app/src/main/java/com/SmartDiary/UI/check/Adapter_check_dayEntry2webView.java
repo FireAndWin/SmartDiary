@@ -1,6 +1,5 @@
 package com.SmartDiary.UI.check;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +16,7 @@ import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
 import com.alibaba.fastjson.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.SmartDiary.UI.record.Adapter_record_tableView.TAG;
 
 //这个类的功能就是根据dayEntry返回一个展示改天数据的webView
 public class Adapter_check_dayEntry2webView {
@@ -67,8 +63,24 @@ public class Adapter_check_dayEntry2webView {
                 "\n" +
                 "\n" +
                 "        //第二部准备好给separate_js准备的函数\n" +
+                "        window.getFormat=function(template_id){\n" +
+                "            for(i in recordEntryList){\n" +
+                "                let recordEntry=recordEntryList[i];\n" +
+                "                if(recordEntry.template_id===template_id){\n" +
+                "                    return recordEntry.format;\n" +
+                "                }\n" +
+                "            }\n" +
+                "        };\n" +
+                "\t    window.getAnalysisResult=function(template_id){\n" +
+                "            for(i in recordEntryList){\n" +
+                "                let recordEntry=recordEntryList[i];\n" +
+                "                if(recordEntry.template_id===template_id){\n" +
+                "                    return recordEntry.analysis_result;\n" +
+                "                }\n" +
+                "            }\n" +
+                "        };\n" +
                 "\n" +
-                "        //第三步加载数据\n" +
+                "        //第三步加载数据到dom元素中\n" +
                 "        let div_dayEntry_table=document.getElementById(\"dayEntry_table\");\n" +
                 "        for(i in recordEntryList){\n" +
                 "            let recordEntry=recordEntryList[i];\n" +
@@ -84,10 +96,11 @@ public class Adapter_check_dayEntry2webView {
                 "\n" +
                 "            //放记录项数据的地方\n" +
                 "            let div_value=document.createElement(\"div\");\n" +
-                "            div_value.setAttribute(\"template_id\",recordEntry.template_id);\n" +
+                "            //div_value.setAttribute(\"template_id\",recordEntry.template_id);\n" +
+                "            div_value.className=\"separateJS\"+recordEntry.template_id;\n" +
                 "            let record_value=window.androidObject.getAndroidRecordValue_byId(recordEntry.id);\n" +
                 "            div_value.setAttribute(\"value\",record_value);\n" +
-                "            div_value.innerText=recordEntry.template_id+record_value;\n" +
+                "            div_value.innerText=\"separateJS\"+recordEntry.template_id;;\n" +
                 "\n" +
                 "\n" +
                 "            //加入到父元素中\n" +

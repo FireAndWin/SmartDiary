@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
 * 需要选择向它加载的数据,
 * 就是一个转换器,
 * 把安卓提供的数据给了WebView*/
-public class Adapter_record_tableView {
+public class Adapter4webView_record_table {
     public static final String TAG = "Adapter_recordtableView";
     WebView webView_record_table;
     String recordEntryID;
@@ -40,7 +40,7 @@ public class Adapter_record_tableView {
     * 3.webView的一些相关设置;
     * 4.从模板获取到动态注入的内容;
     * */
-    public Adapter_record_tableView(
+    public Adapter4webView_record_table(
             WebView webView_record_table,
             String recordEntryID,
             RecordEntryService recordEntryService,
@@ -114,9 +114,10 @@ public class Adapter_record_tableView {
                 "\n" +
                 "            //放数据的地方:\n" +
                 "            let div_value=document.createElement(\"div\");\n" +
-                "            div_value.setAttribute(\"template_id\",recordEntry.template_id);\n" +
+                "            //div_value.setAttribute(\"template_id\",recordEntry.template_id);\n" +
+                "            div_value.className=\"separateJS\"+recordEntry.template_id;\n" +
                 "            div_value.setAttribute(\"value\",cellEntry.value);\n" +
-                "            div_value.innerText=recordEntry.template_id+cellEntry.value;\n" +
+                "            div_value.innerText=\"separateJS\"+recordEntry.template_id;\n" +
                 "\n" +
                 "            div_cell.appendChild(div_date);\n" +
                 "            //div_cell.appendChild(\"<br>\");\n" +
@@ -135,13 +136,9 @@ public class Adapter_record_tableView {
 
     private void load_separate_js(WebView webView_record_table) {
         //获取要动态注入的separate_js
-        /*这个是正规写法
         RecordEntry entry=recordEntryService.getObject_ById(recordEntryID);
         RecordTemplate template=recordTemplateService.getObject_byID(entry.getTemplate_id());
         String separate_js=template.getSeparate_js();
-        String separate_js=template.getSeparate_js();*/
-        String separate_js="let div_1=document.getElementById(\"div1\");\n" +
-                "            div_1.innerHTML=\"我被改了\";";
 
         webView_record_table.setWebViewClient(new WebViewClient() {
             @Override
@@ -175,7 +172,10 @@ public class Adapter_record_tableView {
         test_entry.setAnalysis_result("analysis_result,used for test");
         test_entry.setTemplate_id("template_id,for test use");
 
-        String resultJson= JSON.toJSONString(test_entry);
+        RecordEntry recordEntry=RecordEntryService.newInstance().getObject_ById(recordEntryID);
+
+
+        String resultJson= JSON.toJSONString(recordEntry);
         Log.d(TAG, "getAndroidRecordEntry: "+"202139,被调用了");
         Log.d(TAG, "getAndroidRecordEntry: "+resultJson);
         return resultJson;
@@ -192,6 +192,7 @@ public class Adapter_record_tableView {
         cellEntryList.add(new CellEntry(now,"记录值2"));
         cellEntryList.add(new CellEntry(now,"记录值3"));
         cellEntryList.add(new CellEntry(now,"记录值4"));
+
         String resultJson= JSONArray.toJSONString(cellEntryList);
         Log.d(TAG, "getAndroidRecordEntry: "+"202139,被调用了");
         Log.d(TAG, "getAndroidRecordEntry: "+resultJson);
