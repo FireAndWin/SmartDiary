@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.SmartDiary.pojo.RecordEntry;
@@ -13,13 +14,6 @@ import java.util.List;
 
 public class RecordEntryService {
 
-    private static RecordEntryService singleRecordEntryService;
-    public static  RecordEntryService newInstance() {
-        if(singleRecordEntryService==null){
-            singleRecordEntryService=new RecordEntryService();
-        }
-        return singleRecordEntryService;
-    }
 
     //测试时使用的只存在于内存中的数据
     List<RecordEntry> test_list;
@@ -30,17 +24,17 @@ public class RecordEntryService {
         test_list.add(new RecordEntry("日记","文本模板的测试项","22","12"));
         test_list.add(new RecordEntry("每日支出","数量模板的记录项","23","13"));
 
-//        test_list.add(new RecordEntry("锻炼身体","年轻人要多锻炼身体","2"));
-//        test_list.add(new RecordEntry("体重","要好好吃饭","3"));
-//        test_list.add(new RecordEntry("学习情况","记录学习时间内容分布","4"));
-//        test_list.add(new RecordEntry("记账","花了多少钱,花在哪里","5"));
-//        test_list.add(new RecordEntry("娱乐app使用时长","不要老是玩手机","6"));
-//        test_list.add(new RecordEntry("待办事项","TODO list","7"));
-//        test_list.add(new RecordEntry("痘痘情况","脸上痘痘的情况","8"));
-//        test_list.add(new RecordEntry("雏雁计划日志","进度怎么样","9"));
-//        test_list.add(new RecordEntry("心情","心情怎么样","10"));
-
-
+        dbHelper=UserDataBaseSQLHelper.newInstance();
+        /*
+        test_list.add(new RecordEntry("锻炼身体","年轻人要多锻炼身体","2"));
+        test_list.add(new RecordEntry("体重","要好好吃饭","3"));
+        test_list.add(new RecordEntry("学习情况","记录学习时间内容分布","4"));
+        test_list.add(new RecordEntry("记账","花了多少钱,花在哪里","5"));
+        test_list.add(new RecordEntry("娱乐app使用时长","不要老是玩手机","6"));
+        test_list.add(new RecordEntry("待办事项","TODO list","7"));
+        test_list.add(new RecordEntry("痘痘情况","脸上痘痘的情况","8"));
+        test_list.add(new RecordEntry("雏雁计划日志","进度怎么样","9"));
+        test_list.add(new RecordEntry("心情","心情怎么样","10"));*/
     }
 
     //=================get(读取相关)方法======================
@@ -62,23 +56,23 @@ public class RecordEntryService {
     //==============================实际用的方法=====================================
     private static final String TAG = "RecordEntryService";
 
-    //数据库版本
-    int version=1;
-    //数据库名称:
-    private String dataBase_name="userRecordEntry.db";
+    //单例模式
+    public static RecordEntryService recordEntryService;
+    public static RecordEntryService newInstance() {
+        if(recordEntryService==null){
+            recordEntryService=new RecordEntryService();
+        }
+        return recordEntryService;
+    }
+
+
     //表名
     private String userRecordEntryList_table_name="MyRecordEntry";
     //SQLiteOpenHelper
-    private
-    UserDataBaseSQLHelper dbHelper;
-    Context context;
+    private UserDataBaseSQLHelper dbHelper;
 
-    public RecordEntryService(Context context) {
-        Log.d(TAG, "onCreate: "+"建表语句 RecordEntryService的构造函数 ");
-        this.context = context;
-        dbHelper=new UserDataBaseSQLHelper(context,dataBase_name,null,version);
-        dbHelper.getWritableDatabase();
-    }
+    //真正的无参构造方法.
+    //public RecordEntryService() { dbHelper=UserDataBaseSQLHelper.newInstance(); }
 
     /*
      * 添加一个记录项,
@@ -148,7 +142,17 @@ public class RecordEntryService {
     }
 
     /*
+     * 根据多个status值获取记录项的值*/
+    public List<RecordEntry> get_recordEntryList_byStatus(int[] status){
+        List<RecordEntry> entryList=new ArrayList<>();
+        for(int i=0;i<status.length;i++){
+            List<RecordEntry> singleStatus=get_recordEntryList_byStatus(status[i]);
+            entryList.addAll(singleStatus);
+        }
+        return entryList;
+    }
 
+    /*
      * 查询单个记录项
      * 根据id获取记录项*/
     public RecordEntry get_recordEntry_byId(String recordEntry_id){
@@ -193,6 +197,7 @@ public class RecordEntryService {
         values.put("separate_js",e.separate_js);
         values.put("continuous_view",e.continuous_view);
         values.put("status",e.status);
+        values.put("locked",e.locked);
         values.put("arg",e.arg);
 
         return values;
@@ -213,6 +218,7 @@ public class RecordEntryService {
         e.separate_js =c.getString(c.getColumnIndex("separate_js"));
         e.continuous_view =c.getString(c.getColumnIndex("continuous_view"));
         e.status =c.getInt(c.getColumnIndex("status"));
+        e.locked=c.getInt(c.getColumnIndex("locked"));
         e.arg =c.getString(c.getColumnIndex("arg"));
 
         return e;

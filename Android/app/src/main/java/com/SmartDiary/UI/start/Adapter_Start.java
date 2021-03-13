@@ -39,7 +39,7 @@ public class Adapter_Start extends RecyclerView.Adapter<Adapter_Start.ViewHolder
 
     private void init_pojoService() {
         dayEntryService=mainActivity.dayEntryService;
-        recordEntryService=mainActivity.recordEntryService;
+        recordEntryService=RecordEntryService.newInstance();
         recordTemplateService=mainActivity.recordTemplateService;
     }
 
@@ -58,14 +58,15 @@ public class Adapter_Start extends RecyclerView.Adapter<Adapter_Start.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RecordEntry entry=entryList.get(position);
+        //RecordEntry entry=entryList.get(position);
+        RecordEntry entry=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1}).get(position);
         holder.initFromEntry(entry);
 
     }
 
     @Override
     public int getItemCount() {
-        return entryList.size();
+        return recordEntryService.get_recordEntryList_byStatus(new int[]{0,1}).size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

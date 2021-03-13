@@ -9,22 +9,25 @@ import android.util.Log;
 import com.SmartDiary.pojo.CellEntry;
 
 public class CellEntryService {
+
+    //单例设计模式
+    private static CellEntryService cellEntryService;
+    //获取实例
+    public CellEntryService newInstance(){
+        if (cellEntryService==null){
+            cellEntryService=new CellEntryService();
+        }
+        return cellEntryService;
+    }
+    public CellEntryService() {
+        dbHelper=UserDataBaseSQLHelper.newInstance();
+    }
+
     private static final String TAG = "pojoService";
 
 
-    //数据库版本,很烦人的东西
-    int version=1;
-    //数据库名称
-    private String dataBase_name="cellEntry.db";
     //SQLiteOpenHelper
-    private CellEntrySQLHelper dbHelper;
-    Context context;
-
-    public CellEntryService(Context context) {
-        this.context = context;
-        dbHelper=new CellEntrySQLHelper(context,dataBase_name,null,version);
-    }
-
+    private UserDataBaseSQLHelper dbHelper;
 
     /*
     * 当添加新的记录项时,记得调用此函数,
@@ -34,7 +37,6 @@ public class CellEntryService {
     public void add_recordEntry(String recordEntry_id){
         SQLiteDatabase db=dbHelper.getWritableDatabase();
         if(db.isOpen()) {
-
             //首先添加一张表:
             String add_recordEntry_table = "create table Table" + recordEntry_id + " (" +
                     "id integer primary key autoincrement," +
@@ -42,12 +44,6 @@ public class CellEntryService {
                     "value text " +
                     ")";
             db.execSQL(add_recordEntry_table);
-
-            //然后在管理表中添加一个行
-            db.execSQL("insert into Manager (recordEntry_id,usable) values (" +
-                    "'" +recordEntry_id+"'"+","+
-                    1+""+
-                    ")");
         }
         db.close();
     }
@@ -95,7 +91,6 @@ public class CellEntryService {
                         values,
                         "date=?",
                         new String[]{String.valueOf(date)});
-
             }
         }
     }
@@ -113,7 +108,6 @@ public class CellEntryService {
             if(cursor.getColumnCount()>0){
                 if(cursor.moveToFirst()){
                     String value=cursor.getString(cursor.getColumnIndex("value"));
-                    Log.d(TAG, "get_cellEntry: "+"cursor的第2列值为:"+value);
                     CellEntry cellEntry = new CellEntry();
                     cellEntry.setDate(date);
                     cellEntry.setValue(value);
@@ -131,17 +125,12 @@ public class CellEntryService {
     * 调用此方法会直接把该记录项的所有数据全部删除,
     * 慎用,删除和放入回收站是两回事*/
     public void delete_recordEntry(String recordEntry_id){
-
         /*
         * 第一步是在管理表中删除该行,
         * 第二部是删除该表;*/
-
         SQLiteDatabase db=dbHelper.getWritableDatabase();
         if(db.isOpen()){
-            //第一步,删除管理表中的该项
-            db.delete("Manager","recordEntry_id=?",new String[]{recordEntry_id});
-
-            //第二步,删除这个表
+            //删除这个表
             db.execSQL("drop table if exists Table"+recordEntry_id);
         }
         db.close();

@@ -181,6 +181,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         adapter_viewPager=new Adapter_ViewPager();
         viewPager_itemData_multiDisplay.setAdapter(adapter_viewPager);
 
+        /*
         //从ViewPager的Adapter获取到recyclerView
         recyclerView_table= adapter_viewPager.table.findViewById(R.id.recyclerView_table);
         //这里还是调用tls写的adapter
@@ -193,7 +194,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext(),RecyclerView.VERTICAL,false);
         recyclerView_table.setLayoutManager(linearLayoutManager);
         StudyRecyclerAdapter adapter=new StudyRecyclerAdapter(list,this.getContext(),dayEntryService);
-        recyclerView_table.setAdapter(adapter);
+        recyclerView_table.setAdapter(adapter);*/
     }
 
     //5.绑定控件事件,就是那个编辑按钮,还有Recyclerview的点击事件,还有Radio的切换页面,都在这里实现

@@ -123,6 +123,7 @@ public class Fragment_Record_OutFrame extends Fragment {
             String id=recordEntryService.getAll().get(i).getId();
             Fragment_Record_RecorditemContent record_recorditemContent=Fragment_Record_RecorditemContent.newInstance(id);
             return record_recorditemContent;
+
         }
 
         @Override

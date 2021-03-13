@@ -32,12 +32,29 @@ public class RecordEntry {
 
     //--------拓展功能-------
     //表示状态的变量
+    /*
+    * -1:回收站,
+    *  1:在每日记录列表中,
+    *  0:不在每日记录列表中.*/
     public int status;
+    //是否上锁: 1--上锁了,0--没有上锁
+    public int locked;
     //扩展参数
     public String arg;
 
 
     public RecordEntry() {
+        status=1;
+        locked=0;
+
+    }
+
+    public int getLocked() {
+        return locked;
+    }
+
+    public void setLocked(int locked) {
+        this.locked = locked;
     }
 
     public String getEdit_view() {

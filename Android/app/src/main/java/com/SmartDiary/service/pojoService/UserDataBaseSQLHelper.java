@@ -11,10 +11,10 @@ public class UserDataBaseSQLHelper extends SQLiteOpenHelper {
 
     //还是单例设计模式
     private static UserDataBaseSQLHelper dbHelper;
-    public void init(Context context){
+    public static void init(Context context){
         dbHelper=new UserDataBaseSQLHelper(context,"user.db",null,1);
     }
-    public UserDataBaseSQLHelper newInstance(){
+    public static UserDataBaseSQLHelper newInstance(){
         return dbHelper;
     }
 
@@ -40,6 +40,7 @@ public class UserDataBaseSQLHelper extends SQLiteOpenHelper {
             "continuous_view text," +
             "" +
             "status integer," +
+            "locked integer," +
             "arg text)";
 
 
