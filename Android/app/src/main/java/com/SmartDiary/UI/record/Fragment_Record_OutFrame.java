@@ -83,7 +83,7 @@ public class Fragment_Record_OutFrame extends Fragment {
     public void init_pojoService() {
         MainActivity mainActivity=(MainActivity) getActivity();
         dayEntryService=mainActivity.dayEntryService;
-        recordEntryService=mainActivity.recordEntryService;
+        recordEntryService=RecordEntryService.newInstance();
         recordTemplateService=mainActivity.recordTemplateService;
     }
 
@@ -101,7 +101,7 @@ public class Fragment_Record_OutFrame extends Fragment {
         tablayout_m3Record_RecordItemChoose=view.findViewById(R.id.tablayout_m3Record_RecordItemChoose);
         //关联标签栏和ViewPager
         tablayout_m3Record_RecordItemChoose.setupWithViewPager(viewPager_m3Record_fragmentContainer);
-        List<RecordEntry> recordEntryList=recordEntryService.getAll();
+        List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
         for(int i=0;i<recordEntryList.size();i++){
             TabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
             tab.setText(recordEntryList.get(i).getName());
@@ -114,13 +114,18 @@ public class Fragment_Record_OutFrame extends Fragment {
      * lyh:
      * 是viewPager_m3Record_fragmentContainer哪个放实际内容ViewPager的适配器*/
     class Adapter_viewPager_m3Record_fragmentContainer extends FragmentPagerAdapter {
+
+        List<RecordEntry> using_recordEntryList;
         public Adapter_viewPager_m3Record_fragmentContainer(FragmentManager fm) {
             super(fm);
+            using_recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
+
         }
+
 
         @Override
         public Fragment getItem(int i) {
-            String id=recordEntryService.getAll().get(i).getId();
+            String id=using_recordEntryList.get(i).getId();
             Fragment_Record_RecorditemContent record_recorditemContent=Fragment_Record_RecorditemContent.newInstance(id);
             return record_recorditemContent;
 
@@ -128,7 +133,7 @@ public class Fragment_Record_OutFrame extends Fragment {
 
         @Override
         public int getCount() {
-            return recordEntryService.getAll().size();
+            return using_recordEntryList.size();
         }
 
     }

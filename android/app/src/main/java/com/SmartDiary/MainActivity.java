@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     /*初始化UI相关成员
     * */
     public void init_view(){
+        //实际用:初始化pojoService层
+        init_pojoService();
         viewPager_main=findViewById(R.id.viewPager_main);
         Adapter_viewPager_main adapter_viewPager_main=new Adapter_viewPager_main(getSupportFragmentManager());
         viewPager_main.setAdapter(adapter_viewPager_main);
@@ -56,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         init_tab();
         //测试用:初始化pojoService层的相关对象
         test_init_pojoService();
-        //实际用:初始化pojoService层
-        init_pojoService();
+
     }
 
     private void init_pojoService() {
@@ -71,11 +72,17 @@ public class MainActivity extends AppCompatActivity {
         //2:添加记录项
         RecordEntryService recordEntryService=RecordEntryService.newInstance();
         //测试方法中添加记录项
-//        test_add_choose();
-//        test_add_entertain();
-//        test_add_text();
-//        test_add_number();
-//        test_add_process();
+        //test_init_recordEntryService();
+
+
+    }
+
+    private void test_init_recordEntryService() {
+        test_add_choose();
+        test_add_entertain();
+        test_add_text();
+        test_add_number();
+        test_add_process();
     }
 
     private void test_add_process() {
@@ -147,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 "</html> ");
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
-
     private void test_add_choose() {
         RecordEntry entry=new RecordEntry();
         entry.setId("choice001");
@@ -311,7 +317,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
-
     private void test_add_entertain() {
         RecordEntry entry=new RecordEntry();
         entry.setId("choice002");
@@ -682,6 +687,8 @@ public class MainActivity extends AppCompatActivity {
         dayEntryService=new DayEntryService();
         recordEntryService=new RecordEntryService();
         recordTemplateService=new RecordTemplateService();
+
+
     }
     //=================自定义内部类==========================
     class Adapter_viewPager_main extends FragmentPagerAdapter {

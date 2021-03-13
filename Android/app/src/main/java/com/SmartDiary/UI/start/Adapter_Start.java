@@ -44,7 +44,7 @@ public class Adapter_Start extends RecyclerView.Adapter<Adapter_Start.ViewHolder
     }
 
     private void update_entryList() {
-        entryList=recordEntryService.getAll();
+        entryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
     }
 
     @NonNull
@@ -59,14 +59,14 @@ public class Adapter_Start extends RecyclerView.Adapter<Adapter_Start.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //RecordEntry entry=entryList.get(position);
-        RecordEntry entry=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1}).get(position);
+        RecordEntry entry=entryList.get(position);
         holder.initFromEntry(entry);
 
     }
 
     @Override
     public int getItemCount() {
-        return recordEntryService.get_recordEntryList_byStatus(new int[]{0,1}).size();
+        return entryList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

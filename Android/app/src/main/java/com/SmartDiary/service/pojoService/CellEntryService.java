@@ -84,9 +84,6 @@ public class CellEntryService {
             }
                 //如果找到数据了,就进行update
             else{
-                Log.d(TAG, "update_cellEntry: "+"cursor的getCount()方法返回值为1");
-                Log.d(TAG, "update_cellEntry: "+"cursor的第0列为:"+cursor.getColumnName(0));
-                Log.d(TAG, "update_cellEntry: "+"cursor的列数为:"+cursor.getColumnCount());
                 db.update("Table"+recordEntry_id,
                         values,
                         "date=?",

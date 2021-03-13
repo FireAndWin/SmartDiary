@@ -56,7 +56,6 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             recordEntry_id = getArguments().getString(ARG_RecordEntry_id);
-            recordEntry_id="choice002";
         }
     }
 

@@ -26,11 +26,12 @@ androidObject.getAndroidCellEntry()
 androidObject.getAndroidCellEntryList()
 无参数;
 返回值是json字符串,
-{ data:[{	recordEntry_id:"字符串",
-			date:时间戳,
+[{	date:时间戳,
 			value:"字符串,记录值,和模板html一致",
-		},{},{} ]
-}
+		},
+		{},
+		{} ]
+
 
 4.
 获取单一记录项多天的分析结果(是个json字符串).

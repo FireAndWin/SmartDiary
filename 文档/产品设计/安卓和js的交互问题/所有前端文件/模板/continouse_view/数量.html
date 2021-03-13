@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="echarts.min.js">
+
+
+
+    </script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+
+<div id="chart" style="width:1000px; height: 900px;"></div>
+
+<script >
+ let myChart=echarts.init(document.getElementById('main'));
+ const cellEntryList=[
+     {
+         date:1615621263359,
+         value:25
+     },
+     {
+         date:1215621263990,
+         value:35},
+     {
+         date:1315621263359,
+         value:45},
+     {
+         date:1415621263359,
+         value:55},
+     {
+         date:1515621263359,
+         value:65
+     }
+ ];
+ const arr=new Array();
+ const dataSet=new Array();
+ for(let i=0;i<cellEntryList.length;++i){
+    //  new d=new Array();
+        let time=new Date(cellEntryList[i]['date']).toLocaleString();
+        arr.push(time);
+        dataSet.push(cellEntryList[i]['value']);
+     
+ }
+ console.log(arr);
+ console.log(dataSet);
+ const option={
+    title: {
+            text: '第一个 ECharts 实例'
+        },
+        tooltip: {},
+        legend: {
+            data:['趋势']
+        },
+        xAxis: {
+            data: arr
+        },
+        yAxis: {},
+        series: [{
+            name: '趋势',
+            type: 'line',
+            data: dataSet
+        }]
+ }
+
+ myChart.setOption(option);
+</script>
+
+
+</body>
+</html>
