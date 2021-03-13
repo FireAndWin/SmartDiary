@@ -99,7 +99,6 @@ public class Adapter4webView_record_table {
                 "\n" +
                 "        //第三步加载数据到dom元素中\n" +
                 "        let div_android_data=document.getElementById(\"android_data\");\n" +
-                "        div_android_data.innerHTML=recordEntryJson+\"\\n\"+cellEntryListJson;\n" +
                 "        let div_table=document.getElementById(\"cellEntry_table\");\n" +
                 "        for (i in cellEntryList){\n" +
                 "            cellEntry=cellEntryList[i];\n" +
@@ -136,9 +135,8 @@ public class Adapter4webView_record_table {
 
     private void load_separate_js(WebView webView_record_table) {
         //获取要动态注入的separate_js
-        RecordEntry entry=recordEntryService.getObject_ById(recordEntryID);
-        RecordTemplate template=recordTemplateService.getObject_byID(entry.getTemplate_id());
-        String separate_js=template.getSeparate_js();
+        RecordEntry entry=recordEntryService.get_recordEntry_byId(recordEntryID);
+        String separate_js=entry.getSeparate_js();
 
         webView_record_table.setWebViewClient(new WebViewClient() {
             @Override
@@ -172,7 +170,7 @@ public class Adapter4webView_record_table {
         test_entry.setAnalysis_result("analysis_result,used for test");
         test_entry.setTemplate_id("template_id,for test use");
 
-        RecordEntry recordEntry=RecordEntryService.newInstance().getObject_ById(recordEntryID);
+        RecordEntry recordEntry=RecordEntryService.newInstance().get_recordEntry_byId(recordEntryID);
 
 
         String resultJson= JSON.toJSONString(recordEntry);

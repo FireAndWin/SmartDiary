@@ -56,6 +56,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             recordEntry_id = getArguments().getString(ARG_RecordEntry_id);
+            recordEntry_id="choice002";
         }
     }
 
@@ -126,7 +127,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     public void init_pojoService() {
         MainActivity mainActivity=(MainActivity) getActivity();
         dayEntryService=mainActivity.dayEntryService;
-        recordEntryService=mainActivity.recordEntryService;
+        recordEntryService=RecordEntryService.newInstance();
         recordTemplateService=mainActivity.recordTemplateService;
     }
     //1.加载数据(要显示的数据成员,比如List,Map之类的,和控件无关);
@@ -146,17 +147,18 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //3.向简单控件中加载数据,比如记录项的名称,备注(描述),以及图标
     public void views_load_data(){
-        RecordEntry entry=recordEntryService.getObject_ById(recordEntry_id);
+        RecordEntry entry=recordEntryService.get_recordEntry_byId(recordEntry_id);
         text_itemName.setText(entry.getName());
         text_itemComment.setText(entry.getInfo());
     }
 
     //初始化那个webview的实际记录控件
     public void init_recordView(){
-        String template_id=RecordEntryService.newInstance().getObject_ById(recordEntry_id).getTemplate_id();
-        RecordTemplate template=recordTemplateService.getObject_byID(template_id);
-        String recordView=template.getRecord_view();
+//        String template_id=RecordEntryService.newInstance().getObject_ById(recordEntry_id).getTemplate_id();
+//        RecordTemplate template=recordTemplateService.getObject_byID(template_id);
+//        String recordView=template.getRecord_view();
 
+        String recordView=recordEntryService.get_recordEntry_byId(recordEntry_id).getRecord_view();
         webView_record_recordData.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView_record_recordData.getSettings().setJavaScriptEnabled(true);
         webView_record_recordData.loadDataWithBaseURL(null, recordView, "text/html", "utf-8", null);

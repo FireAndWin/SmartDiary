@@ -139,7 +139,7 @@
                     android:id="@+id/viewPager_itemData_multiDisplay"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="600dp"
+                    android:layout_height="1600dp"
                     android:minHeight="300dp"/>
 
             </LinearLayout>
