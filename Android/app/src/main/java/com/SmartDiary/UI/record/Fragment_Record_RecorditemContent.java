@@ -172,6 +172,7 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     private void init_tableView() {
         webView_record_table=adapter_viewPager.table.findViewById(R.id.webView_record_table);
         Adapter4webView_record_table adapter_4webViewRecordtable =new Adapter4webView_record_table(
+                getContext(),
                 webView_record_table,
                 recordEntry_id,
                 recordEntryService,

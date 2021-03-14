@@ -1,5 +1,6 @@
 package com.SmartDiary.UI.record;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
@@ -7,6 +8,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.SmartDiary.MainActivity;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
@@ -32,6 +34,7 @@ public class Adapter4webView_record_table {
     RecordTemplateService recordTemplateService;
     long start_date;
     int day_count;
+    Context context;
 
     /*初始化方法,把webView要做的事情都初始化好:
     * 0:初始化相关成员变量
@@ -41,10 +44,12 @@ public class Adapter4webView_record_table {
     * 4.从模板获取到动态注入的内容;
     * */
     public Adapter4webView_record_table(
+            Context context,
             WebView webView_record_table,
             String recordEntryID,
             RecordEntryService recordEntryService,
             RecordTemplateService recordTemplateService) {
+        this.context=context;
         this.webView_record_table = webView_record_table;
         this.recordEntryID=recordEntryID;
         this.recordEntryService=recordEntryService;
@@ -116,7 +121,14 @@ public class Adapter4webView_record_table {
                 "            //div_value.setAttribute(\"template_id\",recordEntry.template_id);\n" +
                 "            div_value.className=\"separateJS\"+recordEntry.template_id;\n" +
                 "            div_value.setAttribute(\"value\",cellEntry.value);\n" +
-                "            div_value.innerText=\"separateJS\"+recordEntry.template_id;\n" +
+                "            // div_date.style.backgroundColor=\"#8BC34A\";\n" +
+                "            div_value.innerText=cellEntry.value;\n" +
+                "\n" +
+                "            //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑\n" +
+                "            div_value.onclick=function(){\n" +
+                "                window.androidObject.callAndroidRecordView(cellEntry.date);\n" +
+                "                div_value.style.backgroundColor=\"#8BC34A\";\n" +
+                "            };\n" +
                 "\n" +
                 "            div_cell.appendChild(div_date);\n" +
                 "            //div_cell.appendChild(\"<br>\");\n" +
@@ -186,5 +198,18 @@ public class Adapter4webView_record_table {
         Log.d(TAG, "getAndroidRecordEntry: "+resultJson);
         return resultJson;
         //return "[{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"}]";
+    }
+
+    //召唤recordView
+    @JavascriptInterface
+    public void callAndroidRecordView(long date){
+
+        MainActivity activity=(MainActivity)context;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Dialog_record_recordView(context,recordEntryID,date);
+            }
+        });
     }
 }
