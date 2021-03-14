@@ -57,6 +57,11 @@
             div_value.setAttribute("value",record_value);
             div_value.innerText="separateJS"+recordEntry.template_id;;
 
+            //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑
+             div_value.onclick=function(){
+                window.androidObject.callAndroidRecordView(recordEntry.id);
+                div_value.style.backgroundColor="#8BC34A";
+            };
 
             //加入到父元素中
             div_dayEntry_table.appendChild(div_cell);

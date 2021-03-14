@@ -18,9 +18,9 @@ public class DayEntry {
     public DayEntry() {
         date=System.currentTimeMillis();
         map=new HashMap<>();
-        map.put("21","睡得很早");
-        map.put("22","今天玩得很开心");
-        map.put("23","51");
+        map.put("txt001","睡得很早");
+        map.put("choice001","今天玩得很开心");
+        map.put("number001","51");
     }
 
     public long getDate() {

@@ -1,5 +1,6 @@
 package com.SmartDiary.UI.check;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
+import com.SmartDiary.UI.record.Dialog_record_recordView;
 import com.SmartDiary.pojo.DayEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
@@ -22,16 +25,18 @@ import java.util.List;
 public class Adapter_check_dayEntry2webView {
     public static final String TAG = "dayEntry2webView";
     DayEntry dayEntry;
+    Context context;
+    long date;
     /*构造函数:
     * 1.加载内部变量dayEntry;
     * 2.给webView加载最基本的html;
     * 3.给webView添加JavaScriptInterface;
     * 4.给webView执行动态js注入;*/
 
-    public Adapter_check_dayEntry2webView(View view, DayEntry dayEntry) {
-
+    public Adapter_check_dayEntry2webView(View view,Context context, DayEntry dayEntry) {
+        this.context=context;
         this.dayEntry=dayEntry;
-
+        date=dayEntry.getDate();
         WebView webView_check_dayEntryDisplay=view.findViewById(R.id.webView_check_dayEntryDisplay);
         webView_check_dayEntryDisplay.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView_check_dayEntryDisplay.getSettings().setJavaScriptEnabled(true);
@@ -102,6 +107,11 @@ public class Adapter_check_dayEntry2webView {
                 "            div_value.setAttribute(\"value\",record_value);\n" +
                 "            div_value.innerText=\"separateJS\"+recordEntry.template_id;;\n" +
                 "\n" +
+                "            //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑\n" +
+                "             div_value.onclick=function(){\n" +
+                "                window.androidObject.callAndroidRecordView(recordEntry.id);\n" +
+                "                div_value.style.backgroundColor=\"#8BC34A\";\n" +
+                "            };\n" +
                 "\n" +
                 "            //加入到父元素中\n" +
                 "            div_dayEntry_table.appendChild(div_cell);\n" +
@@ -148,7 +158,7 @@ public class Adapter_check_dayEntry2webView {
     @JavascriptInterface
     public  String getAndroidRecordEntryList(){
         RecordEntryService recordEntryService= RecordEntryService.newInstance();
-        List<RecordEntry> recordEntryList=recordEntryService.getAll();
+        List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
         String resultJson= JSONArray.toJSONString(recordEntryList);
         Log.d(TAG, "getAndroidRecordEntryList: "+"857: "+resultJson);
         return resultJson;
@@ -162,5 +172,18 @@ public class Adapter_check_dayEntry2webView {
     @JavascriptInterface
     public long getAndroidDate(){
         return dayEntry.getDate();
+    }
+
+    //召唤recordView
+    @JavascriptInterface
+    public void callAndroidRecordView(String recordEntryID){
+
+        MainActivity activity=(MainActivity)context;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Dialog_record_recordView(context,recordEntryID,date);
+            }
+        });
     }
 }

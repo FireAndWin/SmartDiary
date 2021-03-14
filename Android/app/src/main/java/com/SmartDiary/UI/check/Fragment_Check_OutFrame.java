@@ -146,7 +146,7 @@ public class Fragment_Check_OutFrame extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_check_content_daily,null);
-            new Adapter_check_dayEntry2webView(view,dayEntryList.get(position));
+            new Adapter_check_dayEntry2webView(view,getContext(),dayEntryList.get(position));
             container.addView(view);
             view_check_content_dailyMap.put(position,view);
             return view;
