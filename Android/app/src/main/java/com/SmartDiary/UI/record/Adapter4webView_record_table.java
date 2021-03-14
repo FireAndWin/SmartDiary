@@ -156,26 +156,16 @@ public class Adapter4webView_record_table {
     public void setPeriod(long start_date,int day_count){
         this.start_date=start_date;
         this.day_count=day_count;
+        
+        //然后这里应该刷新WebView,然后重新js动态注入.
     }
 
     //===============以下是提供给js的借口了==========================
     //获取要展示的RecordEntry的相关信息
     @JavascriptInterface
     public String getAndroidRecordEntry(){
-
-
-        //这里只是暂时代码,主要是过一下json的生成过程
-        RecordEntry test_entry=new RecordEntry("测试用记录项","这个是测试用的","test_id");
-        test_entry.setFormat("format_test,json");
-        test_entry.setAnalysis_result("analysis_result,used for test");
-        test_entry.setTemplate_id("template_id,for test use");
-
         RecordEntry recordEntry=RecordEntryService.newInstance().get_recordEntry_byId(recordEntryID);
-
-
         String resultJson= JSON.toJSONString(recordEntry);
-        Log.d(TAG, "getAndroidRecordEntry: "+"202139,被调用了");
-        Log.d(TAG, "getAndroidRecordEntry: "+resultJson);
         return resultJson;
         //return "{\"id\":\"idString\",\"name\":\"记录项名称,比如学习情况\",\"template_id\":\"模板idString\",\"analysis_result\":\"分析结果String\",\"format\":\"格式String\"}";
     }

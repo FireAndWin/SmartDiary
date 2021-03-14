@@ -26,35 +26,53 @@
 <body>
     <label for="story">请在下方输入文本:</label>
         <br>
-        <textarea id="story" name="story"
+        <textarea id="valueTxtInput" name="story"
           rows="8" cols="30" autocomplete="on" placeholder="请输入文本" autofocus="true">
         </textarea>
     <script>
-        //获取模板json，根据模板json渲染组件
-        // const getJSObj=window.androidObject.getAndroidFormat();
-        // let JSObj=JSON.parse(getObj);
 
-        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值
-        const getAndroidObj=window.androidObject.getAndroidCellEntry();
-        let AndroidObj=JSON.parse(getAndroidObj);
-        // const AndroidObj={
-        //     value:`人生苦短，我用JavaScript;人生苦短，我用Java；人生苦短，我用Goland`
-        // }
-        //要返回的json对象
-        const returnObj={};
+        /*
+        * 说明:
+        * 这个是最基本的文本记录模板,
+        * 不需要模板信息(所以写起来很简单)
+        * 返回值是个json字符串:
+        * 对应的js对象为:
+        {
+            "txtContent":"这个地方就是实际记录的文本,它的键是txtContent",
+        }
+        */
+
+        //获取记录值,直接放到控件上
+        let json_recordValue=window.androidObject.getAndroidRecordValue();
+        //json_recordValue="{\"txtContent\":\"undefinedffffff \\ndede \"}";
+        if(json_recordValue===""){
+            a={
+            "txtData":"",
+            };
+            json_recordValue=JSON.stringify(a);
+        };
+        //let recordValue=JSON.parse(json_recordValue);
+        let recordValue=eval("("+json_recordValue+")");
+        document.write(recordValue.txtData);
+        const returnObj={
+            "txtData":"",
+        };
 
         //获取root dtextarea
-        const root=document.getElementById('story');
-        root.value=AndroidObj['value'];
-        returnObj['value']=root.value;
-        console.log(returnObj);
-        root.onchange=function(){
-            returnObj['value']=root.value;
-            console.log(returnObj);
+        let valueTxtInput=document.getElementById('valueTxtInput');
+        //valueTxtInput.value=recordValue["txtData"];
+        valueTxtInput.value=json_recordValue;
+        returnObj['txtData']=valueTxtInput.value;
+
+        valueTxtInput.onchange=function(){
+            returnObj['txtData']=valueTxtInput.value;
         }
         window.getJSRecordView=function(){
+            returnObj['txtData']=valueTxtInput.value;
             return JSON.stringify(returnObj);
         }
     </script>
 </body>
 </html>
+
+

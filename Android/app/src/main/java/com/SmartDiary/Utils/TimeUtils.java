@@ -16,6 +16,20 @@ public class TimeUtils {
         return calendar.getTimeInMillis();
     }
 
+    /*
+    * 获取距离今天的指定天数的日期的毫秒数,
+    * 进行了小时和分钟和毫秒的归零操作,
+    * -1就是前一天,1就是明天,0就是今天的*/
+    public static long get_deltaTime_long(int amount){
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR,amount);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
     public static long get_dateTime_long(int YEAR,int MONTH,int MONTH_DAY){
         Calendar calendar=Calendar.getInstance();
         calendar.set(Calendar.YEAR,YEAR);

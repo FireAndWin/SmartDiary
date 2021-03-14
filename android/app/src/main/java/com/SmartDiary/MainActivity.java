@@ -17,6 +17,7 @@ import com.SmartDiary.UI.record.Fragment_Record_RecorditemContent;
 import com.SmartDiary.UI.start.Fragment_start_outFrame;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
+import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         //初始化标签
         init_tab();
         //测试用:初始化pojoService层的相关对象
-        test_init_pojoService();
+        //test_init_pojoService();
 
     }
 
@@ -73,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         RecordEntryService recordEntryService=RecordEntryService.newInstance();
         //测试方法中添加记录项
         //test_init_recordEntryService();
-
-
+        test_update();
     }
 
     private void test_init_recordEntryService() {
@@ -85,8 +85,94 @@ public class MainActivity extends AppCompatActivity {
         test_add_process();
     }
 
+    private void test_update() {
+        RecordEntry entry=RecordEntryService.newInstance().get_recordEntry_byId("txt001");
+        entry.setRecord_view("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Document</title>\n" +
+                "    <style>\n" +
+                "            label,textarea {\n" +
+                "            font-size: .8rem;\n" +
+                "            letter-spacing: 1px;\n" +
+                "        }\n" +
+                "        textarea {\n" +
+                "            padding: 1px;\n" +
+                "            line-height: 1.5;\n" +
+                "            border-radius: 5px;\n" +
+                "            border: 1px solid #ccc;\n" +
+                "            box-shadow: 1px 1px 1px #999;\n" +
+                "        }\n" +
+                "\n" +
+                "        label {\n" +
+                "            margin-bottom: 0px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <label for=\"story\">请在下方输入文本:</label>\n" +
+                "        <br>\n" +
+                "        <textarea id=\"valueTxtInput\" name=\"story\"\n" +
+                "          rows=\"8\" cols=\"30\" autocomplete=\"on\" placeholder=\"请输入文本\" autofocus=\"true\">\n" +
+                "        </textarea>\n" +
+                "    <script>\n" +
+                "\n" +
+                "        /*\n" +
+                "        * 说明:\n" +
+                "        * 这个是最基本的文本记录模板,\n" +
+                "        * 不需要模板信息(所以写起来很简单)\n" +
+                "        * 返回值是个json字符串:\n" +
+                "        * 对应的js对象为:\n" +
+                "        {\n" +
+                "            \"txtContent\":\"这个地方就是实际记录的文本,它的键是txtContent\",\n" +
+                "        }\n" +
+                "        */\n" +
+                "\n" +
+                "        //获取记录值,直接放到控件上\n" +
+                "        let json_recordValue=window.androidObject.getAndroidRecordValue();\n" +
+                "        //json_recordValue=\"{\\\"txtContent\\\":\\\"undefinedffffff \\\\ndede \\\"}\";\n" +
+                "        if(json_recordValue===\"\"){\n" +
+                "            a={\n" +
+                "            \"txtData\":\"\",\n" +
+                "            };\n" +
+                "            json_recordValue=JSON.stringify(a);\n" +
+                "        };\n" +
+                "        //let recordValue=JSON.parse(json_recordValue);\n" +
+                "        let recordValue=eval(\"(\"+json_recordValue+\")\");\n" +
+                "        document.write(recordValue.txtData);\n" +
+                "        const returnObj={\n" +
+                "            \"txtData\":\"\",\n" +
+                "        };\n" +
+                "\n" +
+                "        //获取root dtextarea\n" +
+                "        let valueTxtInput=document.getElementById('valueTxtInput');\n" +
+                "        //valueTxtInput.value=recordValue[\"txtData\"];\n" +
+                "        valueTxtInput.value=json_recordValue;\n" +
+                "        returnObj['txtData']=valueTxtInput.value;\n" +
+                "\n" +
+                "        valueTxtInput.onchange=function(){\n" +
+                "            returnObj['txtData']=valueTxtInput.value;\n" +
+                "        }\n" +
+                "        window.getJSRecordView=function(){\n" +
+                "            returnObj['txtData']=valueTxtInput.value;\n" +
+                "            return JSON.stringify(returnObj);\n" +
+                "        }\n" +
+                "    </script>\n" +
+                "</body>\n" +
+                "</html>\n" +
+                "\n" +
+                "\n");
+
+        RecordEntryService.newInstance().update_recordEntry(entry);
+    }
+
     private void test_add_process() {
-        RecordEntry entry=new RecordEntry();
+
+        CellEntryService.newInstance().add_recordEntry("txt002");
+       RecordEntry entry=new RecordEntry();
         entry.setId("txt002");
         entry.setTemplate_id("12");
         entry.setStatus(0);
@@ -124,37 +210,53 @@ public class MainActivity extends AppCompatActivity {
                 "          rows=\"8\" cols=\"30\" autocomplete=\"on\" placeholder=\"请输入文本\" autofocus=\"true\">\n" +
                 "        </textarea>\n" +
                 "    <script>\n" +
-                "        //获取模板json，根据模板json渲染组件\n" +
-                "        // const getJSObj=window.androidObject.getAndroidFormat();\n" +
-                "        // let JSObj=JSON.parse(getObj);\n" +
                 "\n" +
-                "        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值\n" +
-                "        const getAndroidObj=window.androidObject.getAndroidCellEntry();\n" +
-                "        let AndroidObj=JSON.parse(getAndroidObj);\n" +
-                "        // const AndroidObj={\n" +
-                "        //     value:`人生苦短，我用JavaScript;人生苦短，我用Java；人生苦短，我用Goland`\n" +
-                "        // }\n" +
-                "        //要返回的json对象\n" +
+                "        /*\n" +
+                "        * 说明:\n" +
+                "        * 这个是最基本的文本记录模板,\n" +
+                "        * 不需要模板信息(所以写起来很简单)\n" +
+                "        * 返回值是个json字符串:\n" +
+                "        * 对应的js对象为:\n" +
+                "        {\n" +
+                "            \"txtContent\":\"这个地方就是实际记录的文本,它的键是txtContent\",\n" +
+                "        }\n" +
+                "        */\n" +
+                "\n" +
+                "        //获取记录值,直接放到控件上\n" +
+                "        const json_recordValue=window.androidObject.getAndroidRecordValue();\n" +
+                "        json_recordValue=\"\";\n" +
+                "        let android_recordValue={}\n" +
+                "        if(json_recordValue===\"\"){\n" +
+                "            android_recordValue[\"txtContent\"]=\"什么都没有记录\";\n" +
+                "        }\n" +
+                "        else{\n" +
+                "            android_recordValue=JSON.parse(json_recordValue);\n" +
+                "        }\n" +
+                "\n" +
                 "        const returnObj={};\n" +
                 "\n" +
                 "        //获取root dtextarea\n" +
-                "        const root=document.getElementById('story');\n" +
-                "        root.value=AndroidObj['value'];\n" +
-                "        returnObj['value']=root.value;\n" +
-                "        console.log(returnObj);\n" +
+                "        let root=document.getElementById('story');\n" +
+                "        root.value=android_recordValue[\"txtContent\"];\n" +
+                "        returnObj['txtContent']=root.value;\n" +
+                "\n" +
                 "        root.onchange=function(){\n" +
-                "            returnObj['value']=root.value;\n" +
-                "            console.log(returnObj);\n" +
+                "            returnObj['txtContent']=root.value;\n" +
                 "        }\n" +
                 "        window.getJSRecordView=function(){\n" +
                 "            return JSON.stringify(returnObj);\n" +
                 "        }\n" +
                 "    </script>\n" +
                 "</body>\n" +
-                "</html> ");
+                "</html>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n");
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
     private void test_add_choose() {
+        CellEntryService.newInstance().add_recordEntry("choice001");
         RecordEntry entry=new RecordEntry();
         entry.setId("choice001");
         entry.setTemplate_id("11");
@@ -318,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
     private void test_add_entertain() {
+        CellEntryService.newInstance().add_recordEntry("choice002");
         RecordEntry entry=new RecordEntry();
         entry.setId("choice002");
         entry.setTemplate_id("11");
@@ -481,6 +584,7 @@ public class MainActivity extends AppCompatActivity {
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
     private void test_add_text() {
+        CellEntryService.newInstance().add_recordEntry("txt001");
         RecordEntry entry=new RecordEntry();
         entry.setId("txt001");
         entry.setTemplate_id("12");
@@ -514,41 +618,58 @@ public class MainActivity extends AppCompatActivity {
                 "<body>\n" +
                 "    <label for=\"story\">请在下方输入文本:</label>\n" +
                 "        <br>\n" +
-                "        <textarea id=\"story\" name=\"story\"\n" +
+                "        <textarea id=\"valueTxtInput\" name=\"story\"\n" +
                 "          rows=\"8\" cols=\"30\" autocomplete=\"on\" placeholder=\"请输入文本\" autofocus=\"true\">\n" +
                 "        </textarea>\n" +
                 "    <script>\n" +
-                "        //获取模板json，根据模板json渲染组件\n" +
-                "        // const getJSObj=window.androidObject.getAndroidFormat();\n" +
-                "        // let JSObj=JSON.parse(getObj);\n" +
                 "\n" +
-                "        //获取安卓数据库传过来的json，用以给渲染出来的组件填充默认值\n" +
-                "        const getAndroidObj=window.androidObject.getAndroidCellEntry();\n" +
-                "        let AndroidObj=JSON.parse(getAndroidObj);\n" +
-                "        // const AndroidObj={\n" +
-                "        //     value:`人生苦短，我用JavaScript;人生苦短，我用Java；人生苦短，我用Goland`\n" +
-                "        // }\n" +
-                "        //要返回的json对象\n" +
-                "        const returnObj={};\n" +
+                "        /*\n" +
+                "        * 说明:\n" +
+                "        * 这个是最基本的文本记录模板,\n" +
+                "        * 不需要模板信息(所以写起来很简单)\n" +
+                "        * 返回值是个json字符串:\n" +
+                "        * 对应的js对象为:\n" +
+                "        {\n" +
+                "            \"txtContent\":\"这个地方就是实际记录的文本,它的键是txtContent\",\n" +
+                "        }\n" +
+                "        */\n" +
+                "\n" +
+                "        //获取记录值,直接放到控件上\n" +
+                "        //const json_recordValue=window.androidObject.getAndroidRecordValue();\n" +
+                "        json_recordValue=\"\";\n" +
+                "        if(json_recordValue===\"\"){\n" +
+                "            a={\n" +
+                "            \"txtContent\":\"\",\n" +
+                "            };\n" +
+                "            json_recordValue=JSON.stringify(a);\n" +
+                "        };\n" +
+                "        let android_recordValue={};\n" +
+                "        android_recordValue=JSON.parse(json_recordValue);\n" +
+                "        const returnObj={\n" +
+                "            \"txtContent\":\"\",\n" +
+                "        };\n" +
                 "\n" +
                 "        //获取root dtextarea\n" +
-                "        const root=document.getElementById('story');\n" +
-                "        root.value=AndroidObj['value'];\n" +
-                "        returnObj['value']=root.value;\n" +
-                "        console.log(returnObj);\n" +
-                "        root.onchange=function(){\n" +
-                "            returnObj['value']=root.value;\n" +
-                "            console.log(returnObj);\n" +
+                "        let valueTxtInput=document.getElementById('valueTxtInput');\n" +
+                "        valueTxtInput.value=android_recordValue[\"txtContent\"];\n" +
+                "        returnObj['txtContent']=valueTxtInput.value;\n" +
+                "\n" +
+                "        valueTxtInput.onchange=function(){\n" +
+                "            returnObj['txtContent']=valueTxtInput.value;\n" +
                 "        }\n" +
                 "        window.getJSRecordView=function(){\n" +
+                "            returnObj['txtContent']=valueTxtInput.value;\n" +
                 "            return JSON.stringify(returnObj);\n" +
                 "        }\n" +
                 "    </script>\n" +
                 "</body>\n" +
-                "</html> ");
+                "</html>\n" +
+                "\n" +
+                "\n");
         RecordEntryService.newInstance().add_recordEntry(entry);
     }
     private void test_add_number() {
+        CellEntryService.newInstance().add_recordEntry("number001");
         RecordEntry entry=new RecordEntry();
         entry.setId("number001");
         entry.setTemplate_id("13");
@@ -681,7 +802,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab me_tab=tabLayout_main.getTabAt(3);
         me_tab.setText("我");
     }
-
 
     public void test_init_pojoService(){
         dayEntryService=new DayEntryService();

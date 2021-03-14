@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.SmartDiary.Utils.TimeUtils;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
 import com.SmartDiary.service.pojoService.DayEntryService;
@@ -88,6 +89,13 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     DayEntryService dayEntryService;
     RecordEntryService recordEntryService;
     RecordTemplateService recordTemplateService;
+    //---------webView及其相关Adapter
+    //实际的记录控件
+    WebView webView_record_recordData;
+    //记录页面的adapter:
+    Adapter4webView_record_recordView adapter_recordView;
+    //底部通过表格方显示数据的webview
+    WebView webView_record_table;
     //========控件,及其adapter=======
     //就是用来进行 数据/统计结果 换页的ViewPager
     ViewPager viewPager_itemData_multiDisplay;
@@ -101,10 +109,6 @@ public class Fragment_Record_RecorditemContent extends Fragment {
     TextView text_itemName;
     //显示记录项的备注,描述
     TextView text_itemComment;
-    //实际的记录控件
-    WebView webView_record_recordData;
-    //底部通过表格方显示数据的webview
-    WebView webView_record_table;
     //对记录项的信息进行编辑的按钮
     Button btn_itemInfo_edit;
     //在 数据/统计图标 之间进行切换的 单选按钮
@@ -153,15 +157,15 @@ public class Fragment_Record_RecorditemContent extends Fragment {
 
     //初始化那个webview的实际记录控件
     public void init_recordView(){
-//        String template_id=RecordEntryService.newInstance().getObject_ById(recordEntry_id).getTemplate_id();
-//        RecordTemplate template=recordTemplateService.getObject_byID(template_id);
-//        String recordView=template.getRecord_view();
+        adapter_recordView=new Adapter4webView_record_recordView(webView_record_recordData,recordEntry_id, TimeUtils.get_deltaTime_long(0));
 
-        String recordView=recordEntryService.get_recordEntry_byId(recordEntry_id).getRecord_view();
-        webView_record_recordData.getSettings().setDefaultTextEncodingName("utf-8") ;
-        webView_record_recordData.getSettings().setJavaScriptEnabled(true);
-        webView_record_recordData.loadDataWithBaseURL(null, recordView, "text/html", "utf-8", null);
-
+        //当webView的焦点改变时,就调用Adapter的实际记录方法
+        webView_record_recordData.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                adapter_recordView.do_record_dataBase();
+            }
+        });
 
     }
 

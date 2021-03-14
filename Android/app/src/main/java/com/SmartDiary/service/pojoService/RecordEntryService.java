@@ -82,7 +82,7 @@ public class RecordEntryService {
         if(db.isOpen()){
             long res=db.insert(userRecordEntryList_table_name,null,recordEntry_2_contentValues(entry));
         }
-        db.close();
+        //db.close();
     }
 
     /*
@@ -97,14 +97,14 @@ public class RecordEntryService {
                     "id=?",
                     new String[]{entry.getId()});
         }
-        db.close();
+        //db.close();
     }
 
     /*
      * 获取所有记录项,
      * 可能会返回被删除的和被停用的*/
     public List<RecordEntry> getAll_recordEntry(){
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        SQLiteDatabase db=dbHelper.getReadableDatabase();
         List<RecordEntry> entryList=new ArrayList<>();
         if(db.isOpen()){
             Cursor cursor=db.rawQuery("select * from "+userRecordEntryList_table_name,new String[]{},null);
@@ -117,14 +117,14 @@ public class RecordEntryService {
                 while (cursor.moveToNext());
             }
         }
-        db.close();
+        //db.close();
         return entryList;
     }
 
     /*
      * 根据status值获取记录项的值*/
     public List<RecordEntry> get_recordEntryList_byStatus(int status){
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        SQLiteDatabase db=dbHelper.getReadableDatabase();
         List<RecordEntry> entryList=new ArrayList<>();
         if(db.isOpen()){
             Cursor cursor=db.rawQuery("select * from "+userRecordEntryList_table_name+" where status = ?",new String[]{String.valueOf(status)},null);
@@ -137,7 +137,7 @@ public class RecordEntryService {
                 while (cursor.moveToNext());
             }
         }
-        db.close();
+        //db.close();
         return entryList;
     }
 
@@ -156,7 +156,7 @@ public class RecordEntryService {
      * 查询单个记录项
      * 根据id获取记录项*/
     public RecordEntry get_recordEntry_byId(String recordEntry_id){
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        SQLiteDatabase db=dbHelper.getReadableDatabase();
         if(db.isOpen()){
             Cursor cursor=db.rawQuery("select * from "+userRecordEntryList_table_name+" where id=?",new String[]{recordEntry_id},null);
             if(cursor.getCount()>0){
@@ -164,7 +164,7 @@ public class RecordEntryService {
                 return cursor_2_recordEntry(cursor);
             }
         }
-        db.close();
+        //db.close();
         return null;
     }
 
@@ -177,7 +177,7 @@ public class RecordEntryService {
         if(db.isOpen()){
             db.delete(userRecordEntryList_table_name,"id=?",new String[]{recordEntry_id});
         }
-        db.close();
+        //db.close();
     }
 
     //---------一些辅助方法----------------

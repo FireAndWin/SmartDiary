@@ -13,7 +13,7 @@ public class CellEntryService {
     //单例设计模式
     private static CellEntryService cellEntryService;
     //获取实例
-    public CellEntryService newInstance(){
+    public static CellEntryService newInstance(){
         if (cellEntryService==null){
             cellEntryService=new CellEntryService();
         }
@@ -45,7 +45,7 @@ public class CellEntryService {
                     ")";
             db.execSQL(add_recordEntry_table);
         }
-        db.close();
+        //db.close();
     }
 
     /*
@@ -92,6 +92,7 @@ public class CellEntryService {
         }
     }
 
+
     /*
     * 查询操作:
     * 根据date和recordEntry_id返回CellEntry,
@@ -112,9 +113,31 @@ public class CellEntryService {
                 }
             }
         }
-        db.close();
+        //db.close();
         return null;
     }
+
+    /*
+    * 查询操作:
+    * 更直接的方法,根据记录项id和date获取记录值,
+    * 如果没有查询到,就返回""
+    * */
+    public String get_recordValue_byID_Date(String recordEntry_id, long date){
+        SQLiteDatabase db=dbHelper.getReadableDatabase();
+        String value="";
+        if(db.isOpen()){
+            Cursor cursor=db.rawQuery("select * from Table"+recordEntry_id+" where date=?",new String[]{String.valueOf(date)});
+            if(cursor.getColumnCount()>0){
+                if(cursor.moveToFirst()){
+                    value=cursor.getString(cursor.getColumnIndex("value"));
+                    return value;
+                }
+            }
+        }
+        //db.close();
+        return value;
+    }
+
 
     /*
     * 删除操作:
@@ -130,6 +153,6 @@ public class CellEntryService {
             //删除这个表
             db.execSQL("drop table if exists Table"+recordEntry_id);
         }
-        db.close();
+        //db.close();
     }
 }
