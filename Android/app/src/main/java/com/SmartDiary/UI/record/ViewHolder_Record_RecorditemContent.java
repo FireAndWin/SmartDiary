@@ -16,11 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 import com.SmartDiary.UI.start.Dialog_start_editRecordEntry;
 import com.SmartDiary.UI.start.On_RecordEntry_Edit_Listener;
-import com.SmartDiary.Utils.TimeUtils;
+import com.SmartDiary.Utils.TimeUtilsMy;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
@@ -115,7 +114,7 @@ public class ViewHolder_Record_RecorditemContent implements On_RecordEntry_Edit_
 
     //初始化那个webview的实际记录控件
     public void init_recordView(){
-        adapter_recordView=new Adapter4webView_record_recordView(webView_record_recordData,recordEntry_id, TimeUtils.get_deltaTime_long(0));
+        adapter_recordView=new Adapter4webView_record_recordView(webView_record_recordData,recordEntry_id, TimeUtilsMy.get_deltaTime_long(0));
         //当webView的焦点改变时,就调用Adapter的实际记录方法
         webView_record_recordData.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override

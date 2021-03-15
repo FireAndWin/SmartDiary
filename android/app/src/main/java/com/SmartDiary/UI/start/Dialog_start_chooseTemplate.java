@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.SmartDiary.R;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
+import com.SmartDiary.service.pojoService.RecordEntryService;
 
 //选择模板界面
 public class Dialog_start_chooseTemplate {
@@ -16,7 +17,6 @@ public class Dialog_start_chooseTemplate {
     On_RecordEntry_Edit_Listener listener;
     Context context;
 
-    Button btn_test_chooseDone;
     AlertDialog dialog;
     View view;
 
@@ -31,27 +31,44 @@ public class Dialog_start_chooseTemplate {
         dialog=builder.create();
         dialog.show();
 
-        initview(view);
-        bindView(view);
+        test_bindView(view);
     }
 
-    private void initview(View view) {
-        btn_test_chooseDone=view.findViewById(R.id.btn_test_chooseDone);
-    }
 
-    private void bindView(View view) {
-        btn_test_chooseDone.setOnClickListener(new View.OnClickListener() {
+    private void test_bindView(View view) {
+        view.findViewById(R.id.test_txt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                go_create_RecordEntry(null);
+                RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("txt001");
+                go_create_RecordEntry(entry);
+            }
+        });
+        view.findViewById(R.id.test_numbers).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("number001");
+                go_create_RecordEntry(entry);
+            }
+        });
+        view.findViewById(R.id.test_choose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("choice001");
+                go_create_RecordEntry(entry);
+            }
+        });
+        view.findViewById(R.id.test_singleNumber).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("txt001");
+                go_create_RecordEntry(entry);
             }
         });
     }
 
     //选择好模板后,调用此方法去创建具体的记录项
-    public void go_create_RecordEntry(RecordTemplate template){
+    public void go_create_RecordEntry(RecordEntry entry){
         dialog.dismiss();
-        RecordEntry entry=new RecordEntry("娱乐项目","记录今天玩了个啥","44");
         Dialog_start_editRecordEntry dialog_start_editRecordEntry=new Dialog_start_editRecordEntry(context,entry,listener);
     }
 }

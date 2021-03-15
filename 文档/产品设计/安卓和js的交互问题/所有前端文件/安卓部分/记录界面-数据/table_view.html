@@ -37,11 +37,12 @@
         let div_android_data=document.getElementById("android_data");
         let div_table=document.getElementById("cellEntry_table");
         for (i in cellEntryList){
-            cellEntry=cellEntryList[i];
+            let cellEntry=cellEntryList[i];
 
             //放数据的整个格子
             let div_cell=document.createElement("div");
 
+            document.write(cellEntry.date);
             //放日期的地方
             let div_date=document.createElement("div");
             div_date.textContent= new Date(cellEntry.date).toLocaleString();
@@ -53,12 +54,14 @@
             div_value.className="separateJS"+recordEntry.template_id;
             div_value.setAttribute("value",cellEntry.value);
             // div_date.style.backgroundColor="#8BC34A";
-            //div_value.innerText="separateJS"+recordEntry.template_id;
+            div_value.innerText=cellEntry.value;
+
 
             //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑
             div_value.onclick=function(){
-                //window.androidObject.callAndroidRecordView(cellEntry.date);
-                div_date.style.backgroundColor="#8BC34A";
+                let this_loop_date=cellEntry.date
+                window.androidObject.callAndroidRecordView(this_loop_date);
+                div_value.style.backgroundColor="#8BC34A";
             };
 
             div_cell.appendChild(div_date);

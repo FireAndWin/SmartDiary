@@ -3,15 +3,18 @@ package com.SmartDiary.UI.record;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.SmartDiary.MainActivity;
+import com.SmartDiary.Utils.TimeUtilsMy;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
+import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
 import com.alibaba.fastjson.JSON;
@@ -26,7 +29,8 @@ import static android.content.ContentValues.TAG;
 * 需要选择向它加载的数据,
 * 就是一个转换器,
 * 把安卓提供的数据给了WebView*/
-public class Adapter4webView_record_table {
+public class
+Adapter4webView_record_table {
     public static final String TAG = "Adapter_recordtableView";
     WebView webView_record_table;
     String recordEntryID;
@@ -35,6 +39,8 @@ public class Adapter4webView_record_table {
     long start_date;
     int day_count;
     Context context;
+    //显示模式,1就是显示那些原本没有记录的天数,0就是不显示那些原本没有记录的天数.
+    int display_mode=1;
 
     /*初始化方法,把webView要做的事情都初始化好:
     * 0:初始化相关成员变量
@@ -106,11 +112,12 @@ public class Adapter4webView_record_table {
                 "        let div_android_data=document.getElementById(\"android_data\");\n" +
                 "        let div_table=document.getElementById(\"cellEntry_table\");\n" +
                 "        for (i in cellEntryList){\n" +
-                "            cellEntry=cellEntryList[i];\n" +
+                "            let cellEntry=cellEntryList[i];\n" +
                 "\n" +
                 "            //放数据的整个格子\n" +
                 "            let div_cell=document.createElement(\"div\");\n" +
                 "\n" +
+                "            document.write(cellEntry.date);\n" +
                 "            //放日期的地方\n" +
                 "            let div_date=document.createElement(\"div\");\n" +
                 "            div_date.textContent= new Date(cellEntry.date).toLocaleString();\n" +
@@ -124,9 +131,11 @@ public class Adapter4webView_record_table {
                 "            // div_date.style.backgroundColor=\"#8BC34A\";\n" +
                 "            div_value.innerText=cellEntry.value;\n" +
                 "\n" +
+                "\n" +
                 "            //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑\n" +
                 "            div_value.onclick=function(){\n" +
-                "                window.androidObject.callAndroidRecordView(cellEntry.date);\n" +
+                "                let this_loop_date=cellEntry.date\n" +
+                "                window.androidObject.callAndroidRecordView(this_loop_date);\n" +
                 "                div_value.style.backgroundColor=\"#8BC34A\";\n" +
                 "            };\n" +
                 "\n" +
@@ -184,14 +193,29 @@ public class Adapter4webView_record_table {
     //获取要显示的很多天的数据.
     @JavascriptInterface
     public String getAndroidCellEntryList(){
-
-        //这段代码也是暂时的,只是为了测试json的转换流程
+        //这个是试验参数,就是指拿多少天的值
+        int dayCount=10;
+        CellEntryService cellEntryService=CellEntryService.newInstance();
         List<CellEntry> cellEntryList=new ArrayList<>();
-        long now=System.currentTimeMillis();
-        cellEntryList.add(new CellEntry(now,"记录值1"));
-        cellEntryList.add(new CellEntry(now,"记录值2"));
-        cellEntryList.add(new CellEntry(now,"记录值3"));
-        cellEntryList.add(new CellEntry(now,"记录值4"));
+
+        /*
+        * 开始向cellEntryService取值,
+        * 这里的取值是一个个日期的取,
+        * 每个日期就请求一次,不是让service一次多个select,
+        * 因为这么写判断是否记录的时候方便,
+        * 以后有时间再来重构*/
+        for(int i=0;i<dayCount;i++){
+            long date=TimeUtilsMy.get_deltaTime_long(-i);
+            String value=cellEntryService.get_recordValue_byID_Date(recordEntryID,date);
+            if(display_mode==0 && (value==""|| value==null)){
+                continue;
+            }
+            if(value==""){
+                value="这里的记录值本来为空";
+            }
+            CellEntry cellEntry=new CellEntry(date,value);
+            cellEntryList.add(cellEntry);
+        }
 
         String resultJson= JSONArray.toJSONString(cellEntryList);
         Log.d(TAG, "getAndroidRecordEntry: "+"202139,被调用了");
@@ -208,6 +232,7 @@ public class Adapter4webView_record_table {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Log.d(TAG, "callAndroidRecordView: "+"wahahaha,js给出的时间是:"+TimeUtilsMy.long_2_MonthDay(date));
                 new Dialog_record_recordView(context,recordEntryID,date);
             }
         });

@@ -43,7 +43,7 @@ public class Adapter_Start extends RecyclerView.Adapter<Adapter_Start.ViewHolder
         recordTemplateService=mainActivity.recordTemplateService;
     }
 
-    private void update_entryList() {
+    public void update_entryList() {
         entryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
     }
 

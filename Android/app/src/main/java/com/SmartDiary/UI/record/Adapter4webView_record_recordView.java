@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 
+import com.SmartDiary.Utils.TimeUtilsMy;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.service.pojoService.CellEntryService;
@@ -64,7 +65,7 @@ public class Adapter4webView_record_recordView {
                 entry.setLatest(System.currentTimeMillis());
                 RecordEntryService.newInstance().update_recordEntry(entry);
 
-                Log.d(TAG, "onReceiveValue: "+"xxyx 已经放到数据库了,是:"+entry.getName()+value);
+                Log.d(TAG, "onReceiveValue: "+"wahahahah已经放到数据库了,日期:"+ TimeUtilsMy.long_2_MonthDay(record_time)+" 具体:" +entry.getName()+value);
             }
         });
     };

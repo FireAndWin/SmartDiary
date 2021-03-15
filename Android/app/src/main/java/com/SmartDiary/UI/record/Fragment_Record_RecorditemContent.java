@@ -1,37 +1,14 @@
 package com.SmartDiary.UI.record;
-import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
-import com.SmartDiary.Utils.TimeUtils;
-import com.SmartDiary.pojo.RecordEntry;
-import com.SmartDiary.pojo.RecordTemplate;
-import com.SmartDiary.service.pojoService.DayEntryService;
-import com.SmartDiary.service.pojoService.RecordEntryService;
-import com.SmartDiary.service.pojoService.RecordTemplateService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

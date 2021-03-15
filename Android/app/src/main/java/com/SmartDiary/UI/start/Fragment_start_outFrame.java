@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 import com.SmartDiary.pojo.RecordEntry;
+import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
@@ -49,6 +50,8 @@ public class Fragment_start_outFrame extends Fragment implements On_RecordEntry_
     RecyclerView recyclerView_start;
     //添加记录项按钮
     Button btn_start_add;
+    //主题Recyclerview的adapter
+    Adapter_Start adapter_start;
 
     private void findView(View view) {
         btn_start_add=view.findViewById(R.id.btn_start_add);
@@ -66,7 +69,7 @@ public class Fragment_start_outFrame extends Fragment implements On_RecordEntry_
 
     private void init_ViewPager(View view) {
         recyclerView_start=view.findViewById(R.id.recyclerView_start);
-        Adapter_Start adapter_start=new Adapter_Start((MainActivity) getActivity());
+        adapter_start=new Adapter_Start((MainActivity) getActivity());
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL,false);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager=
@@ -81,6 +84,21 @@ public class Fragment_start_outFrame extends Fragment implements On_RecordEntry_
     * 以及记录项的名称,描述和图标,*/
     @Override
     public void edit_recordEntry_done(RecordEntry newEntry) {
+        /*
+        * 1.给entry搞个别的id,
+        * 2.把entry添加到数据库中,
+        * 3.更新*/
+
+        //1:这里简单的用毫秒值当id了
+        newEntry.setId(String.valueOf(System.currentTimeMillis()));
+
+        //2:有两个操作
+        RecordEntryService.newInstance().add_recordEntry(newEntry);
+        CellEntryService.newInstance().add_recordEntry(newEntry.getId());
+
+        //3:应该把三个界面都更新了,这里只更新start界面
+        adapter_start.update_entryList();
+        adapter_start.notifyDataSetChanged();
 
     }
 }
