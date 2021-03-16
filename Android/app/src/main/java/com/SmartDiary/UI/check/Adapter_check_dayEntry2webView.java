@@ -178,7 +178,8 @@ public class Adapter_check_dayEntry2webView {
     @JavascriptInterface
     public void callAndroidRecordView(String recordEntryID){
 
-        MainActivity activity=(MainActivity)context;
+        MainActivity activity=(MainActivity)context
+                ;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
