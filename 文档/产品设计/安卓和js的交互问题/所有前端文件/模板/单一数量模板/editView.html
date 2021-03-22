@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="TPLsn01">
+        单一数量模板编辑
+        <br>
+        默认值
+        <input type="number" id="defaultNumber">
+        <br>
+        <input type="checkbox" id="btn_usale">是否使用按钮
+        <br>
+        按钮的step:<input type="number"id="btn_step" />
+
+        <br>
+        <input type="checkbox" id="slider_usale">是否使用滑动条
+        <br>
+        滑动条最小值:<input type="number" id="slider_min" />
+        <br>
+        滑动条最大值:<input type="number" id="slider_max"/>
+        <br>
+        滑动条的step:<input type="number" id="slider_step"/>
+    </div>
+    
+    <script>
+
+        //===========================从安卓中获取格式字符串=========================
+        //let jsonFormat=window.androidObject.getAndroidFormat();
+        //let jsonFormat=JSON.stringify(testFormatObj);
+        let jsonFormat="";
+
+        //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.
+        if(jsonFormat===""){
+            defaultFormat={
+                TPLsn01:{
+                    defaultNumber:0,
+                    btn:{
+                        usable:true,
+                        step:10,
+                    },
+                    slider:{
+                        usable:true,
+                        min:1,
+                        max:999,
+                        step:5,
+                    },
+                },
+            };
+            jsonFormat=JSON.stringify(defaultFormat);
+        };
+
+        //解析json,获取格式对象,对格式的修改都要落实到formaObj上
+        let formatObj=JSON.parse(jsonFormat);
+        console.log(formatObj);
+
+        //==============================提供给安卓的借口,从这里获取格式json===============================
+        window.getJsFormat=function(){
+            //把控件的值放到formatObj中
+            formatObj["TPLsn01"]["defaultNumber"]=defaultNumber.value;
+            formatObj["TPLsn01"]["btn"]["usable"]=btn_usale.checked;
+            formatObj["TPLsn01"]["btn"]["step"]=btn_step.value;
+            formatObj["TPLsn01"]["slider"]["usable"]=slider_usale.checked;
+            formatObj["TPLsn01"]["slider"]["min"]=slider_min.value;
+            formatObj["TPLsn01"]["slider"]["max"]=slider_max.value;
+            formatObj["TPLsn01"]["slider"]["step"]=slider_step.value;
+
+            return JSON.stringify(formatObj);
+        };
+
+        //===============================获取到所有值输入的控件:===========================================
+        let defaultNumber=document.getElementById("defaultNumber");
+        let btn_usale=document.getElementById("btn_usale");
+        let btn_step=document.getElementById("btn_step");
+        let slider_usale=document.getElementById("slider_usale");
+        let slider_min=document.getElementById("slider_min");
+        let slider_max=document.getElementById("slider_max");
+        let slider_step=document.getElementById("slider_step");
+
+        //===============================把formatObj的值放到控件中===========================================
+        defaultNumber.value=formatObj["TPLsn01"]["defaultNumber"];
+        btn_usale.checked   =formatObj["TPLsn01"]["btn"]["usable"];
+        btn_step.value      =formatObj["TPLsn01"]["btn"]["step"];
+        slider_usale.checked=formatObj["TPLsn01"]["slider"]["usable"];
+        slider_min.value    =formatObj["TPLsn01"]["slider"]["min"];
+        slider_max.value    =formatObj["TPLsn01"]["slider"]["max"];
+        slider_step.value   =formatObj["TPLsn01"]["slider"]["step"];
+
+    </script>
+</body>
+</html>

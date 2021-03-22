@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="TPLsn01">
+        <input type="number" id="TPLsn01_number">
+        <br>
+
+ 
+        <div id="btn_div">
+            <button id="btn_add">+</button>
+            <button id="btn_minus">-</button>
+        </div>
+
+        <div id="slider_div">
+            <input type="range" id="slider">
+        </div>
+
+
+        <textarea id="TPLsn01_txt" 
+            rows="8" cols="30" autocomplete="on" placeholder="请输入文本" autofocus="true">
+        </textarea>
+    </div>
+    
+    <script>
+        //===============================这一部分是从安卓中获取格式,和editView那里的代码一样.=======================
+        //从安卓中获取格式字符串
+        let testFormatObj={
+                TPLsn01:{
+                    defaultNumber:20,
+                    btn:{
+                        usable:false,
+                        step:10,
+                    },
+                    slider:{
+                        usable:false,
+                        min:10,
+                        max:99,
+                        step:5,
+                    },
+                },
+            };
+        //let jsonFormat=window.androidObject.getAndroidFormat();
+        let jsonFormat=JSON.stringify(testFormatObj);
+        let formatObj=JSON.parse(jsonFormat);
+        //console.log(formatObj);
+
+
+        //============================这一部分是从安卓中获取记录值=======================
+        let testValuetObj={
+            TPLsn01:{
+                number_value:1,
+                txt_value:"失误失误",
+            },
+        };
+        //从安卓中获取记录值
+        //let jsonValue=window.android.getAndroidRecordValue();
+        let jsonRecordValue="";
+        if(jsonRecordValue===""){
+            let defaultValueObj={
+                TPLsn01:{
+                    number_value:1,
+                    txt_value:"失dededed误失误",
+                },
+            };
+            defaultValueObj.TPLsn01.number_value=formatObj.TPLsn01.defaultNumber;
+            jsonRecordValue=JSON.stringify(defaultValueObj);
+        };
+        let recordValueObj=JSON.parse(jsonRecordValue);
+        console.log(recordValueObj);
+
+        //==============获取控件====================
+        let TPLsn01_number=document.getElementById("TPLsn01_number");
+        let btn_add=document.getElementById("btn_add");
+        let btn_minus=document.getElementById("btn_minus");
+        let slider=document.getElementById("slider");
+        let TPLsn01_txt=document.getElementById("TPLsn01_txt");
+
+    
+        //===============根据recordValueObj的值设置输入框和滑动条的显示===============
+        function updateView(){
+            TPLsn01_number.value=recordValueObj.TPLsn01.number_value;
+            TPLsn01_txt.value=recordValueObj.TPLsn01.txt_value;
+            slider.value=recordValueObj.TPLsn01.number_value;
+        };
+        
+
+        //==============根据recordValueObj的值和格式字符串初始化控件==================
+        updateView();//初始化输入框和滑动条的值,还有文本输入框的值,直接解决了.
+        //判断是否要用按钮和滑动条
+        let btn_div=document.getElementById("btn_div");
+        let slider_div=document.getElementById("slider_div");
+        if(formatObj.TPLsn01.btn.usable===false){
+            btn_div.style.display="none";
+        };
+        if(formatObj.TPLsn01.slider.usable===false){
+            slider_div.style.display="none";
+        };
+        
+        //===============绑定事件======================================
+        //输入框
+        TPLsn01_number.onchange=function(){
+            recordValueObj.TPLsn01.number_value=TPLsn01_number.value;
+            updateView();
+            console.log(recordValueObj);
+        };
+        //添加按钮
+        btn_add.onclick=function(){
+            recordValueObj.TPLsn01.number_value=recordValueObj.TPLsn01.number_value+formatObj.TPLsn01.btn.step;
+            updateView();
+        };
+        //减少按钮
+        btn_minus.onclick=function(){
+            recordValueObj.TPLsn01.number_value=recordValueObj.TPLsn01.number_value-formatObj.TPLsn01.btn.step;
+            updateView();
+        };
+        //滑动条
+        slider.min=formatObj.TPLsn01.slider.min;
+        slider.max=formatObj.TPLsn01.slider.max;
+        slider.step=formatObj.TPLsn01.slider.step;
+        slider.onchange=function(){
+            recordValueObj.TPLsn01.number_value=slider.value;
+            updateView();
+        };
+        //文本输入框
+        TPLsn01_txt.onchange=function(){
+            recordValueObj.TPLsn01.txt_value=TPLsn01_txt.value;
+            console.log(recordValueObj);
+        };
+
+        //====================提供给安卓的借口,返回记录值的json=====================
+        window.getJSRecordView=function(){
+            return JSON.stringify(recordValueObj);
+        };
+        window.getJsFormat=function(){
+            return JSON.stringify(formatObj);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* "TPL"是template的缩写,是模板id的开头字母;
+ * "sn"是single number的缩写,意思是单一数量;
+ * "01"就是第一个;
+ */
+模板id=TPLsn01
+
+/*
+ * 该模板是个json字符串,对应的js对象为"
+  {
+	
+	//表示格式中和绷木板有关的信息.
+	TPLsn01:{
+	
+		//本模板中和按钮相关的参数设定.
+		btn:{
+			//是否可用
+			usable:true,
+			//按下+/-按钮时数值改变的绝对值
+			step:1,
+		},
+		
+		//本模板中和滑动条相关的设定.
+		slider:{
+			//是否可用
+			usable:false,
+			//滚动条的最小值
+			min:0,
+			//滚动条的最大值
+			max:100,
+		},
+	},
+  };
+  
+  */
+getAndroidFormat()={"TPLsn01":{"btn":{"usable":true,"step":0},"slider":{"usable":false,"min":0,"max":999}}}
+
+getAndroidRecordValue()=
+
+getAndroidCellEntryList()=
