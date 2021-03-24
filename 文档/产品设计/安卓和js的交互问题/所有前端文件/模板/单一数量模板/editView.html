@@ -4,27 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style type="text/css">
+
+        #TPLsn01 {
+            margin-left: 1.5rem;
+        }
+
+        input[type="number"] {
+            font-size: 1.2rem;
+            width: 4rem;
+            border-radius: 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /*
+        td {
+            text-align: center;
+            font-size: 1.2rem;
+            background-color: #F1F1F1;
+        }
+        */
+
+        input[type="checkbox"] {
+            width: 2rem;
+            height: 2rem;
+            border-width: 0.2rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            border-color: #2E7BFD;
+        }
+
+
+    </style>
+
 </head>
 <body>
 
     <div id="TPLsn01">
-        单一数量模板编辑
-        <br>
-        默认值
-        <input type="number" id="defaultNumber">
-        <br>
-        <input type="checkbox" id="btn_usale">是否使用按钮
-        <br>
-        按钮的step:<input type="number"id="btn_step" />
+        <table>
+            <tr>
+                <td>默认值</td>
+                <td><input type="number" id="defaultNumber"></td>
+            </tr>
 
-        <br>
-        <input type="checkbox" id="slider_usale">是否使用滑动条
-        <br>
-        滑动条最小值:<input type="number" id="slider_min" />
-        <br>
-        滑动条最大值:<input type="number" id="slider_max"/>
-        <br>
-        滑动条的step:<input type="number" id="slider_step"/>
+            <tr>
+                <td> 
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td>是否使用按钮</td>
+                <td> <input type="checkbox" id="btn_usale"> </td>
+            </tr>
+
+            <tr>
+                <td>按钮的step</td>
+                <td> <input type="number"id="btn_step" /> </td>
+            </tr>
+
+            <tr>
+                <td> 
+                    <br>
+                </td>
+            </tr>
+
+            <tr>
+                <td>是否使用滑动条</td>
+                <td> <input type="checkbox" id="slider_usale"> </td>
+            </tr>
+
+            <tr>
+                <td>滑动条最小值</td>
+                <td> <input type="number" id="slider_min" /> </td>
+            </tr>
+
+            <tr>
+                <td>滑动条最大值</td>
+                <td> <input type="number" id="slider_max"/> </td>
+            </tr>
+
+            <tr>
+                <td>滑动条的step </td>
+                <td> <input type="number" id="slider_step"/> </td>
+            </tr>
+
+        </table>    
     </div>
     
     <script>

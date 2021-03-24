@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./echart/echarts.min.js"></script>
+    <script src="./echart/ecStat.js"></script>
+    <script src="./echart/theme-chalk.js"></script>
+
+<body>
+
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <input type="radio" name="displayMethod" id="lineDisplay"><label for="lineDisplay">折线图</label>
+    <input type="radio" name="displayMethod" id="scatterDisplay"><label for="scatterDisplay">散点图</label>
+
+    <div id="lineChart" style="width: 100vw;height:40vh;"></div>
+    <div id="scatterChart" style="width: 100vw;height:40vh;"></div>
+
+    <table border="1" align="center" cellspacing="0" cellpadding="0">
+        <caption>统计特征值</caption>
+        <tr>
+            <td>平均值</td>
+            <td id="pinJunZhi"></td>
+        </tr>
+
+        <tr>
+            <td>最大值</td>
+            <td id="zuiDaZhi"></td>
+        </tr>
+
+        <tr>
+            <td>最小值</td>
+            <td id="zuiXiaoZhi"></td>
+        </tr>
+
+        <tr>
+            <td>众数</td>
+            <td id="zhongShu"></td>
+        </tr>
+
+        <tr>
+            <td>方差</td>
+            <td id="fangCha"></td>
+        </tr>
+
+        <tr>
+            <td>极差</td>
+            <td id="jiCha"></td>
+        </tr>
+
+        <tr>
+            <td>和</td>
+            <td id="he"></td>
+        </tr>
+    </table>
+    <script>
+
+        function getLocalTime(nS) {
+            return new Date(nS).toLocaleString().replace(/:\d{1,2}$/, ' ');
+        }
+        //=======================测试数据生产区域====================
+        let cellEntryList = [];
+        let today = Date.now();
+        today = today - today % (24 * 60 * 60 * 1000);
+        for (let i = 0; i < 300; i++) {
+
+            //cellEntry中的value就是这个.
+            let recordValue = {
+                TPLsn01: {
+                    number_value: 1,
+                    txt_value: "失dededed误失误",
+                },
+            };
+            recordValue.TPLsn01.number_value = 0.1 * i + Math.ceil(Math.random() * 10);
+            recordValue.TPLsn01.txt_value = "示例文字,这个是个记录值的文本";
+            let valueJSON = JSON.stringify(recordValue);
+
+            //cellEntry
+            let entry = {
+                date: 1,
+                value: "",
+            };
+            entry.value = valueJSON;
+            entry.date = today - i * 24 * 60 * 60 * 1000;
+            //console.log(getLocalTime(entry.date));
+
+            cellEntryList.push(entry);
+        }
+        //console.log(cellEntryList);
+
+        //========================生成折线图区域=========================
+        // 基于准备好的dom，初始化echarts实例
+        var lineChart = echarts.init(document.getElementById('lineChart'), "chalk");
+        var scatterChart = echarts.init(document.getElementById('scatterChart'), "chalk");
+
+        //根据cellEntryList准备好图标所用列表
+        var plot_data = [];
+        //值储存着数字的一维列表
+        let numberValueList = [];
+        for (i = 0; i < cellEntryList.length; i++) {
+            //先从entry中的value中解析到实际的数字的值
+            let entry = cellEntryList[i];
+            let number_value = JSON.parse(entry.value).TPLsn01.number_value;
+
+            //将毫秒值和数字的值放到图标所用列表
+            plot_data.push([entry.date, number_value]);
+            //只把数字的记录值放到numberValueList中
+            numberValueList.push(number_value);
+        }
+
+        // 指定图表的配置项和数据
+        var plot_option = {
+            title: {
+                text: '记录值显示'
+            },
+            tooltip: {
+                trigger: 'axis', // 显示横坐标值
+            },
+            legend: {
+                data: ['数据显示']
+            },
+            dataZoom: [
+                {   // 这个dataZoom组件，默认控制x轴。
+                    type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                    start: 100,      // 左边在 10% 的位置。
+                    end: 90         // 右边在 60% 的位置。
+                }
+            ],
+            // visualMap: [
+            //     {
+            //         type: 'piecewise',
+            //         min: 0,
+            //         max: 10,
+            //         // dimension: 1,       // series.data 的第四个维度（即 value[3]）被映射
+            //         // seriesIndex: 1,     // 对第四个系列进行映射。
+            //         inRange: {          // 选中范围中的视觉配置
+            //             color: ['blue', '#121122', 'red'], // 定义了图形颜色映射的颜色列表，
+            //             // 数据最小值映射到'blue'上，
+            //             // 最大值映射到'red'上，
+            //             // 其余自动线性计算。
+            //             symbolSize: [10, 15]               // 定义了图形尺寸的映射范围，
+            //             // 数据最小值映射到30上，
+            //             // 最大值映射到100上，
+            //             // 其余自动线性计算。
+            //         },
+            //         outOfRange: {       // 选中范围外的视觉配置
+            //             symbolSize: [15, 16]
+            //         }
+            //     },
+            // ],
+            xAxis: {
+                type: 'time',
+                splitLine: {
+                    show: false
+                },
+            },
+            yAxis: {
+                type: 'value'
+            },
+            toolbox: { // 工具箱
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: { readOnly: false },
+                    magicType: { type: ['line', 'scatter'] },
+                    restore: {}
+                }
+            },
+
+            series: [
+                {
+                    type: 'line',
+                    data: plot_data,
+                    markPoint: {
+                        data: [{
+                            type: 'max',
+                            name: '最大值'
+                        },
+                        {
+                            type: 'min',
+                            name: '最小值'
+                        }
+                        ]
+                    },
+
+                    markLine: {
+                        data: [
+                            {
+                                type: 'average',
+                                name: '平均值'
+                            }
+                        ]
+                    },
+                },
+            ],
+
+
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        lineChart.setOption(plot_option);
+        scatterChart.setOption(plot_option);
+        //点击切换功能
+        let radioLine = document.getElementById("lineDisplay");
+        let radioScatter = document.getElementById("scatterDisplay");
+        let change_display = function () {
+            let hideAll = function () {
+                document.getElementById("lineChart").style.display = "none";
+                document.getElementById("scatterChart").style.display = "none";
+            };
+
+            console.log("dedede");
+            if (radioLine.checked === true) {
+                plot_option["series"][0].type = "line";
+                lineChart.setOption(plot_option);
+                hideAll();
+                document.getElementById("lineChart").style.display = "block";
+                //main_plot.setOption(plot_option);
+
+            }
+            else {
+                plot_option["series"][0].type = "scatter";
+                scatterChart.setOption(plot_option);
+                hideAll();
+                document.getElementById("scatterChart").style.display = "block";
+            };
+        };
+        radioLine.onchange = change_display;
+        radioScatter.onchange = change_display;
+        radioLine.checked = true;
+        change_display();
+
+        //======================生成统计特征值表格区域============================
+        let fangChaTd = document.getElementById("fangCha");
+        fangCha.textContent = ecStat.statistics.sampleVariance(numberValueList);
+
+        let zuiDaZhiTd = document.getElementById("zuiDaZhi");
+        zuiDaZhiTd.textContent = ecStat.statistics.max(numberValueList);
+
+        let zuiXiaoZhiTd = document.getElementById("zuiXiaoZhi");
+        zuiXiaoZhiTd.textContent = ecStat.statistics.min(numberValueList);
+
+        let newArray = numberValueList.slice(0);
+        newArray.sort();
+
+        let pinJunZhiTd = document.getElementById("pinJunZhi");
+        pinJunZhiTd.textContent = ecStat.statistics.mean(numberValueList);
+
+        let heTd = document.getElementById("he");
+        heTd.textContent = ecStat.statistics.sum(numberValueList);
+
+
+    </script>
+</body>
+
+</html>
