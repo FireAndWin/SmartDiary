@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+
+</head>
+
+<body>
+
+    <div id="divChoices"> </div>
+    <script>
+        let formatObj = {
+            choiceList: [
+                {
+                    key: "1111",
+                    textValue: "几乎没有玩"
+                },
+                {
+                    key: "1112",
+                    textValue: "玩了一小会"
+                },
+                {
+                    key: "113",
+                    textValue: "玩了挺长时间"
+                },
+                {
+                    key: "1114",
+                    textValue: "一直玩"
+                },
+            ],
+            type: "checkbox",
+            id: "choiceTemplate",
+        };
+
+        let recordValueObj = {
+            choice: [
+                "1112",
+            ],
+        };
+
+
+        //===================获取放所有选择的div======================
+        let divChoices = document.getElementById("divChoices");
+
+        //==================根据记录值和格式添加元素=====================
+        for (let indexList in formatObj.choiceList) {
+            let choice = formatObj.choiceList[indexList];
+            let choiceKey = choice.key;
+            let choiceText = choice.textValue;
+
+
+            //-----创建列表的列表项label
+            let labelChoice = document.createElement("label");
+
+            //-----向label中添加内容,这里要判断是否为单选
+            //----1.如果是单选:
+            if (formatObj.type === "radio" && recordValueObj.choice.length === 1) {
+                divChoices.setAttribute("class", "weui-cells weui-cells_radio");
+
+                labelChoice.setAttribute("class", "weui-cell weui-check__label");
+                labelChoice.setAttribute("for", choiceKey);
+                //把单选框放到右边
+                labelChoice.innerHTML = `<div class="weui-cell__bd">
+                                <p>`+ choiceText + `</p>
+                                </div>
+                                <div class="weui-cell__ft">
+                                <input type="radio" class="weui-check" name="radio1" id=`+ choiceKey + `>
+                                <span class="weui-icon-checked"></span>
+                                </div>`;
+                ////把单选框放到左边
+                // labelChoice.innerHTML = `
+                //                 <div class="weui-cell__hd">
+                //                     <input type="radio" class="weui-check" name="radio1" id=`+ choiceKey + `>
+                //                     <span class="weui-icon-checked"></span>
+                //                 </div>
+                //                 <div class="weui-cell__bd">
+                //                     <p>`+ choiceText + `</p>
+                //                 </div>
+                //                 `;
+
+            }
+            //----2.如果不是单选:
+            else {
+                divChoices.setAttribute("class", "weui-cells weui-cells_checkbox");
+
+                labelChoice.setAttribute("class", "weui-cell weui-check__label");
+                labelChoice.setAttribute("for", choiceKey);
+                labelChoice.innerHTML = `
+                <div class="weui-cell__hd">
+                    <input type="checkbox" class="weui-check" name="checkbox1" id=`+ choiceKey + ` checked= "false">
+                    <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                    <p>`+ choiceText + `</p>
+                    </div>`;
+
+            };
+
+
+            //添加到父元素
+            divChoices.appendChild(labelChoice);
+            //获取到input元素
+            let inputChoice = document.getElementById(choiceKey);
+            //获取该元素是否被选中,如果没有选中,就用代码点击一下(设置checked不能用),取消选中状态
+            if (recordValueObj.choice.indexOf(choiceKey) === -1) {
+                inputChoice.click();
+            }
+            //添加事件,当状态改变时修改recordValueObj
+            inputChoice.onchange = function () {
+                if (formatObj.type === "radio") {
+                    recordValueObj.choice = [];
+                    recordValueObj.choice.push(choiceKey);
+                }
+                else {
+                    if (inputChoice.checked === true) {
+                        recordValueObj.choice.push(choiceKey);
+                    }
+                    else {
+                        recordValueObj.choice.forEach(function (item, index, arr) {
+                            if (item === choiceKey) {
+                                arr.splice(index, 1);
+                            }
+                        });
+                    };
+                };
+                console.log(recordValueObj);
+            };
+
+        };
+
+        //提供给安卓的借口:
+        window.getJSRecordView = function () {
+            return JSON.stringify(recordValueObj);
+        };
+
+
+    </script>
+
+
+
+    <!-- body 最后 -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <!-- 如果使用了某些拓展插件还需要额外的JS -->
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/city-picker.min.js"></script>
+
+</body>
+
+</html>
