@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #addBtn {
+            padding: 5vw;
+        }
+    </style>
+
+    <!-- head 中 -->
+    <!-- body 最后 -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+</head>
+
+<body>
+
+
+    <div id="divChoices" class="weui-cells">
+    </div>
+    <div id="addBtn">
+        <a href="javascript:;" class="weui-btn weui-btn_primary">
+            添加选项
+        </a>
+    </div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>按钮step</p>
+        </div>
+        <div class="weui-cell__ft">
+            <div class="weui-count">
+                <a class="weui-count__btn weui-count__decrease" id="btnMinusStep"></a>
+                <input class="weui-count__number" id="inputBtnStep" type="number" width="5vw" value="1">
+                <a class="weui-count__btn weui-count__increase" id="btnAddStep"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <p>默认值</p>
+        </div>
+        <div class="weui-cell__ft">
+            <div class="weui-count">
+                <a class="weui-count__btn weui-count__decrease" id="btnMinusdefaultNumber"></a>
+                <input class="weui-count__number" id="inputdefaultNumber" type="number" width="5vw" value="1">
+                <a class="weui-count__btn weui-count__increase" id="btnAdddefaultNumber"></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+        //===============先获取到安卓的格式对象========================
+        let formatObj = {
+            choiceList: [
+                {
+                    key: "1111",
+                    textValue: "几乎没有玩"
+                },
+                {
+                    key: "1112",
+                    textValue: "玩了一小会"
+                },
+                {
+                    key: "113",
+                    textValue: "玩了挺长时间"
+                },
+                {
+                    key: "1114",
+                    textValue: "一直玩"
+                },
+            ],
+            btnStep: 10,
+            defaultNumber: 0,
+            type: "checkbox",
+            id: "choiceTemplate",
+        };
+
+        //==============然后遍历choice中的选项,添加到div中================
+        let initChoiceList = function () {
+            let divChoices = document.getElementById("divChoices");
+            divChoices.innerHTML = "";
+            for (let indexList in formatObj.choiceList) {
+                let choice = formatObj.choiceList[indexList];
+                let keyChoice = choice.key;
+                let textChoice = choice.textValue;
+                console.log("ded", choice);
+
+                //创建列表表格div
+                let divCell = document.createElement("div");
+                divCell.setAttribute("class", "weui-cell divCell");
+                divCell.setAttribute("choiceKey", keyChoice);
+                //添加内容
+                divCell.innerHTML = `
+
+            <div class="weui-cell__hd">
+                <i class="weui-icon-download" id=`+ "movedown" + keyChoice + `></i>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" id=`+ "input" + keyChoice + ` type="text" placeholder="请输入选项名称" value=` + textChoice + `>
+            </div>
+            <div class="weui-cell__ft">
+                <a href="javascript:;"     id=` + "delete" + keyChoice + ` class="weui-btn  weui-btn_mini  weui-btn_warn">删除</a>
+            </div>
+            `;
+                divChoices.appendChild(divCell);
+
+
+                //获取到输入框和删除按钮,向下移动按钮
+                let btnDelete = document.getElementById("delete" + keyChoice);
+                let inputName = document.getElementById("input" + keyChoice);
+                let btnMoveDown = document.getElementById("movedown" + keyChoice);
+                //添加事件
+                //删除
+                btnDelete.onclick = function () {
+                    divCell.parentNode.removeChild(divCell);
+                    formatObj.choiceList.forEach(function (item, index, arr) {
+                        if (item.key === keyChoice) {
+                            arr.splice(index, 1);
+                            //console.log(formatObj.choiceList);
+                            //initChoiceList();
+                        };
+                    });
+                }
+                //重命名
+                inputName.onchange = function () {
+                    formatObj.choiceList.forEach(function (item, index, arr) {
+                        if (item.key === keyChoice) {
+                            formatObj.choiceList[index].textValue = inputName.value;
+                        };
+                    });
+                    console.log(formatObj);
+                }
+                //向下移动
+                btnMoveDown.onclick = function () {
+                    let cells = divChoices.childNodes;
+                    cells.forEach(function (item, index, arr) {
+                        if (cells[index] === divCell) {
+                            let next = (index + 1) % (cells.length);
+                            formatObj.choiceList[index] = formatObj.choiceList.splice(next, 1, formatObj.choiceList[index])[0];
+                            console.log(formatObj.choiceList);
+                            initChoiceList();
+                        };
+                    });
+                };
+            }
+        };
+        initChoiceList();
+
+        //=============="添加选项"按钮事件========
+        let btnAdd = document.getElementById("addBtn");
+        btnAdd.onclick = function () {
+            let millisNow = "" + Date.now();
+            let newChoice = {
+                key: "" + millisNow,
+                textValue: "",
+            }
+            formatObj.choiceList.push(newChoice);
+            initChoiceList();
+            document.getElementById("input" + millisNow).focus();
+        };
+
+        //==============按钮step相关===========
+        let inputBtnStep = document.getElementById("inputBtnStep");
+        inputBtnStep.value = formatObj.btnStep;
+        inputBtnStep.style.width = "3rem";
+        let btnMinusStep = document.getElementById("btnMinusStep");
+        btnMinusStep.onclick = function (e) {
+            let number = parseInt(inputBtnStep.value) - 1;
+            if (number < 0) number = 0;
+            inputBtnStep.value = number;
+            formatObj.btnStep = number;
+        };
+        let btnAddStep = document.getElementById("btnAddStep");
+        btnAddStep.onclick = function (e) {
+            let number = parseInt(inputBtnStep.value) + 1;
+            if (number < 0) number = 0;
+            inputBtnStep.value = number;
+            formatObj.btnStep = number;
+        };
+
+        //=============默认值相关===========
+        let inputdefaultNumber = document.getElementById("inputdefaultNumber");
+        inputdefaultNumber.value = formatObj.defaultNumber;
+        inputdefaultNumber.style.width = "3rem";
+        let btnMinusdefaultNumber = document.getElementById("btnMinusdefaultNumber");
+        btnMinusdefaultNumber.onclick = function (e) {
+            let number = parseInt(inputdefaultNumber.value) - 1;
+            inputdefaultNumber.value = number;
+            formatObj.defaultNumber = number;
+        };
+        let btnAdddefaultNumber = document.getElementById("btnAdddefaultNumber");
+        btnAdddefaultNumber.onclick = function (e) {
+            let number = parseInt(inputdefaultNumber.value) + 1;
+            if (number < 0) number = 0;
+            inputdefaultNumber.value = number;
+            formatObj.defaultNumber = number;
+        };
+
+        //==============给安卓提供的借口============
+        window.getJsFormat = function () {
+            return JSON.stringify(formatObj);
+        };
+
+    </script>
+
+    <!-- body 最后 -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <!-- 如果使用了某些拓展插件还需要额外的JS -->
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/city-picker.min.js"></script>
+</body>
+
+</html>
