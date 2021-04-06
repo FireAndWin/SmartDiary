@@ -13,4 +13,32 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- 白天主题 -->
+    <style name="Day1"  parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorAccent">#FFFFFF</item>
+
+        <item name="start_bg">#FFFFFF</item>
+        <item name="main_color">#2E7BFD</item>
+        <item name="title_color">#000000</item>
+        <item name="tip_color">#474444</item>
+
+        <item name="tab_bg">#FBFAFA</item>
+        <item name="tab_border">#808080</item>
+        <item name="tab_font">#808080</item>
+        <item name="tab_selected_bg">#2E7BFD</item>
+        <item name="tab_selected_border">#808080</item>
+        <item name="tab_selected_font">#FFFFFF</item>
+
+        <item name="item_bg">#ffffff</item>
+        <item name="item_2">#00b0fe</item>
+        <item name="start_font1">#0E0E0E</item>
+        <item name="start_font2">#232120</item>
+        <item name="start_item_timeInfo_font">#474B4E</item>
+
+        <item name="tab_bg">#FFFFFF</item>
+
+    </style>
 </resources>

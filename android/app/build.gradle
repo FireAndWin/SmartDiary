@@ -33,6 +33,8 @@ android {
                             'src/main/res/layout/check_page',
                             'src/main/res/layout/record_page',
                             'src/main/res/layout/start_page',
+                            'src/main/res/drawable/start_page',
+                            'src/main/res/drawable/record_page',
                     ]
         }
     }

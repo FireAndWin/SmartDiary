@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./echart/echarts.min.js"></script>
+    <script src="./echart/ecStat.js"></script>
+    <script src="./echart/theme-chalk.js"></script>
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <script src="./weui/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://jqweui.com/dist/css/jquery-weui.css" />
+    <link rel="stylesheet" type="text/css" href="http://jqweui.com/dist/lib/weui.min.css" />
+    <script src="http://jqweui.com/dist/lib/jquery-2.1.4.js"></script>
+    <script src="http://jqweui.com/dist/js/jquery-weui.js"></script>
+
+    <!-- body 最后 -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+
+<body>
+    <div id="divChart" style="width: 100vw;height:50vh;"></div>
+
+    <div class="weui-cell">
+        <div class="weui-cell__hd"><label for="name" class="weui-label">图表选择</label></div>
+        <div class="weui-cell__bd" id="cellChooseChart">
+            <input class="weui-input" id="inputChart" type="text" value="" readonly="">
+        </div>
+    </div>
+    <script>
+
+
+        let option = {
+
+            "calendar": {
+                "top": "middle",
+                "left": "center",
+                "orient": "vertical",
+                "cellSize": [
+                    80,
+                    80
+                ],
+                "yearLabel": {
+                    "show": true,
+                    "fontSize": 30
+                },
+                "dayLabel": {
+                    "margin": 20,
+                    "firstDay": 1,
+                    "nameMap": [
+                        "星期日",
+                        "星期一",
+                        "星期二",
+                        "星期三",
+                        "星期四",
+                        "星期五",
+                        "星期六"
+                    ]
+                },
+                "monthLabel": {
+                    "show": false
+                },
+                "range": [
+                    "2021-03"
+                ]
+            },
+            "series": [
+                {
+                    "id": "0pie",
+                    "type": "pie",
+                    "center": [
+                        200,
+                        200
+                    ],
+                    "label": {
+                        "normal": {
+                            "formatter": "{c}",
+                            "position": "inside"
+                        }
+                    },
+                    "radius": 30,
+                    "data": [
+                        {
+                            "name": "工作",
+                            "value": 2
+                        },
+                        {
+                            "name": "娱乐",
+                            "value": 18
+                        },
+                        {
+                            "name": "睡觉",
+                            "value": 14
+                        }
+                    ]
+                },
+                {
+                    "id": "1pie",
+                    "type": "pie",
+                    "center": [
+                        200,
+                        200
+                    ],
+                    "label": {
+                        "normal": {
+                            "formatter": "{c}",
+                            "position": "inside"
+                        }
+                    },
+                    "radius": 30,
+                    "data": [
+                        {
+                            "name": "工作",
+                            "value": 2
+                        },
+                        {
+                            "name": "娱乐",
+                            "value": 21
+                        },
+                        {
+                            "name": "睡觉",
+                            "value": 24
+                        }
+                    ]
+                },
+            ]
+        }
+        myChart = echarts.init(document.getElementById('divChart'));
+        myChart.setOption(option, true);
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

@@ -15,17 +15,20 @@
 
        <com.google.android.material.tabs.TabLayout
            android:id="@+id/tablayout_m3Record_RecordItemChoose"
-           android:background="#009688"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
            app:tabMode="scrollable"
+           android:layout_height="45dp"
+           app:tabIndicatorHeight="0dp"
+           android:layout_margin="0dp"
+           app:tabPadding="0dp"
+           app:tabPaddingEnd="0dp"
+           app:tabPaddingStart="0dp"
            />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager_m3Record_fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="@android:color/background_light"/>
 
    </LinearLayout>

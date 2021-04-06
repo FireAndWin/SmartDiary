@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="./echart/echarts.min.js"></script>
+    <script src="./echart/ecStat.js"></script>
+    <script src="./echart/theme-chalk.js"></script>
+    <script src="./echart/theme-macarons.js"></script>
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+    <script src="./weui/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://jqweui.com/dist/css/jquery-weui.css" />
+    <link rel="stylesheet" type="text/css" href="http://jqweui.com/dist/lib/weui.min.css" />
+    <script src="http://jqweui.com/dist/lib/jquery-2.1.4.js"></script>
+    <script src="http://jqweui.com/dist/js/jquery-weui.js"></script>
+
+    <!-- body 最后 -->
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <style>
+        .weui-btn_primary {
+            margin-right: 8vw;
+        }
+    </style>
+
+<body>
+
+    <div class="weui-cells">
+
+
+        <div class="weui-cells__title">
+            <h2 class="demos-title"> </h2>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <div id="divChart" style="width: 100vw;height:60vh;"></div>
+            </div>
+        </div>
+
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+
+                <a href="javascript:;" id="btnChooseChart" class="weui-btn weui-btn_mini weui-btn_primary">
+                    <label for="inputChart" class="weui-label">
+                        <h3 class="demos-title">图表选择</h3>
+                    </label>
+                </a>
+
+            </div>
+            <div class="weui-cell__ft" id="cellChooseChart">
+                <input class="weui-input" id="inputChart" type="text" value="" readonly="">
+            </div>
+        </div>
+
+        <!--统计数据表格区域-->
+        <div class="weui-cells__title">
+            <h2 class=> </h2>
+        </div>
+
+        <!--平均值--->
+        <div class="weui-cells__title">
+
+        </div>
+        <div class="weui-cells" id="cellsMean">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">
+                <h3>平均值</h3>
+            </a>
+        </div>
+
+        <!--和--->
+        <div class="weui-cells__title">
+        </div>
+        <div class="weui-cells" id="cellsSum">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">
+                <h3>总和</h3>
+            </a>
+        </div>
+
+        <!--最值--->
+        <div class="weui-cells__title">
+        </div>
+        <div class="weui-cells" id="cellsMinAndMax">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">
+                <h3>最值</h3>
+            </a>
+        </div>
+
+        <!--方差--->
+        <div class="weui-cells__title">
+        </div>
+        <div class="weui-cells" id="cellsSampleVariance">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">
+                <h3>方差</h3>
+            </a>
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        //=========================生成测试数据区域===========================
+        let cellEntryList = [];
+        let formatObj = {
+            choiceList: [
+                {
+                    key: "1",
+                    textValue: "做算法题"
+                },
+                {
+                    key: "2",
+                    textValue: "做作业"
+                },
+                {
+                    key: "3",
+                    textValue: "学英语"
+                },
+                {
+                    key: "4",
+                    textValue: "雏雁项目"
+                },
+            ],
+            btnStep: 10,
+            defaultNumber: 100,
+            type: "checkbox",
+            id: "choiceTemplate",
+        };
+        let today = Date.now();
+        today = today - today % (24 * 60 * 60 * 1000);
+        for (let i = 0; i < 30; i++) {
+
+            let recordValueObj = {
+                numberValueMap: [
+                ],
+                remark: "今天玩得真开心,哈哈哈"
+            };
+            //依次生成随机值
+            let alog = 120 + Math.ceil(Math.random() * 30);
+            let homw = 30 + Math.ceil(Math.random() * 10);
+            let eng = 20 + Math.ceil(Math.random() * 10);
+            let proj = 5 + Math.ceil(Math.random() * 5);
+
+            recordValueObj.numberValueMap.push({ key: "1", value: alog, });
+            recordValueObj.numberValueMap.push({ key: "2", value: homw, });
+            recordValueObj.numberValueMap.push({ key: "3", value: eng, });
+            recordValueObj.numberValueMap.push({ key: "4", value: proj, });
+            //console.log(recordValueObj.numberValueMap);
+
+            //cellEntry
+            let valueJSON = JSON.stringify(recordValueObj);
+            let entry = {
+                date: 1,
+                value: "",
+            };
+            entry.value = valueJSON;
+            entry.date = today - i * 24 * 60 * 60 * 1000;
+            //console.log(getLocalTime(entry.date));
+            cellEntryList.push(entry);
+        };
+
+
+        //============================解析cellEntryList中的数据===========================
+        //--存放所有时间戳的数组
+        let timeStampList = [];
+        /*--存放各个数据项各自信息对象的数组,长这样:
+        [
+            {
+                "name": "做算法题",
+                "key": "1",
+                "data": [100,200,300,400]
+            },
+            {
+                "name": "做作业",
+                "key": "2",
+                "data": [100,200,300,400]
+            },
+            {
+                "name": "学英语",
+                "key": "3",
+                "data": [100,200,300,400]
+            },
+            {
+                "name": "雏雁项目",
+                "key": "4",
+                "data":[100,200,300,400]
+            }
+        ]
+        */
+        let numberObjList = [];
+        formatObj.choiceList.forEach(function (item, index, arr) {
+            let numberObj = {
+                name: item.textValue,
+                key: item.key,
+                data: [],
+            };
+            numberObjList.push(numberObj);
+        });
+        //--存放所有备注信息的列表
+        let remarkList = [];
+        //--把cellEntryList的值装入
+        for (let i = 0; i < cellEntryList.length; i++) {
+            let entry = cellEntryList[i];
+
+            //获取并转入毫秒值
+            timeStampList.push(entry.date);
+            //获取并转入备注值
+            remarkList.push(entry.remark);
+            //获取并转入各个数值项
+            let recordValueObj = JSON.parse(entry.value);
+            if (recordValueObj != null) {
+                numberObjList.forEach(function (numberObj, index, arr) {
+                    let key = numberObj.key;
+                    let numberObjValue = 0;
+                    recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                        if (item.key === key) {
+                            numberObjValue = item.value;
+                        };
+                    });
+                    if (numberObjValue === 0) {
+                        numberObjValue = formatObj.defaultNumber;
+                    };
+                    numberObj.data.push(numberObjValue);
+                });
+            };
+        };
+        //--生成各个数值项的各个统计特征
+        numberObjList.forEach(function (numberObj, index, arr) {
+            numberObj.sampleVariance = ecStat.statistics.sampleVariance(numberObj.data);
+            numberObj.max = ecStat.statistics.max(numberObj.data);
+            numberObj.min = ecStat.statistics.min(numberObj.data);
+            numberObj.mean = ecStat.statistics.mean(numberObj.data);
+            numberObj.sum = ecStat.statistics.sum(numberObj.data);
+        });
+        console.log(timeStampList);
+
+        //===========================各种get_option函数=============================
+        /*生成折线堆积图所用option的函数
+        参数说明:
+        *.timeStampList:是一个时间戳的列表,包含所有你要显示的日期的毫秒值;
+        *.nameAndDataList:是一个对象列表,对象实例如下:
+            {
+                name:"语文分数",
+                data:[100,120,111,114,115,113,110],
+            }
+            其中"name"用作折线的名称,
+            data和timeStampList形成时间折线图必要的数据,data和timeStampList的长度一致;
+            nameAndDataList中可以由多个这样的对象,
+            每个对象对应于多数量/选择中的一个数值项.
+        
+        *.tooltip:对应于每天的备注文字,暂时未实现该功能
+        */
+        window.get_stackedLine_option = function (timeStampList, nameAndDataList, tooltipList) {
+            //图例列表
+            let legendData = [];
+            numberObjList.forEach(function (item, index, arr) {
+                legendData.push(item.name);
+            });
+            //series
+            let seriesList = [];
+            numberObjList.forEach(function (numberObj, index, arr) {
+                let series = {
+                    name: numberObj.name,
+                    type: 'line',
+                    data: [],
+                };
+                timeStampList.forEach(function (timeStamp, index, arr) {
+                    series.data.push([timeStamp, numberObj.data[index]]);
+                });
+                seriesList.push(series);
+            });
+
+            let option = {
+                title: {
+                    text: '折线图堆叠'
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'right',      //可设定图例在左、右、居中
+                    y: 'top',
+                    data: legendData,
+                },
+                tooltip: {
+                    triggerOn: 'none',
+                    position: function (pt) {
+                        return [pt[0], 130];
+                    }
+                },
+                dataZoom: [
+                    {   // 这个dataZoom组件，默认控制x轴。
+                        type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        start: 100,      // 左边在 10% 的位置。
+                        end: 10         // 右边在 60% 的位置。
+                    }
+                ],
+                xAxis: {
+                    type: 'time',
+                    splitLine: {
+                        show: false
+                    },
+                    axisPointer: {
+                        snap: true,
+                        lineStyle: {
+                            color: '#7581BD',
+                            width: 1
+                        },
+                        label: {
+                            show: true,
+                            formatter: function (params) {
+                                console.log(params);
+                                return echarts.format.formatTime('yyyy-MM-dd', params.value);
+                            },
+                            backgroundColor: '#7581BD'
+                        },
+                        handle: {
+                            show: true,
+                            color: '#7581BD'
+                        }
+                    },
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: seriesList,
+            };
+
+            return option;
+        };
+
+        /*生成面积堆积图所用option的函数
+           基本和get_stackedLine_option一致,就是在get_stackedLine_option的返回值option上做了一些修改
+        */
+        window.get_stackedArea_option = function (timeStampList, nameAndDataList, tooltipList) {
+            let option = get_stackedLine_option(timeStampList, nameAndDataList, tooltipList);
+            option.series.forEach(function (item, index, arr) {
+                item.stack = '总数量';
+                item.areaStyle = {};
+            });
+            return option;
+        };
+
+        /* 
+        生成总体饼状图所用option的函数
+        */
+        window.get_totalPie_option = function (nameAndSumList) {
+            let legendData = [];
+            numberObjList.forEach(function (item, index, arr) {
+                legendData.push(item.name);
+            });
+
+            let data = [];
+            numberObjList.forEach(function (item, index, arr) {
+                data.push({ name: item.name, value: item.sum });
+            });
+            let option = {
+                title: {
+                    text: '总体数据显示',
+                    subtext: '饼状图',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                },
+                series: [
+                    {
+                        name: '饼状图',
+                        type: 'pie',
+                        radius: '50%',
+                        data: data,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+
+            return option;
+        };
+
+        /*
+        生成日历饼图*/
+        window.get_calendarPie_option = function (timeStampList, nameAndDataList) {
+            console.log("dede");
+            let legendData = [];
+            numberObjList.forEach(function (item, index, arr) {
+                legendData.push(item.name);
+            });
+
+
+            let option = {
+                legend: {
+                    orient: 'vertical',
+                    x: 'right',      //可设定图例在左、右、居中
+                    y: 'bottom',
+                    data: legendData,
+                },
+                calendar: {
+                    top: 'middle',
+                    left: 'center',
+                    orient: 'vertical',
+                    cellSize: [40, 40],
+                    yearLabel: {
+                        show: true,
+                        fontSize: 30
+                    },
+                    dayLabel: {
+                        margin: 20,
+                        firstDay: 1,
+                        nameMap: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+                    },
+                    monthLabel: {
+                        show: false
+                    },
+                    range: ['2021-3']
+                },
+                series: [],
+            };
+
+            console.log(option);
+            return option;
+        };
+        window.get_calendarPie_series = function (timeStampList, chart) {
+            let pieSeriesList = timeStampList.map(function (timeStamp, timeIndex) {
+                let center = chart.convertToPixel('calendar', timeStamp);
+                let data = [];
+                numberObjList.forEach(function (item, index, arr) {
+                    data.push({
+                        name: item.name,
+                        value: item.data[timeIndex],
+                    });
+                });
+                let pieOption = {
+                    id: timeIndex + 'pie',
+                    type: 'pie',
+                    center: center,
+                    label: {
+                        normal: {
+                            formatter: '{c}',
+                            position: 'inside'
+                        }
+                    },
+                    radius: 15,
+                    data: data,
+                };
+
+                return pieOption;
+            });
+
+            return pieSeriesList;
+        };
+
+        //========================图标类型选择==============================
+        let option = get_stackedLine_option(timeStampList, numberObjList);
+        //let option = get_stackedArea_option(timeStampList, numberObjList);
+        //let option = get_totalPie_option(numberObjList);
+        var chart = echarts.init(document.getElementById('divChart'), "macarons");
+        var chart = echarts.init(document.getElementById('divChart'));
+        chart.setOption(option);
+        let inputChart = document.getElementById("inputChart");
+        $("#inputChart").select({
+            title: "选择图表类型",
+            items: ["折线图", "面积堆叠图", "扇形图", "日历图", "动态排序图"]
+        });
+        //let lastChart = "折线图";
+        inputChart.change = function () {
+            let nextChart = inputChart.value;
+            // console.log(nextChart);
+            // if (nextChart === lastChart) { return; };
+            let option;
+            if (nextChart === "折线图") {
+                option = get_stackedLine_option(timeStampList, numberObjList);
+            }
+            else if (nextChart === "面积堆叠图") {
+                option = get_stackedArea_option(timeStampList, numberObjList);
+            }
+            else if (nextChart === "扇形图") {
+                option = get_totalPie_option(numberObjList);
+            }
+            else if (nextChart === "日历图") {
+                option = get_calendarPie_option(timeStampList, numberObjList);
+                chart.setOption(option, true);
+                setTimeout(function () {
+                    chart.setOption({
+                        series: get_calendarPie_series(timeStampList, chart)
+                    });
+                }, 40);
+                //break;
+            }
+            //lastChart = nextChart;
+            //chart = echarts.init(document.getElementById('divChart'), "chalk");
+            chart.setOption(option, true);
+        };
+        inputChart.value = "折线图";
+        document.getElementById("btnChooseChart").onclick = function () {
+            inputChart.click();
+        };
+
+        //=========================生成统计数据表格========================
+        window.updateStaticTable = function (numberObjList) {
+            //========把添加cell的foreach单独提取出来,方便演示的改变==========
+            let addCells = function (cell__ft_function, cells) {
+                numberObjList.forEach(function (numberObj, index, arr) {
+                    let cell = document.createElement("div");
+                    cell.setAttribute("class", "weui-cell");
+                    cell.innerHTML = `
+                        <div class="weui-cell__bd">
+                            <p>`+ numberObj.name + `</p>
+                        </div>
+                        <div class="weui-cell__ft">`+ cell__ft_function(numberObj) + `</div>`;
+                    cells.appendChild(cell);
+                });
+            };
+
+
+            //=======平均值列表==================
+            let cellsMean = document.getElementById("cellsMean");
+            addCells(function (numberObj) { return numberObj.mean + "/天"; }, cellsMean);
+
+            //========总和列表=======================
+            let cellsSum = document.getElementById("cellsSum");
+            addCells(function (numberObj) { return numberObj.sum; }, cellsSum);
+
+            //========最值列表========================
+            let cellsMinAndMax = document.getElementById("cellsMinAndMax");
+            addCells(function (numberObj) { return "min:" + numberObj.min + "\t" + "  max:" + numberObj.max + "\t"; }, cellsMinAndMax);
+
+            //========方差列表========================
+            let cellsSampleVariance = document.getElementById("cellsSampleVariance");
+            addCells(function (numberObj) { return numberObj.sampleVariance; }, cellsSampleVariance);
+
+        };
+        updateStaticTable(numberObjList);
+
+    </script>
+
+</body>
+
+</html>

@@ -8,31 +8,40 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/start_bg">
 
         <!--添加按钮区域-->
         <LinearLayout
+            android:id="@+id/area_addbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_start_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btnadd"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/main_color"
+                android:textSize="20sp"
                 android:text="添加新的记录项"/>
         </LinearLayout>
 
         <!--菜单按钮-->
         <Button
             android:id="@+id/btn_start_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/btn_sort"
+            app:layout_constraintTop_toTopOf="@id/area_addbtn"
             app:layout_constraintRight_toRightOf="parent"
             />
 

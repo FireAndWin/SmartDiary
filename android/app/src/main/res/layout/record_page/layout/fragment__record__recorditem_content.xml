@@ -25,8 +25,8 @@
                     android:id="@+id/image_itemIcon"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/ic_launcher_background"
-                    android:background="@android:color/holo_blue_light"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/default_icon"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="MissingConstraints">
@@ -40,7 +40,8 @@
                     android:textSize="35sp"
                     android:text="日记"
                     android:textFontWeight="@android:integer/config_mediumAnimTime"
-                    android:background="@android:color/holo_orange_dark"
+                    android:textColor="?attr/title_color"
+                    android:layout_marginLeft="10dp"
                     app:layout_constraintLeft_toRightOf="@+id/image_itemIcon"
                     app:layout_constraintTop_toTopOf="@+id/image_itemIcon">
 
@@ -48,13 +49,15 @@
 
                 <TextView
                     android:id="@+id/text_itemComment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="270dp"
                     android:layout_height="wrap_content"
                     android:text="记录生活感动瞬间"
                     android:textFontWeight="@android:integer/config_mediumAnimTime"
                     android:textSize="25sp"
-                    android:background="@android:color/holo_red_light"
-                    app:layout_constraintLeft_toRightOf="@+id/image_itemIcon"
+                    android:textColor="?attr/tip_color"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_itemName"
                     app:layout_constraintTop_toBottomOf="@+id/text_itemName"
                     tools:ignore="MissingConstraints">
 
@@ -62,13 +65,15 @@
 
                 <Button
                     android:id="@+id/btn_itemInfo_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/image_itemIcon"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_itemComment"
                     app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="40dp"
                     android:text="编辑"
-                    android:background="#2196F3"
+                    android:background="@drawable/btn_edittemplate"
                     >
 
                 </Button>

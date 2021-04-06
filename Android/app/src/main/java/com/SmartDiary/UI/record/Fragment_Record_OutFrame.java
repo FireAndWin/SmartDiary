@@ -1,10 +1,13 @@
 package com.SmartDiary.UI.record;
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
+
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +30,7 @@ import java.util.List;
  * Use the {@link Fragment_Record_OutFrame#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_Record_OutFrame extends Fragment {
+public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTabSelectedListener {
 
 
     public Fragment_Record_OutFrame() {
@@ -104,8 +107,13 @@ public class Fragment_Record_OutFrame extends Fragment {
         List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
         for(int i=0;i<recordEntryList.size();i++){
             TabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
-            tab.setText(recordEntryList.get(i).getName());
+            tab.setCustomView(R.layout.view_record_tab);
+            TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name);
+            textView.setText(recordEntryList.get(i).getName());
+            //tab.setText(recordEntryList.get(i).getName());
         }
+        tablayout_m3Record_RecordItemChoose.addOnTabSelectedListener(this);
+        tablayout_m3Record_RecordItemChoose.selectTab(tablayout_m3Record_RecordItemChoose.getTabAt(0));
     }
 
 
@@ -135,6 +143,43 @@ public class Fragment_Record_OutFrame extends Fragment {
         public int getCount() {
             return using_recordEntryList.size();
         }
+
+    }
+
+
+    //==============================上方那个TabLayout的事件实现
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+//        TextView old=tab.getCustomView().findViewById(R.id.tab_record_name);
+//        String name= (String) old.getText();
+//        tab.setCustomView(R.layout.view_record_tab_selected);
+//        View view=tab.getCustomView();
+//        view.setBackground(R.drawable.);
+//        TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name_selected);
+//        textView.setText(name);
+        View view=tab.getCustomView();
+        TextView textView=view.findViewById(R.id.tab_record_name);
+        textView.setBackgroundResource(R.drawable.tab_selected);
+        textView.setTextColor(0xffFFFFFF);
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        View view=tab.getCustomView();
+        TextView textView=view.findViewById(R.id.tab_record_name);
+        textView.setBackgroundResource(R.drawable.tab_normal);
+        textView.setTextColor(0xff808080);
+//        TextView old=tab.getCustomView().findViewById(R.id.tab_record_name_selected);
+//        if(old!=null){
+//            String name= (String) old.getText();
+//            tab.setCustomView(R.layout.view_record_tab);
+//            TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name);
+//            textView.setText(name);
+//        }
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
 
     }
 }

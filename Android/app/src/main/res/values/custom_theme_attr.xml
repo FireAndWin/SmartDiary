@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 开始界面-背景 -->
+    <attr name="start_bg" format="color|reference" />
+    <!-- 主颜色,可以是字体或者按钮的颜色-->
+    <attr name="main_color" format="color|reference" />
+    <!-- 标题级别字体颜色-->
+    <attr name="title_color" format="color|reference" />
+    <!-- 提示级别字体颜色-->
+    <attr name="tip_color" format="color|reference" />
+
+    <!-- 记录界面-标签-未选中-背景颜色 -->
+    <attr name="tab_bg" format="color|reference" />
+    <!-- 记录界面-标签-未选中-边线颜色 -->
+    <attr name="tab_border" format="color|reference" />
+    <!-- 记录界面-标签-未选中-字体颜色 -->
+    <attr name="tab_font" format="color|reference" />
+
+    <!-- 记录界面-标签-选中-背景颜色 -->
+    <attr name="tab_selected_bg" format="color|reference" />
+    <!-- 记录界面-标签-选中-边线颜色 -->
+    <attr name="tab_selected_border" format="color|reference" />
+    <!-- 记录界面-标签-选中-字体颜色 -->
+    <attr name="tab_selected_font" format="color|reference" />
+
+    <!-- 开始界面-闹钟项-背景颜色 -->
+    <attr name="item_bg" format="color|reference" />
+    <!-- 开始界面-闹钟项-辅助颜色 -->
+    <attr name="item_2" format="color|reference" />
+    <!-- 开始界面-字体-主要颜色 -->
+    <attr name="start_font1" format="color|reference" />
+    <!-- 开始界面-字体-次要颜色 -->
+    <attr name="start_font2" format="color|reference" />
+    <!-- 开始界面-闹钟项-左部时间设定显示-字体 -->
+    <attr name="start_item_timeInfo_font" format="color|reference" />
+    <!-- 开始界面-group分页-背景色-->
+    <attr name="start_group_bg"  format="color|reference" />
+    <!-- 开始界面-group分页-Recyclerview-背景色-->
+    <attr name="start_group_recyclerview_bg"  format="color|reference" />
+
+    <!-- 编辑页面背景色 -->
+    <attr name="edit_bg" format="color|reference" />
+    <!-- 按钮的背景色 -->
+    <attr name="button_bg_1st" format="color|reference" />
+    <!-- 按钮上字体的颜色 -->
+    <attr name="btn_font" format="color|reference" />
+    <!-- 普通按钮的颜色 -->
+    <attr name="btn_bg" format="color|reference" />
+    <!-- 删除按钮的颜色 -->
+    <attr name="delete_btn_bg" format="color|reference" />
+    <!-- 提醒界面的特殊颜色-->
+    <!-- 提醒界面的标题颜色-->
+    <attr name="effect_font_1st" format="color|reference"/>
+    <!-- 提醒界面的内容颜色-->
+    <attr name="effect_font_2nd" format="color|reference"/>
+</resources>
