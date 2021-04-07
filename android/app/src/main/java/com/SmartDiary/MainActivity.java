@@ -8,17 +8,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.SmartDiary.UI.Test_Fragment;
 import com.SmartDiary.UI.check.Fragment_Check_OutFrame;
 import com.SmartDiary.UI.record.Fragment_Record_OutFrame;
-import com.SmartDiary.UI.record.Fragment_Record_RecorditemContent;
 import com.SmartDiary.UI.start.Fragment_start_outFrame;
 import com.SmartDiary.pojo.RecordEntry;
-import com.SmartDiary.pojo.RecordTemplate;
 import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.DayEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
@@ -807,14 +804,14 @@ public class MainActivity extends AppCompatActivity {
         textView=record_tab.getCustomView().findViewById(R.id.textView_start_tab);
         textView.setText("记录");
         imageView=record_tab.getCustomView().findViewById(R.id.imageView_start_tab);
-        imageView.setBackgroundResource(R.drawable.tab_start_menuicon);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon_edit);
 
         TabLayout.Tab check_tab=tabLayout_main.getTabAt(2);
         check_tab.setCustomView(R.layout.item_start_tab);
         textView=check_tab.getCustomView().findViewById(R.id.textView_start_tab);
         textView.setText("查看");
         imageView=check_tab.getCustomView().findViewById(R.id.imageView_start_tab);
-        imageView.setBackgroundResource(R.drawable.tab_start_menuicon);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon_read);
 
 
         TabLayout.Tab me_tab=tabLayout_main.getTabAt(3);

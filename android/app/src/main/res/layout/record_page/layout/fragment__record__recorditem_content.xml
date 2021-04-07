@@ -65,16 +65,15 @@
 
                 <Button
                     android:id="@+id/btn_itemInfo_edit"
-                    android:layout_width="90dp"
-                    android:layout_height="40dp"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@+id/text_itemComment"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="40dp"
-                    android:text="编辑"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="36dp"
                     android:background="@drawable/btn_edittemplate"
-                    >
+                    android:text="编辑"
+                    android:textSize="23sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_itemComment">
 
                 </Button>
             </androidx.constraintlayout.widget.ConstraintLayout>

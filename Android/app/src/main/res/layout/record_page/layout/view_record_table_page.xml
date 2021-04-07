@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="200dp"
-    android:background="#8BC34A"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
