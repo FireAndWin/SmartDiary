@@ -96,9 +96,10 @@
                 </LinearLayout>
 
                 <RadioGroup
+                    android:background="@drawable/btn__record_radiogroup"
                     android:id="@+id/radioGroup_viewChoose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:textAlignment="center"
@@ -107,32 +108,35 @@
                     tools:ignore="RtlCompat">
 
                     <RadioButton
+                        android:textColor="@drawable/btn_record_radiotext"
+                        android:layout_margin="2dp"
+                        android:textSize="20sp"
+                        android:button="@null"
                         android:id="@+id/radioBtn_table"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#2196F3"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/btn_record_radio_backgroud"
                         android:layout_weight="1"
                         android:checked="true"
 
                         android:gravity="center"
                         android:text="数据"
-                        android:textColor="@android:color/black"
-                        android:textFontWeight="@android:integer/config_longAnimTime"
                         android:textIsSelectable="true">
 
                     </RadioButton>
                     <!--        android:background="@android:drawable/btn_radio"-->
                     <RadioButton
+                        android:textColor="@drawable/btn_record_radiotext"
+                        android:layout_margin="2dp"
+                        android:textSize="20sp"
+                        android:button="@null"
+                        android:background="@drawable/btn_record_radio_backgroud"
                         android:id="@+id/radioBtn_chart"
                         android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:background="#2196F3"
                         android:gravity="center"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="统计结果"
-                        android:textColor="@android:color/black"
-                        android:textFontWeight="@android:integer/config_longAnimTime"
                         android:textIsSelectable="true">
 
                     </RadioButton>
