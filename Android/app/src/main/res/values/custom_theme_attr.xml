@@ -9,6 +9,9 @@
     <!-- 提示级别字体颜色-->
     <attr name="tip_color" format="color|reference" />
 
+    <!-- 底部菜单标签-未选中-字体颜色 -->
+    <attr name="tabMenu__font" format="color|reference" />
+
     <!-- 记录界面-标签-未选中-背景颜色 -->
     <attr name="tab_bg" format="color|reference" />
     <!-- 记录界面-标签-未选中-边线颜色 -->

@@ -9,6 +9,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.SmartDiary.UI.Test_Fragment;
 import com.SmartDiary.UI.check.Fragment_Check_OutFrame;
@@ -794,13 +796,34 @@ public class MainActivity extends AppCompatActivity {
         tabLayout_main=findViewById(R.id.tabLayout_main);
         tabLayout_main.setupWithViewPager(viewPager_main);
         TabLayout.Tab list_tab=tabLayout_main.getTabAt(0);
-        list_tab.setText("列表");
+        list_tab.setCustomView(R.layout.item_start_tab);
+        TextView textView=list_tab.getCustomView().findViewById(R.id.textView_start_tab);
+        textView.setText("列表");
+        ImageView imageView=list_tab.getCustomView().findViewById(R.id.imageView_start_tab);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon);
+
         TabLayout.Tab record_tab=tabLayout_main.getTabAt(1);
-        record_tab.setText("记录");
+        record_tab.setCustomView(R.layout.item_start_tab);
+        textView=record_tab.getCustomView().findViewById(R.id.textView_start_tab);
+        textView.setText("记录");
+        imageView=record_tab.getCustomView().findViewById(R.id.imageView_start_tab);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon);
+
         TabLayout.Tab check_tab=tabLayout_main.getTabAt(2);
-        check_tab.setText("查看");
+        check_tab.setCustomView(R.layout.item_start_tab);
+        textView=check_tab.getCustomView().findViewById(R.id.textView_start_tab);
+        textView.setText("查看");
+        imageView=check_tab.getCustomView().findViewById(R.id.imageView_start_tab);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon);
+
+
         TabLayout.Tab me_tab=tabLayout_main.getTabAt(3);
-        me_tab.setText("我");
+        me_tab.setCustomView(R.layout.item_start_tab);
+        textView=me_tab.getCustomView().findViewById(R.id.textView_start_tab);
+        textView.setText("我");
+        imageView=me_tab.getCustomView().findViewById(R.id.imageView_start_tab);
+        imageView.setBackgroundResource(R.drawable.tab_start_menuicon_me);
+
     }
 
     public void test_init_pojoService(){

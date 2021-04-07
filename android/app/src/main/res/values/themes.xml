@@ -25,6 +25,8 @@
         <item name="title_color">#000000</item>
         <item name="tip_color">#474444</item>
 
+        <item name="tabMenu__font">#B2B2B2</item>
+
         <item name="tab_bg">#FBFAFA</item>
         <item name="tab_border">#808080</item>
         <item name="tab_font">#808080</item>

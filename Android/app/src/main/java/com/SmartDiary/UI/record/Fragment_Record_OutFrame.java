@@ -97,6 +97,8 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         //3.关联ViewPager及其适配器;
         viewPager_m3Record_fragmentContainer.setAdapter(adapter);
 
+        viewPager_m3Record_fragmentContainer.setOffscreenPageLimit(2);
+
     }
 
     private void init_tabLayout(View view) {
