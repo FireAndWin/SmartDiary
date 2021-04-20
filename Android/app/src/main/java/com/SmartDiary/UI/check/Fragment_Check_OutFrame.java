@@ -70,7 +70,7 @@ public class Fragment_Check_OutFrame extends Fragment {
 
     //==========================================================
     //外层的vewPager
-    ViewPager viewPager_check_content;
+    //ViewPager viewPager_check_content;
     //内层的ViewPager
     ViewPager viewPager_checkContent_swipe;
     class Test_Daily_Data{
@@ -91,12 +91,12 @@ public class Fragment_Check_OutFrame extends Fragment {
 
 
     public void init_view(View view){
-        viewPager_check_content=view.findViewById(R.id.viewPager_check_content);
-        Adapter_Out_ViewPager adapter_viewPager=new Adapter_Out_ViewPager();
-        viewPager_check_content.setAdapter(adapter_viewPager);
+//        viewPager_check_content=view.findViewById(R.id.viewPager_check_content);
+//        Adapter_Out_ViewPager adapter_viewPager=new Adapter_Out_ViewPager();
+//        viewPager_check_content.setAdapter(adapter_viewPager);
 
 
-        viewPager_checkContent_swipe=adapter_viewPager.table.findViewById(R.id.viewPager_checkContent_swipe);
+        viewPager_checkContent_swipe=view.findViewById(R.id.viewPager_checkContent_swipe);
         Adapter_Inner_ViewPager adapter_inner_viewPager=new Adapter_Inner_ViewPager();
         viewPager_checkContent_swipe.setAdapter(adapter_inner_viewPager);
     }
@@ -126,27 +126,22 @@ public class Fragment_Check_OutFrame extends Fragment {
     class Adapter_Inner_ViewPager extends PagerAdapter {
 
         Map<Integer,View> view_check_content_dailyMap;
-        List<DayEntry> dayEntryList;
+        int day_gap_total;
 
         //构造函数,主要是初始化这两个View
         public Adapter_Inner_ViewPager(){
             view_check_content_dailyMap=new HashMap<>();
-            dayEntryList=new ArrayList<>();
-
-            //这里是为了开发随便加几个数据就完事
-            dayEntryList.add(new DayEntry());
-            dayEntryList.add(new DayEntry());
+            day_gap_total=5;
         }
 
         @Override
         public int getCount() {
-            return dayEntryList.size();
+            return day_gap_total;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_check_content_daily,null);
-            new Adapter_check_dayEntry2webView(view,getContext(),dayEntryList.get(position));
+            View view=(new Adapter_check_dayEntry(getContext(),position)).getView();
             container.addView(view);
             view_check_content_dailyMap.put(position,view);
             return view;
@@ -164,47 +159,4 @@ public class Fragment_Check_OutFrame extends Fragment {
         }
     }
 
-    class Adapter_Out_ViewPager extends PagerAdapter {
-
-        //第一页,用表格显示数据
-        public View table;
-        //第二页,显示图标即统计结果
-        public View analysis;
-
-        //构造函数,主要是初始化这两个View
-        public Adapter_Out_ViewPager(){
-            table=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_check_table,null);
-            analysis=LayoutInflater.from((Context)getActivity()).inflate(R.layout.view_check_analysis,null);
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            if (position == 0) {
-                container.addView(table);
-                return table;
-            } else {
-                container.addView(analysis);
-                return analysis;
-            }
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            if (position == 0) {
-                container.removeView(table);
-            } else {
-                container.removeView(analysis);
-            }
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view==object;
-        }
-    }
 }

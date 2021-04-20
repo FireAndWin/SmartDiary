@@ -3,6 +3,7 @@ package com.SmartDiary.UI.check;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -12,6 +13,7 @@ import android.webkit.WebViewClient;
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 import com.SmartDiary.UI.record.Dialog_record_recordView;
+import com.SmartDiary.Utils.TimeUtilsMy;
 import com.SmartDiary.pojo.DayEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
@@ -21,22 +23,23 @@ import com.alibaba.fastjson.JSONArray;
 
 import java.util.List;
 
-//这个类的功能就是根据dayEntry返回一个展示改天数据的webView
-public class Adapter_check_dayEntry2webView {
-    public static final String TAG = "dayEntry2webView";
-    DayEntry dayEntry;
-    Context context;
-    long date;
-    /*构造函数:
-    * 1.加载内部变量dayEntry;
-    * 2.给webView加载最基本的html;
-    * 3.给webView添加JavaScriptInterface;
-    * 4.给webView执行动态js注入;*/
+public class Adapter_check_dayEntry {
 
-    public Adapter_check_dayEntry2webView(View view,Context context, DayEntry dayEntry) {
-        this.context=context;
-        this.dayEntry=dayEntry;
-        date=dayEntry.getDate();
+    public Context context;
+    public View view;
+    public int day_gap;
+    public long date;
+    public WebView webView_check_dayEntryDisplay;
+    public DayEntry dayEntry;
+
+    public Adapter_check_dayEntry(Context context, int day_gap) {
+        this.context = context;
+        this.day_gap = day_gap;
+        this.date= TimeUtilsMy.get_deltaTime_long(-day_gap);
+
+        this.view= LayoutInflater.from(context).inflate(R.layout.view_check_content_daily,null);
+        dayEntry=new DayEntry();
+
         WebView webView_check_dayEntryDisplay=view.findViewById(R.id.webView_check_dayEntryDisplay);
         webView_check_dayEntryDisplay.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView_check_dayEntryDisplay.getSettings().setJavaScriptEnabled(true);
@@ -44,6 +47,12 @@ public class Adapter_check_dayEntry2webView {
 
         load_basicHTML(webView_check_dayEntryDisplay);
         load_separate_js(webView_check_dayEntryDisplay);
+
+        //new Adapter_check_dayEntry2webView(view,context,this.dayEntry);
+    }
+
+    public View getView() {
+        return view;
     }
 
     //给webView加载最基本的html;
@@ -155,12 +164,13 @@ public class Adapter_check_dayEntry2webView {
         });
     }
 
+
     @JavascriptInterface
     public  String getAndroidRecordEntryList(){
         RecordEntryService recordEntryService= RecordEntryService.newInstance();
         List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
         String resultJson= JSONArray.toJSONString(recordEntryList);
-        Log.d(TAG, "getAndroidRecordEntryList: "+"857: "+resultJson);
+        //Log.d(TAG, "getAndroidRecordEntryList: "+"857: "+resultJson);
         return resultJson;
     };
 
