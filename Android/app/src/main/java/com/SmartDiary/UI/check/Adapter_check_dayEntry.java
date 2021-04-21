@@ -17,10 +17,12 @@ import com.SmartDiary.Utils.TimeUtilsMy;
 import com.SmartDiary.pojo.DayEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
+import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 import com.SmartDiary.service.pojoService.RecordTemplateService;
 import com.alibaba.fastjson.JSONArray;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Adapter_check_dayEntry {
@@ -39,6 +41,7 @@ public class Adapter_check_dayEntry {
 
         this.view= LayoutInflater.from(context).inflate(R.layout.view_check_content_daily,null);
         dayEntry=new DayEntry();
+        form_dayEntry();
 
         WebView webView_check_dayEntryDisplay=view.findViewById(R.id.webView_check_dayEntryDisplay);
         webView_check_dayEntryDisplay.getSettings().setDefaultTextEncodingName("utf-8") ;
@@ -53,6 +56,24 @@ public class Adapter_check_dayEntry {
 
     public View getView() {
         return view;
+    }
+
+    //根据日期去pojoService中查询,获得dayentry
+    private void form_dayEntry(){
+        dayEntry.date=date;
+        dayEntry.map=new HashMap<>();
+        RecordEntryService recordEntryService= RecordEntryService.newInstance();
+        CellEntryService cellEntryService=CellEntryService.newInstance();
+        List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
+
+        //遍历记录项,根据id和date获取记录值
+        for(RecordEntry recordEntry:recordEntryList){
+            String value=cellEntryService.get_recordValue_byID_Date(recordEntry.getId(),date);
+            if(value==null || value==""){
+                value="NaN";
+            }
+            dayEntry.map.put(String.valueOf(recordEntry.getId()),value);
+        }
     }
 
     //给webView加载最基本的html;
@@ -114,7 +135,7 @@ public class Adapter_check_dayEntry {
                 "            div_value.className=\"separateJS\"+recordEntry.template_id;\n" +
                 "            let record_value=window.androidObject.getAndroidRecordValue_byId(recordEntry.id);\n" +
                 "            div_value.setAttribute(\"value\",record_value);\n" +
-                "            div_value.innerText=\"separateJS\"+recordEntry.template_id;;\n" +
+                "            div_value.innerText = record_value;" +
                 "\n" +
                 "            //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑\n" +
                 "             div_value.onclick=function(){\n" +

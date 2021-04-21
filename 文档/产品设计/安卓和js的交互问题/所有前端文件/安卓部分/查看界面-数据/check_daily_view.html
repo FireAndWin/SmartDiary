@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="date">在这里显示时间</div>
     <div id="dayEntry_table"></div>
     <script>
         //第一步要获得所有数据
-            //先获取所有要显示的记录项
-        let JsonRecordEntryList=window.androidObject.getAndroidRecordEntryList();
-        let recordEntryList=JSON.parse(JsonRecordEntryList);
-            //然后获得日期
-        let date=window.androidObject.getAndroidDate();
+        //先获取所有要显示的记录项
+        let JsonRecordEntryList = window.androidObject.getAndroidRecordEntryList();
+        let recordEntryList = JSON.parse(JsonRecordEntryList);
+        //然后获得日期
+        let date = window.androidObject.getAndroidDate();
 
 
         //第二部准备好给separate_js准备的函数
-        window.getFormat=function(template_id){
-            for(i in recordEntryList){
-                let recordEntry=recordEntryList[i];
-                if(recordEntry.template_id===template_id){
+        window.getFormat = function (template_id) {
+            for (i in recordEntryList) {
+                let recordEntry = recordEntryList[i];
+                if (recordEntry.template_id === template_id) {
                     return recordEntry.format;
                 }
             }
         };
-	    window.getAnalysisResult=function(template_id){
-            for(i in recordEntryList){
-                let recordEntry=recordEntryList[i];
-                if(recordEntry.template_id===template_id){
+        window.getAnalysisResult = function (template_id) {
+            for (i in recordEntryList) {
+                let recordEntry = recordEntryList[i];
+                if (recordEntry.template_id === template_id) {
                     return recordEntry.analysis_result;
                 }
             }
         };
 
         //第三步加载数据到dom元素中
-        let div_dayEntry_table=document.getElementById("dayEntry_table");
-        for(i in recordEntryList){
-            let recordEntry=recordEntryList[i];
+        let div_dayEntry_table = document.getElementById("dayEntry_table");
+        for (i in recordEntryList) {
+            let recordEntry = recordEntryList[i];
 
             //放数据的整个格子
-            let div_cell=document.createElement("div");
+            let div_cell = document.createElement("div");
 
 
             //记录项名称的地方
-            let div_name=document.createElement("div");
-            div_name.innerHTML=recordEntry.name;
-            div_name.style.backgroundColor="#03A9F4";
+            let div_name = document.createElement("div");
+            div_name.innerHTML = recordEntry.name;
+            div_name.style.backgroundColor = "#03A9F4";
 
             //放记录项数据的地方
-            let div_value=document.createElement("div");
+            let div_value = document.createElement("div");
             //div_value.setAttribute("template_id",recordEntry.template_id);
-            div_value.className="separateJS"+recordEntry.template_id;
-            let record_value=window.androidObject.getAndroidRecordValue_byId(recordEntry.id);
-            div_value.setAttribute("value",record_value);
-            div_value.innerText="separateJS"+recordEntry.template_id;;
+            div_value.className = "separateJS" + recordEntry.template_id;
+            let record_value = window.androidObject.getAndroidRecordValue_byId(recordEntry.id);
+            div_value.setAttribute("value", record_value);
+            //div_value.innerText="separateJS"+recordEntry.template_id;;
+            div_value.innerText = record_value;
 
             //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑
-             div_value.onclick=function(){
+            div_value.onclick = function () {
                 window.androidObject.callAndroidRecordView(recordEntry.id);
-                div_value.style.backgroundColor="#8BC34A";
+                div_value.style.backgroundColor = "#8BC34A";
             };
 
             //加入到父元素中
@@ -70,10 +73,11 @@
         }
 
         //第四步修改时间显示
-        let div_date=document.getElementById("date");
-        let long_date=window.androidObject.getAndroidDate();
-        div_date.innerHTML= new Date(long_date).toLocaleString();
+        let div_date = document.getElementById("date");
+        let long_date = window.androidObject.getAndroidDate();
+        div_date.innerHTML = new Date(long_date).toLocaleString();
     </script>
-    
+
 </body>
+
 </html>
