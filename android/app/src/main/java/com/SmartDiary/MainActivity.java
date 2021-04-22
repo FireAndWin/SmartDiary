@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init_pojoService() {
+
         /*
         * 1.初始化SQLOpenHelper对象,
         * 2.添加测试数据*/

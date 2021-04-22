@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
@@ -55,6 +57,15 @@ public class Dialog_start_editRecordEntry {
         dialog=builder.create();
         dialog.show();
 
+
+        // 将对话框的大小按屏幕大小的百分比设置
+        MainActivity mainActivity=(MainActivity)context;
+        WindowManager windowManager = mainActivity.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = (int)(display.getWidth()); //设置宽度
+        lp.height=(int)(display.getHeight());
+        dialog.getWindow().setAttributes(lp);
         //当该对话框被关闭时:
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
             @Override

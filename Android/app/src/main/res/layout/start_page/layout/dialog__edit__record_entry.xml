@@ -2,13 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/start_bg"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/txt_editPage_title"
         app:layout_constraintTop_toTopOf="parent"
         android:text="编辑记录项"
         android:gravity="center"
         android:textSize="40sp"
+        android:textColor="?attr/tip_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
@@ -21,12 +29,18 @@
             android:id="@+id/textView_editRecordEntry_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/tab_font"
+            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
             android:text="记录项名称"/>
         <EditText
+            android:textColor="?attr/tip_color"
+            android:layout_marginLeft="20dp"
+            android:textSize="22sp"
             android:id="@+id/editText_editRecordEntry_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"/>
+            android:maxLines="3"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_edit_info"
@@ -38,12 +52,18 @@
             android:id="@+id/textView_editRecordEntry_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/tab_font"
+            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
             android:text="记录项描述"/>
         <EditText
+            android:layout_marginLeft="20dp"
+            android:textSize="22sp"
+            android:textColor="?attr/tip_color"
             android:id="@+id/editText_editRecordEntry_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="3"
+            android:maxLines="6"
             android:minLines="2"/>
     </LinearLayout>
     <LinearLayout
@@ -56,23 +76,27 @@
             android:id="@+id/textView_editRecordEntry_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/tab_font"
+            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
             android:text="记录项图标"/>
 
         <ImageView
+            android:layout_marginLeft="20dp"
             android:id="@+id/imageView_editRecordEntry_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_launcher_background" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="80dp"
+        android:minHeight="300dp"
         app:layout_constraintTop_toBottomOf="@id/layout_edit_icon">
         <LinearLayout
             android:id="@+id/layout_edit_format"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/layout_edit_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -80,14 +104,20 @@
                 android:id="@+id/textView_editRecordEntry_format"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/tab_font"
+                android:textSize="20sp"
+                android:layout_marginLeft="8dp"
                 android:text="编辑模板"/>
 
             <WebView
                 android:id="@+id/webView_editRecordEntry_format"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_launcher_background" />
         </LinearLayout>
     </LinearLayout>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
