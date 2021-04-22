@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.SmartDiary.R;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
+import com.SmartDiary.service.pojoService.CellEntryService;
 import com.SmartDiary.service.pojoService.RecordEntryService;
 
 //选择模板界面
@@ -53,7 +54,8 @@ public class Dialog_start_chooseTemplate {
         view.findViewById(R.id.test_choose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("choice001");
+                //RecordEntry entry= RecordEntryService.newInstance().get_recordEntry_byId("choice001");
+                RecordEntry entry=get_chooseTemplate_entry();
                 go_create_RecordEntry(entry);
             }
         });
@@ -70,5 +72,408 @@ public class Dialog_start_chooseTemplate {
     public void go_create_RecordEntry(RecordEntry entry){
         dialog.dismiss();
         Dialog_start_editRecordEntry dialog_start_editRecordEntry=new Dialog_start_editRecordEntry(context,entry,listener);
+    }
+
+    //形成选择模板,这里还是测试方法
+    public RecordEntry get_chooseTemplate_entry(){
+        RecordEntry entry=new RecordEntry();
+        entry.setId("choice001");
+        entry.setTemplate_id("11");
+        entry.setName("选择");
+        entry.setInfo("可以用来记录一些和选择有关的,是个基本的记录项模板哦");
+        entry.setSeparate_js("");
+        entry.setEdit_view("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Document</title>\n" +
+                "    <style>\n" +
+                "        #addBtn {\n" +
+                "            padding: 5vw;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "\n" +
+                "    <!-- head 中 -->\n" +
+                "    <link rel=\"stylesheet\" href=\"file:///android_asset/weui/weui.min.css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"file:///android_asset/weui/jquery-weui.mini.css\">\n" +
+                "    <!-- body 最后 -->\n" +
+                "    <script src=\"file:///android_asset/weui/jquery.min.js\"></script>\n" +
+                "    <script src=\"file:///android_asset/weui/jquery-weui.min.js\"></script>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "\n" +
+                "\n" +
+                "    <div id=\"divChoices\" class=\"weui-cells\">\n" +
+                "    </div>\n" +
+                "    <div id=\"addBtn\">\n" +
+                "        <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\">\n" +
+                "            添加选项\n" +
+                "        </a>\n" +
+                "    </div>\n" +
+                "\n" +
+                "    <div class=\"weui-cells__title\">选择方式</div>\n" +
+                "    <div class=\"weui-cells weui-cells_radio\">\n" +
+                "        <label class=\"weui-cell weui-check__label\" for=\"rbtn1\">\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <p>单选 </p>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__ft\">\n" +
+                "                <input type=\"radio\" class=\"weui-check\" name=\"radio1\" id=\"rbtn1\">\n" +
+                "                <span class=\"weui-icon-checked\"></span>\n" +
+                "            </div>\n" +
+                "        </label>\n" +
+                "        <label class=\"weui-cell weui-check__label\" for=\"rbtn2\">\n" +
+                "\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <p>多选</p>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__ft\">\n" +
+                "                <input type=\"radio\" name=\"radio1\" class=\"weui-check\" id=\"rbtn2\" checked=\"checked\">\n" +
+                "                <span class=\"weui-icon-checked\"></span>\n" +
+                "            </div>\n" +
+                "        </label>\n" +
+                "    </div>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "    <script>\n" +
+                "\n" +
+                "\n" +
+                "        //===============先获取到安卓的格式对象========================\n" +
+                "        let formatObj = {\n" +
+                "            choiceList: [\n" +
+                "                {\n" +
+                "                    key: \"1111\",\n" +
+                "                    textValue: \"几乎没有玩\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"1112\",\n" +
+                "                    textValue: \"玩了一小会\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"113\",\n" +
+                "                    textValue: \"玩了挺长时间\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"1114\",\n" +
+                "                    textValue: \"一直玩\"\n" +
+                "                },\n" +
+                "            ],\n" +
+                "            type: \"checkbox\",\n" +
+                "            id: \"choiceTemplate\",\n" +
+                "        };\n" +
+                "\n" +
+                "        //==============然后遍历choice中的选项,添加到div中================\n" +
+                "        let initChoiceList = function () {\n" +
+                "            let divChoices = document.getElementById(\"divChoices\");\n" +
+                "            divChoices.innerHTML = \"\";\n" +
+                "            for (let indexList in formatObj.choiceList) {\n" +
+                "                let choice = formatObj.choiceList[indexList];\n" +
+                "                let keyChoice = choice.key;\n" +
+                "                let textChoice = choice.textValue;\n" +
+                "                console.log(\"ded\", choice);\n" +
+                "\n" +
+                "                //创建列表表格div\n" +
+                "                let divCell = document.createElement(\"div\");\n" +
+                "                divCell.setAttribute(\"class\", \"weui-cell divCell\");\n" +
+                "                divCell.setAttribute(\"choiceKey\", keyChoice);\n" +
+                "                //添加内容\n" +
+                "                divCell.innerHTML = `\n" +
+                "\n" +
+                "            <div class=\"weui-cell__hd\">\n" +
+                "                <i class=\"weui-icon-download\" id=`+ \"movedown\" + keyChoice + `></i>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <input class=\"weui-input\" id=`+ \"input\" + keyChoice + ` type=\"text\" placeholder=\"请输入选项名称\" value=` + textChoice + `>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__ft\">\n" +
+                "                <a href=\"javascript:;\"     id=` + \"delete\" + keyChoice + ` class=\"weui-btn  weui-btn_mini  weui-btn_warn\">删除</a>\n" +
+                "            </div>\n" +
+                "            `;\n" +
+                "                divChoices.appendChild(divCell);\n" +
+                "\n" +
+                "\n" +
+                "                //获取到输入框和删除按钮,向下移动按钮\n" +
+                "                let btnDelete = document.getElementById(\"delete\" + keyChoice);\n" +
+                "                let inputName = document.getElementById(\"input\" + keyChoice);\n" +
+                "                let btnMoveDown = document.getElementById(\"movedown\" + keyChoice);\n" +
+                "                //添加事件\n" +
+                "                //删除\n" +
+                "                btnDelete.onclick = function () {\n" +
+                "                    divCell.parentNode.removeChild(divCell);\n" +
+                "                    formatObj.choiceList.forEach(function (item, index, arr) {\n" +
+                "                        if (item.key === keyChoice) {\n" +
+                "                            arr.splice(index, 1);\n" +
+                "                            //console.log(formatObj.choiceList);\n" +
+                "                            //initChoiceList();\n" +
+                "                        };\n" +
+                "                    });\n" +
+                "                }\n" +
+                "                //重命名\n" +
+                "                inputName.onchange = function () {\n" +
+                "                    formatObj.choiceList.forEach(function (item, index, arr) {\n" +
+                "                        if (item.key === keyChoice) {\n" +
+                "                            formatObj.choiceList[index].textValue = inputName.value;\n" +
+                "                        };\n" +
+                "                    });\n" +
+                "                    console.log(formatObj);\n" +
+                "                }\n" +
+                "                //向下移动\n" +
+                "                btnMoveDown.onclick = function () {\n" +
+                "                    let cells = divChoices.childNodes;\n" +
+                "                    cells.forEach(function (item, index, arr) {\n" +
+                "                        if (cells[index] === divCell) {\n" +
+                "                            let next = (index + 1) % (cells.length);\n" +
+                "                            formatObj.choiceList[index] = formatObj.choiceList.splice(next, 1, formatObj.choiceList[index])[0];\n" +
+                "                            console.log(formatObj.choiceList);\n" +
+                "                            initChoiceList();\n" +
+                "                        };\n" +
+                "                    });\n" +
+                "                };\n" +
+                "            }\n" +
+                "        };\n" +
+                "        initChoiceList();\n" +
+                "\n" +
+                "        //==============\"添加选项\"按钮事件========\n" +
+                "        let btnAdd = document.getElementById(\"addBtn\");\n" +
+                "        btnAdd.onclick = function () {\n" +
+                "            let millisNow = \"\" + Date.now();\n" +
+                "            let newChoice = {\n" +
+                "                key: \"\" + millisNow,\n" +
+                "                textValue: \"\",\n" +
+                "            }\n" +
+                "            formatObj.choiceList.push(newChoice);\n" +
+                "            initChoiceList();\n" +
+                "            document.getElementById(\"input\" + millisNow).focus();\n" +
+                "        };\n" +
+                "        //=============\"选择方式\"相关==============\n" +
+                "        let rbtn1 = document.getElementById(\"rbtn1\");\n" +
+                "        let rbtn2 = document.getElementById(\"rbtn2\");\n" +
+                "        if (formatObj.type === \"radio\") {\n" +
+                "            rbtn1.checked = true;\n" +
+                "        }\n" +
+                "        else {\n" +
+                "            rbtn2.checked = true;\n" +
+                "        }\n" +
+                "\n" +
+                "        let changeType = function () {\n" +
+                "            if (rbtn1.checked == true)\n" +
+                "                formatObj.type = \"radio\";\n" +
+                "            else\n" +
+                "                formatObj.type = \"checkbox\";\n" +
+                "            console.log(formatObj);\n" +
+                "        }\n" +
+                "        rbtn1.onclick = changeType;\n" +
+                "        rbtn2.onclick = changeType;\n" +
+                "        //==============拖拽改变顺序功能===========\n" +
+                "\n" +
+                "        //==============给安卓提供的借口============\n" +
+                "        window.getJsFormat = function () {\n" +
+                "            return JSON.stringify(formatObj);\n" +
+                "        };\n" +
+                "\n" +
+                "    </script>\n" +
+                "\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>");
+        entry.setRecord_view("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Document</title>\n" +
+                "\n" +
+                "\n" +
+                "    <!-- head 中 -->\n" +
+                "    <link rel=\"stylesheet\" href=\"file:///android_asset/weui/weui.min.css\">\n" +
+                "    <link rel=\"stylesheet\" href=\"file:///android_asset/weui/jquery-weui.mini.css\">\n" +
+                "    <!-- body 最后 -->\n" +
+                "    <script src=\"file:///android_asset/weui/jquery.min.js\"></script>\n" +
+                "    <script src=\"file:///android_asset/weui/jquery-weui.min.js\"></script>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "\n" +
+                "    <div id=\"divChoices\"> </div>\n" +
+                "    <div class=\"weui-cells__title\">备注信息</div>\n" +
+                "    <div class=\"weui-cells weui-cells_form\">\n" +
+                "        <div class=\"weui-cell\">\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <textarea class=\"weui-textarea\" id=\"remark\" placeholder=\"请输入备注内容\" rows=\"3\"></textarea>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "    <script>\n" +
+                "        let formatObj = {\n" +
+                "            choiceList: [\n" +
+                "                {\n" +
+                "                    key: \"几乎没有玩\",\n" +
+                "                    textValue: \"几乎没有玩\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"玩了一小会\",\n" +
+                "                    textValue: \"玩了一小会\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"玩了挺长时间\",\n" +
+                "                    textValue: \"玩了挺长时间\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    key: \"一直玩\",\n" +
+                "                    textValue: \"一直玩\"\n" +
+                "                },\n" +
+                "            ],\n" +
+                "            type: \"radio\",\n" +
+                "            id: \"choiceTemplate\",\n" +
+                "        };\n" +
+                "\n" +
+                "        let recordValueObj = {\n" +
+                "            numberValueMap: [\n" +
+                "                {\n" +
+                "                    key: \"玩了挺长时间\",\n" +
+                "                    value: 0,\n" +
+                "                },\n" +
+                "\n" +
+                "                {\n" +
+                "                    key: \"一直玩\",\n" +
+                "                    value: 0,\n" +
+                "                },\n" +
+                "            ],\n" +
+                "            remark: \"今天玩得真开心,哈哈哈\"\n" +
+                "        };\n" +
+                "\n" +
+                "\n" +
+                "        //===================获取放所有选择的div======================\n" +
+                "        let divChoices = document.getElementById(\"divChoices\");\n" +
+                "\n" +
+                "        //==================根据记录值和格式添加元素=====================\n" +
+                "        for (let indexList in formatObj.choiceList) {\n" +
+                "            let choice = formatObj.choiceList[indexList];\n" +
+                "            let choiceKey = choice.key;\n" +
+                "            let choiceText = choice.textValue;\n" +
+                "\n" +
+                "\n" +
+                "            //-----创建列表的列表项label\n" +
+                "            let labelChoice = document.createElement(\"label\");\n" +
+                "\n" +
+                "            //-----向label中添加内容,这里要判断是否为单选\n" +
+                "            //----1.如果是单选:\n" +
+                "            if (formatObj.type === \"radio\") {\n" +
+                "                divChoices.setAttribute(\"class\", \"weui-cells weui-cells_radio\");\n" +
+                "\n" +
+                "                labelChoice.setAttribute(\"class\", \"weui-cell weui-check__label\");\n" +
+                "                labelChoice.setAttribute(\"for\", choiceKey);\n" +
+                "                //把单选框放到右边\n" +
+                "                labelChoice.innerHTML = `<div class=\"weui-cell__bd\">\n" +
+                "                                <p>`+ choiceText + `</p>\n" +
+                "                                </div>\n" +
+                "                                <div class=\"weui-cell__ft\">\n" +
+                "                                <input type=\"radio\" class=\"weui-check\" name=\"radio1\" id=`+ choiceKey + `>\n" +
+                "                                <span class=\"weui-icon-checked\"></span>\n" +
+                "                                </div>`;\n" +
+                "\n" +
+                "            }\n" +
+                "            //----2.如果不是单选:\n" +
+                "            else {\n" +
+                "                divChoices.setAttribute(\"class\", \"weui-cells weui-cells_checkbox\");\n" +
+                "\n" +
+                "                labelChoice.setAttribute(\"class\", \"weui-cell weui-check__label\");\n" +
+                "                labelChoice.setAttribute(\"for\", choiceKey);\n" +
+                "                labelChoice.innerHTML = `\n" +
+                "                <div class=\"weui-cell__hd\">\n" +
+                "                    <input type=\"checkbox\" class=\"weui-check\" name=\"checkbox1\" id=`+ choiceKey + ` checked= \"false\">\n" +
+                "                    <i class=\"weui-icon-checked\"></i>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"weui-cell__bd\">\n" +
+                "                    <p>`+ choiceText + `</p>\n" +
+                "                    </div>`;\n" +
+                "\n" +
+                "            };\n" +
+                "\n" +
+                "\n" +
+                "            //添加到父元素\n" +
+                "            divChoices.appendChild(labelChoice);\n" +
+                "            //获取到input元素\n" +
+                "            let inputChoice = document.getElementById(choiceKey);\n" +
+                "            //获取该元素是否被选中,如果没有选中,就用代码点击一下(设置checked不能用),取消选中状态\n" +
+                "            let checked = 0;\n" +
+                "            recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "                if (item.key === choiceKey) {\n" +
+                "                    if (item.value > 0) {\n" +
+                "                        checked = 1;\n" +
+                "                        arr.splice(index, 1);\n" +
+                "                    };\n" +
+                "                };\n" +
+                "            });\n" +
+                "            recordValueObj.numberValueMap.push({ key: choiceKey, value: checked });\n" +
+                "            inputChoice.click();\n" +
+                "            if (checked === 1) { inputChoice.click(); }\n" +
+                "            //添加事件,当状态改变时修改recordValueObj\n" +
+                "            inputChoice.onchange = function () {\n" +
+                "                if (formatObj.type === \"radio\") {\n" +
+                "                    recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "                        recordValueObj.numberValueMap[index].value = 0;\n" +
+                "                        if (item.key === choiceKey) {\n" +
+                "                            recordValueObj.numberValueMap[index].value = 1;\n" +
+                "                        };\n" +
+                "                    });\n" +
+                "                }\n" +
+                "                else {\n" +
+                "                    if (inputChoice.checked === true) {\n" +
+                "                        recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "                            if (item.key === choiceKey) {\n" +
+                "                                recordValueObj.numberValueMap[index].value = 1;\n" +
+                "                            };\n" +
+                "                        });\n" +
+                "                    }\n" +
+                "                    else {\n" +
+                "                        recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "                            if (item.key === choiceKey) {\n" +
+                "                                recordValueObj.numberValueMap[index].value = 0;\n" +
+                "                            };\n" +
+                "                        });\n" +
+                "                    };\n" +
+                "                };\n" +
+                "                console.log(recordValueObj.numberValueMap);\n" +
+                "            };\n" +
+                "\n" +
+                "        };\n" +
+                "\n" +
+                "        //==================备注信息相关==============================\n" +
+                "        let inputRemark = document.getElementById(\"remark\");\n" +
+                "        inputRemark.value = recordValueObj.remark;\n" +
+                "        inputRemark.onchange = function () {\n" +
+                "            recordValueObj.remark = inputRemark.value;\n" +
+                "            console.log(recordValueObj);\n" +
+                "        };\n" +
+                "        //==================提供给安卓的借口:=============================\n" +
+                "        window.getJSRecordView = function () {\n" +
+                "            return JSON.stringify(recordValueObj);\n" +
+                "        };\n" +
+                "\n" +
+                "    </script>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>");
+        return entry;
+    }
+
+    //形成多数量模板,这里还是测试方法
+    public RecordEntry get_multiNumberTemplate_entry(){
+        return null;
+    }
+
+    //形成文本模板,这里还是测试方法
+    public RecordEntry get_textTemplate_entry(){
+        return null;
     }
 }

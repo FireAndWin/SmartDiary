@@ -72,16 +72,16 @@ public class MainActivity extends AppCompatActivity {
         //2:添加记录项
         RecordEntryService recordEntryService=RecordEntryService.newInstance();
         //测试方法中添加记录项
-        //test_init_recordEntryService();
-        test_update();
+        test_init_recordEntryService();
+        //test_update();
     }
 
     private void test_init_recordEntryService() {
-        test_add_choose();
-        test_add_entertain();
-        test_add_text();
-        test_add_number();
-        test_add_process();
+//        test_add_choose();
+//        test_add_entertain();
+//        test_add_text();
+//        test_add_number();
+//        test_add_process();
     }
 
     private void test_update() {

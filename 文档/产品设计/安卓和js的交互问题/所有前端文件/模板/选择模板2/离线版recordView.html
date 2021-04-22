@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="file:///android_asset/weui/weui.min.css">
+    <link rel="stylesheet" href="file:///android_asset/weui/jquery-weui.mini.css">
+    <!-- body 最后 -->
+    <script src="file:///android_asset/weui/jquery.min.js"></script>
+    <script src="file:///android_asset/weui/jquery-weui.min.js"></script>
+</head>
+
+<body>
+
+    <div id="divChoices"> </div>
+    <div class="weui-cells__title">备注信息</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" id="remark" placeholder="请输入备注内容" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <script>
+        let formatObj = {
+            choiceList: [
+                {
+                    key: "几乎没有玩",
+                    textValue: "几乎没有玩"
+                },
+                {
+                    key: "玩了一小会",
+                    textValue: "玩了一小会"
+                },
+                {
+                    key: "玩了挺长时间",
+                    textValue: "玩了挺长时间"
+                },
+                {
+                    key: "一直玩",
+                    textValue: "一直玩"
+                },
+            ],
+            type: "radio",
+            id: "choiceTemplate",
+        };
+
+        let recordValueObj = {
+            numberValueMap: [
+                {
+                    key: "玩了挺长时间",
+                    value: 0,
+                },
+
+                {
+                    key: "一直玩",
+                    value: 0,
+                },
+            ],
+            remark: "今天玩得真开心,哈哈哈"
+        };
+
+
+        //===================获取放所有选择的div======================
+        let divChoices = document.getElementById("divChoices");
+
+        //==================根据记录值和格式添加元素=====================
+        for (let indexList in formatObj.choiceList) {
+            let choice = formatObj.choiceList[indexList];
+            let choiceKey = choice.key;
+            let choiceText = choice.textValue;
+
+
+            //-----创建列表的列表项label
+            let labelChoice = document.createElement("label");
+
+            //-----向label中添加内容,这里要判断是否为单选
+            //----1.如果是单选:
+            if (formatObj.type === "radio") {
+                divChoices.setAttribute("class", "weui-cells weui-cells_radio");
+
+                labelChoice.setAttribute("class", "weui-cell weui-check__label");
+                labelChoice.setAttribute("for", choiceKey);
+                //把单选框放到右边
+                labelChoice.innerHTML = `<div class="weui-cell__bd">
+                                <p>`+ choiceText + `</p>
+                                </div>
+                                <div class="weui-cell__ft">
+                                <input type="radio" class="weui-check" name="radio1" id=`+ choiceKey + `>
+                                <span class="weui-icon-checked"></span>
+                                </div>`;
+
+            }
+            //----2.如果不是单选:
+            else {
+                divChoices.setAttribute("class", "weui-cells weui-cells_checkbox");
+
+                labelChoice.setAttribute("class", "weui-cell weui-check__label");
+                labelChoice.setAttribute("for", choiceKey);
+                labelChoice.innerHTML = `
+                <div class="weui-cell__hd">
+                    <input type="checkbox" class="weui-check" name="checkbox1" id=`+ choiceKey + ` checked= "false">
+                    <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                    <p>`+ choiceText + `</p>
+                    </div>`;
+
+            };
+
+
+            //添加到父元素
+            divChoices.appendChild(labelChoice);
+            //获取到input元素
+            let inputChoice = document.getElementById(choiceKey);
+            //获取该元素是否被选中,如果没有选中,就用代码点击一下(设置checked不能用),取消选中状态
+            let checked = 0;
+            recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                if (item.key === choiceKey) {
+                    if (item.value > 0) {
+                        checked = 1;
+                        arr.splice(index, 1);
+                    };
+                };
+            });
+            recordValueObj.numberValueMap.push({ key: choiceKey, value: checked });
+            inputChoice.click();
+            if (checked === 1) { inputChoice.click(); }
+            //添加事件,当状态改变时修改recordValueObj
+            inputChoice.onchange = function () {
+                if (formatObj.type === "radio") {
+                    recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                        recordValueObj.numberValueMap[index].value = 0;
+                        if (item.key === choiceKey) {
+                            recordValueObj.numberValueMap[index].value = 1;
+                        };
+                    });
+                }
+                else {
+                    if (inputChoice.checked === true) {
+                        recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                            if (item.key === choiceKey) {
+                                recordValueObj.numberValueMap[index].value = 1;
+                            };
+                        });
+                    }
+                    else {
+                        recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                            if (item.key === choiceKey) {
+                                recordValueObj.numberValueMap[index].value = 0;
+                            };
+                        });
+                    };
+                };
+                console.log(recordValueObj.numberValueMap);
+            };
+
+        };
+
+        //==================备注信息相关==============================
+        let inputRemark = document.getElementById("remark");
+        inputRemark.value = recordValueObj.remark;
+        inputRemark.onchange = function () {
+            recordValueObj.remark = inputRemark.value;
+            console.log(recordValueObj);
+        };
+        //==================提供给安卓的借口:=============================
+        window.getJSRecordView = function () {
+            return JSON.stringify(recordValueObj);
+        };
+
+    </script>
+
+
+
+
+</body>
+
+</html>
