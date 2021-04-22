@@ -129,12 +129,13 @@ public class RecordEntryService {
         if(db.isOpen()){
             Cursor cursor=db.rawQuery("select * from "+userRecordEntryList_table_name+" where status = ?",new String[]{String.valueOf(status)},null);
             if(cursor.getColumnCount()>0){
-                cursor.moveToFirst();
-                do{
-                    RecordEntry recordEntry=cursor_2_recordEntry(cursor);
-                    entryList.add(recordEntry);
+                if(cursor.moveToPosition(0)==true){
+                    do{
+                        RecordEntry recordEntry=cursor_2_recordEntry(cursor);
+                        entryList.add(recordEntry);
+                    }
+                    while (cursor.moveToNext());
                 }
-                while (cursor.moveToNext());
             }
         }
         //db.close();
