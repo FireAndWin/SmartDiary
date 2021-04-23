@@ -59,9 +59,8 @@
 
 
         //===============先获取到安卓的格式对象========================
-        window.localStorage.clear();
         let jsonFormat = window.androidObject.getAndroidFormat();
-        console.log("初始收到的jsonFormat:", jsonFormat);
+        console.log("初始收到的jsonFormat: '"+jsonFormat);
         console.log("初始收到的jsonFormat类型:", typeof jsonFormat);
         //let jsonFormat = "{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}";
         //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.

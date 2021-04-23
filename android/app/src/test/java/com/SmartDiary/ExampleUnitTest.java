@@ -13,7 +13,27 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void run(){
-        System.out.println(MyStringUtils.JSON_2_String("{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}"));
+    public void run2(){
+        run();
+    }
+
+
+    public String run(){
+        String temp= MyStringUtils.JSON_2_String("{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}");
+        String temp2="\""+temp+"\"";
+        System.out.println(temp2);
+
+        String res=temp2;
+        if(res==null || res.equals(""))
+            return "";
+
+        if(res.charAt(0)=='"')
+            res=res.substring(1);
+
+        if(res.charAt(res.length()-1)=='"')
+            res=res.substring(0,res.length()-1);
+
+        System.out.println(res);
+        return res;
     }
 }
