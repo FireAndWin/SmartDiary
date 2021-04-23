@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="file:///android_asset/weui/weui.min.css">
+    <link rel="stylesheet" href="file:///android_asset/weui/jquery-weui.mini.css">
+    <!-- body 最后 -->
+    <script src="file:///android_asset/weui/jquery.min.js"></script>
+    <script src="file:///android_asset/weui/jquery-weui.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="weui-cells__title">文本内容:</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" id="remark" placeholder="请输入备注内容" rows="6"></textarea>
+            </div>
+        </div>
+    </div>
+    <script>
+        let JsonRecordValue = window.androidObject.getAndroidRecordValue();
+        if (JsonRecordValue === "") {
+            let defaultValueObj = {
+                numberValueMap: [
+                    {
+                        key: "impossible key",
+                        value: 0,
+                    },
+                ],
+                remark: ""
+            };
+            JsonRecordValue = JSON.stringify(defaultValueObj);
+        };
+        let recordValueObj = JSON.parse(JsonRecordValue);
+
+        //==================备注信息相关==============================
+        let inputRemark = document.getElementById("remark");
+        inputRemark.value = recordValueObj.remark;
+        inputRemark.oninput = function () {
+            recordValueObj.remark = inputRemark.value;
+            console.log(recordValueObj);
+        };
+        //==================提供给安卓的借口:=============================
+        window.getJSRecordView = function () {
+            return JSON.stringify(recordValueObj);
+        };
+
+    </script>
+
+
+</body>
+
+</html>

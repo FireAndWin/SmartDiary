@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- head 中 -->
+    <link rel="stylesheet" href="file:///android_asset/weui/weui.min.css">
+    <link rel="stylesheet" href="file:///android_asset/weui/jquery-weui.mini.css">
+    <!-- body 最后 -->
+    <script src="file:///android_asset/weui/jquery.min.js"></script>
+    <script src="file:///android_asset/weui/jquery-weui.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="divNumbers" class="weui-cells">
+
+
+</div>
+<div class="weui-cells__title">备注信息</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <textarea class="weui-textarea" id="remark" placeholder="请输入备注内容" rows="3"></textarea>
+        </div>
+    </div>
+</div>
+<script>
+        let JsonFormat = window.androidObject.getAndroidFormat();
+        let formatObj = JSON.parse(JsonFormat);
+
+
+        let JsonRecordValue = window.androidObject.getAndroidRecordValue();
+        if (JsonRecordValue === "") {
+            let defaultValueObj = {
+                numberValueMap: [
+                    {
+                        key: "impossible key",
+                        value: 0,
+                    },
+                ],
+                remark: ""
+            };
+            JsonRecordValue = JSON.stringify(defaultValueObj);
+        };
+        let recordValueObj = JSON.parse(JsonRecordValue);
+
+
+
+        //===================获取放所有选择的div======================
+        let divNumbers = document.getElementById("divNumbers");
+        //divNumbers.innerHTML = "";
+
+        //==================根据记录值和格式添加元素=====================
+        for (let indexList in formatObj.choiceList) {
+            //获取该数值项的id,名称,值
+            let choice = formatObj.choiceList[indexList];
+            let numberKey = choice.key;
+            let numberText = choice.textValue;
+            let numberValue = formatObj.defaultNumber;
+            recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                if (item.key === numberKey) {
+                    numberValue = item.value;
+                };
+            });
+
+            //-----创建列表的列表项
+            //创建列表表格div
+            let divCell = document.createElement("div");
+            divCell.setAttribute("class", "weui-cell");
+            //添加内容
+            divCell.innerHTML =
+                `<div class="weui-cell__bd">
+                    <p>`+ numberText + `</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <div class="weui-count">
+                        <a      id=`+ "btnMinus" + numberKey + `    class="weui-count__btn weui-count__decrease"></a>
+                        <input  id=`+ "input" + numberKey + `   class="weui-count__number" type="number">
+                        <a      id=`+ "btnAdd" + numberKey + `   class="weui-count__btn weui-count__increase"></a>
+                    </div>
+                </div>`;
+            divNumbers.appendChild(divCell);
+
+            //获取到输入框,+按钮,-按钮
+            //修改本数值项记录值的函数
+            let changRecordNumberValue = function (newNumberValue) {
+                let valueObj = {
+                    key: numberKey,
+                    value: newNumberValue,
+                };
+                recordValueObj.numberValueMap.forEach(function (item, index, arr) {
+                    if (item.key === numberKey) {
+                        arr.splice(index, 1);
+                    };
+                });
+                recordValueObj.numberValueMap.push(valueObj);
+                console.log(recordValueObj.numberValueMap)
+            };
+            //输入框
+            let inputNumber = document.getElementById("input" + numberKey);
+            inputNumber.style.width = "12vw";
+            inputNumber.value = numberValue;
+            inputNumber.onblur = function () { changRecordNumberValue(inputNumber.value); };
+            //+按钮
+            let btnAdd = document.getElementById("btnAdd" + numberKey);
+            console.log(btnAdd);
+            btnAdd.onclick = function () {
+                let newNumber = parseInt(inputNumber.value) + formatObj.btnStep;
+                inputNumber.value = newNumber;
+                changRecordNumberValue(newNumber);
+            };
+            //-按钮
+            let btnMinus = document.getElementById("btnMinus" + numberKey);
+            console.log(btnAdd);
+            btnMinus.onclick = function () {
+                let newNumber = parseInt(inputNumber.value) - formatObj.btnStep;
+                inputNumber.value = newNumber;
+                changRecordNumberValue(newNumber);
+            };
+
+        };
+
+        //==================备注信息相关==============================
+        let inputRemark = document.getElementById("remark");
+        inputRemark.value = recordValueObj.remark;
+        inputRemark.oninput = function () {
+            recordValueObj.remark = inputRemark.value;
+            console.log(recordValueObj);
+        };
+        //==================提供给安卓的借口:=============================
+        window.getJSRecordView = function () {
+            return JSON.stringify(recordValueObj);
+        };
+
+    </script>
+
+</body>
+
+</html>

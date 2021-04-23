@@ -6,6 +6,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 
 import com.SmartDiary.Utils.TimeUtilsMy;
+import com.SmartDiary.Utils.WebViewUtils.MyStringUtils;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.service.pojoService.CellEntryService;
@@ -41,6 +42,7 @@ public class Adapter4webView_record_recordView {
 
     private void load_basicHtml() {
         record_view.loadDataWithBaseURL(null, entry.getRecord_view(), "text/html", "utf-8", null);
+        //record_view.loadUrl("file:///android_asset/template/multiNumber/recordView.html");
     }
 
 
@@ -73,13 +75,16 @@ public class Adapter4webView_record_recordView {
     //================提供给js的对象======================
     @JavascriptInterface
     public String getAndroidFormat(){
-        return entry.getFormat();
+        String res= MyStringUtils.JSON_2_String(entry.getFormat());
+        return res;
     }
 
     @JavascriptInterface
     public String getAndroidRecordValue(){
         String value= CellEntryService.newInstance().get_recordValue_byID_Date(entry.getId(),record_time);
-        Log.d(TAG, "getAndroidRecordValue: "+"1142:swswsw getAndroidRecordValue"+entry.getName()+value);
-        return value;
+        String res= MyStringUtils.JSON_2_String(value);
+        return res;
+//        Log.d(TAG, "getAndroidRecordValue: "+"1142:swswsw getAndroidRecordValue"+entry.getName()+value);
+//        return value;
     }
 }

@@ -17,51 +17,50 @@
     <!-- body 最后 -->
     <script src="file:///android_asset/weui/jquery.min.js"></script>
     <script src="file:///android_asset/weui/jquery-weui.min.js"></script>
-
 </head>
 
 <body>
 
 
-<div id="divChoices" class="weui-cells">
-</div>
-<div id="addBtn">
-    <a href="javascript:;" class="weui-btn weui-btn_primary">
-        添加选项
-    </a>
-</div>
+    <div id="divChoices" class="weui-cells">
+    </div>
+    <div id="addBtn">
+        <a href="javascript:;" class="weui-btn weui-btn_primary">
+            添加选项
+        </a>
+    </div>
 
-<div class="weui-cells__title">选择方式</div>
-<div class="weui-cells weui-cells_radio">
-    <label class="weui-cell weui-check__label" for="rbtn1">
+    <div class="weui-cell">
         <div class="weui-cell__bd">
-            <p>单选 </p>
+            <p>按钮step</p>
         </div>
         <div class="weui-cell__ft">
-            <input type="radio" class="weui-check" name="radio1" id="rbtn1">
-            <span class="weui-icon-checked"></span>
+            <div class="weui-count">
+                <a class="weui-count__btn weui-count__decrease" id="btnMinusStep"></a>
+                <input class="weui-count__number" id="inputBtnStep" type="number" width="5vw" value="1">
+                <a class="weui-count__btn weui-count__increase" id="btnAddStep"></a>
+            </div>
         </div>
-    </label>
-    <label class="weui-cell weui-check__label" for="rbtn2">
+    </div>
 
+    <div class="weui-cell">
         <div class="weui-cell__bd">
-            <p>多选</p>
+            <p>默认值</p>
         </div>
         <div class="weui-cell__ft">
-            <input type="radio" name="radio1" class="weui-check" id="rbtn2" checked="checked">
-            <span class="weui-icon-checked"></span>
+            <div class="weui-count">
+                <a class="weui-count__btn weui-count__decrease" id="btnMinusdefaultNumber"></a>
+                <input class="weui-count__number" id="inputdefaultNumber" type="number" width="5vw" value="1">
+                <a class="weui-count__btn weui-count__increase" id="btnAdddefaultNumber"></a>
+            </div>
         </div>
-    </label>
-</div>
+    </div>
 
-
-<script>
+    <script>
 
 
         //===============先获取到安卓的格式对象========================
         let jsonFormat = window.androidObject.getAndroidFormat();
-        console.log("初始收到的jsonFormat: '"+jsonFormat);
-        console.log("初始收到的jsonFormat类型:", typeof jsonFormat);
         //let jsonFormat = "{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}";
         //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.
         if (jsonFormat === "") {
@@ -69,17 +68,19 @@
                 choiceList: [
                     {
                         key: "1111",
-                        textValue: "选项1(可重命名)"
+                        textValue: "数值1"
                     },
                     {
                         key: "1112",
-                        textValue: "选项2"
+                        textValue: "数值2"
                     },
                     {
                         key: "113",
-                        textValue: "选项3(可以继续添加选项)"
+                        textValue: "数值3"
                     },
                 ],
+                btnStep: 1,
+                defaultNumber: 0,
                 type: "checkbox",
                 id: "choiceTemplate",
             };
@@ -101,7 +102,7 @@
                 let choice = formatObj.choiceList[indexList];
                 let keyChoice = choice.key;
                 let textChoice = choice.textValue;
-                console.log("ded", textChoice);
+                console.log("ded", choice);
 
                 //创建列表表格div
                 let divCell = document.createElement("div");
@@ -176,38 +177,50 @@
             initChoiceList();
             document.getElementById("input" + millisNow).focus();
         };
-        //============="选择方式"相关==============
-        let rbtn1 = document.getElementById("rbtn1");
-        let rbtn2 = document.getElementById("rbtn2");
-        if (formatObj.type === "radio") {
-            rbtn1.checked = true;
-        }
-        else {
-            rbtn2.checked = true;
-        }
 
-        let changeType = function () {
-            if (rbtn1.checked == true)
-                formatObj.type = "radio";
-            else
-                formatObj.type = "checkbox";
-            console.log(formatObj);
-        }
-        rbtn1.onclick = changeType;
-        rbtn2.onclick = changeType;
-        //==============拖拽改变顺序功能===========
+        //==============按钮step相关===========
+        let inputBtnStep = document.getElementById("inputBtnStep");
+        inputBtnStep.value = formatObj.btnStep;
+        inputBtnStep.style.width = "3rem";
+        let btnMinusStep = document.getElementById("btnMinusStep");
+        btnMinusStep.onclick = function (e) {
+            let number = parseInt(inputBtnStep.value) - 1;
+            if (number < 0) number = 0;
+            inputBtnStep.value = number;
+            formatObj.btnStep = number;
+        };
+        let btnAddStep = document.getElementById("btnAddStep");
+        btnAddStep.onclick = function (e) {
+            let number = parseInt(inputBtnStep.value) + 1;
+            if (number < 0) number = 0;
+            inputBtnStep.value = number;
+            formatObj.btnStep = number;
+        };
+
+        //=============默认值相关===========
+        let inputdefaultNumber = document.getElementById("inputdefaultNumber");
+        inputdefaultNumber.value = formatObj.defaultNumber;
+        inputdefaultNumber.style.width = "3rem";
+        let btnMinusdefaultNumber = document.getElementById("btnMinusdefaultNumber");
+        btnMinusdefaultNumber.onclick = function (e) {
+            let number = parseInt(inputdefaultNumber.value) - 1;
+            inputdefaultNumber.value = number;
+            formatObj.defaultNumber = number;
+        };
+        let btnAdddefaultNumber = document.getElementById("btnAdddefaultNumber");
+        btnAdddefaultNumber.onclick = function (e) {
+            let number = parseInt(inputdefaultNumber.value) + 1;
+            if (number < 0) number = 0;
+            inputdefaultNumber.value = number;
+            formatObj.defaultNumber = number;
+        };
 
         //==============给安卓提供的借口============
         window.getJsFormat = function () {
             return JSON.stringify(formatObj);
         };
 
-        window.getjsonFormat = function () {
-            return jsonFormat;
-        };
-
     </script>
-
 </body>
 
 </html>

@@ -144,7 +144,7 @@ public class Dialog_start_editRecordEntry {
             webView_editRecordEntry_format.getSettings().setDefaultTextEncodingName("utf-8") ;
             webView_editRecordEntry_format.getSettings().setJavaScriptEnabled(true);
             webView_editRecordEntry_format.addJavascriptInterface(this,"androidObject");
-            webView_editRecordEntry_format.loadUrl("file:///android_asset/template/choice/editView.html");
+            webView_editRecordEntry_format.loadUrl("file:///android_asset/template/multiNumber/editView.html");
             //webView_editRecordEntry_format.loadDataWithBaseURL(null, entry.getEdit_view(), "text/html", "utf-8", null);
             webView_editRecordEntry_format.setWebViewClient(new WebViewClient() {
                 @Override
