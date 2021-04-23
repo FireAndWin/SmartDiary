@@ -10,11 +10,14 @@ import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
+import com.SmartDiary.Utils.TimeUtilsMy;
+import com.SmartDiary.Utils.WebViewUtils.MyStringUtils;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.service.pojoService.CellEntryService;
@@ -80,24 +83,35 @@ public class Dialog_start_editRecordEntry {
         dialog.dismiss();
         //如果记录项有editView,那就从WebView获取到格式json,并放到entry中
         String edit_view=entry.getEdit_view();
-        if( edit_view!=null && edit_view!=""){
-            //先调用editview的getJSFormat()获取格式字符串
-            // 1:首先调用js的方法获取记录值;
-            webView_editRecordEntry_format.evaluateJavascript("javascript:getJSFormat()", new ValueCallback<String>() {
+        if( edit_view!=null){
+        //先调用editview的getJSFormat()获取格式字符串
+        // 1:首先调用js的方法获取记录值
+            webView_editRecordEntry_format.evaluateJavascript("javascript:getJsFormat()", new ValueCallback<String>() {
                 @Override
-                public void onReceiveValue(String format) {
-                    //2:然后更新entry
-                    entry.setFormat(format);
-                    Log.d(TAG, "onReceiveValue: "+"已经更新格式信息,是:"+entry.getName()+format);
+                public void onReceiveValue(String value) {
+
+                    entry.setFormat(value);
+                    int b=1;
                 }
             });
         }
 
+
         //3.然后从控件中获取值更新到entry中
         update_entry_from_view();
 
-        //4.最后回调listener的借口
-        listener.edit_recordEntry_done(entry);
+        int b=1;
+        // 1:首先调用js的方法获取记录值;
+        webView_editRecordEntry_format.evaluateJavascript("javascript:getJsFormat()", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                entry.setFormat(value);
+                String res=MyStringUtils.JSON_2_String(value);
+                //4.最后回调listener的借口
+                listener.edit_recordEntry_done(entry);
+            }
+        });
+
     }
 
     private void update_entry_from_view() {
@@ -122,7 +136,7 @@ public class Dialog_start_editRecordEntry {
     private void init_editView() {
         String edit_view=entry.getEdit_view();
         //如果该记录项有editView再进行加载,否则不加载,并且把webView隐藏了.
-        if(edit_view==""&& edit_view==null){
+        if(edit_view==null||edit_view.equals("")){
             webView_editRecordEntry_format.setVisibility(View.GONE);
             view.findViewById(R.id.textView_editRecordEntry_format).setVisibility(View.GONE);
         }
@@ -130,14 +144,24 @@ public class Dialog_start_editRecordEntry {
             webView_editRecordEntry_format.getSettings().setDefaultTextEncodingName("utf-8") ;
             webView_editRecordEntry_format.getSettings().setJavaScriptEnabled(true);
             webView_editRecordEntry_format.addJavascriptInterface(this,"androidObject");
-            webView_editRecordEntry_format.loadDataWithBaseURL(null, entry.getEdit_view(), "text/html", "utf-8", null);
+            webView_editRecordEntry_format.loadUrl("file:///android_asset/template/choice/editView.html");
+            //webView_editRecordEntry_format.loadDataWithBaseURL(null, entry.getEdit_view(), "text/html", "utf-8", null);
+            webView_editRecordEntry_format.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    //只要调用一下此方法就可以顺利执行
+                    Log.i(TAG, "onPageFinished: 方法被调用");
+                }
+            });
         }
     }
 
     //提供给js的借口,把格式信息给了js
     @JavascriptInterface
     public String getAndroidFormat(){
-        return entry.getFormat();
+        String res=MyStringUtils.JSON_2_String(entry.getFormat());
+        return res;
     }
 
 }

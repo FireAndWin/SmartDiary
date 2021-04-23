@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,6 +54,7 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         View view= inflater.inflate(R.layout.fragment__record__out_frame, container, false);
 
 
+        this.view=view;
         //初始化pojoService层的相关对象
         init_pojoService();
         //初始化下方的viewPager
@@ -70,7 +72,9 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
     DayEntryService dayEntryService;
     RecordEntryService recordEntryService;
     RecordTemplateService recordTemplateService;
+    List<RecordEntry> entryList;
     // ---------1.1.和控件相关的-----------
+    View view;
     //lyh:就是记录页面上面那个可以切换记录项的标签栏
     TabLayout tablayout_m3Record_RecordItemChoose;
     //lyh:标签栏下方实际盛放内容Fragment的ViewPager,会和标签栏联动,下面滑上面也动
@@ -81,6 +85,36 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
 
 
     //############################2.自定义函数##########################
+    /*当新建,删除记录项时调用该方法*/
+    public void update_view(){
+        entryList=recordEntryService.get_recordEntryList_byStatus(1);
+
+        int selected=tablayout_m3Record_RecordItemChoose.getSelectedTabPosition();
+        tablayout_m3Record_RecordItemChoose.setupWithViewPager(null);
+
+//        viewPager_m3Record_fragmentContainer.setAdapter(null);
+        adapter.using_recordEntryList=entryList;
+        adapter.notifyDataSetChanged();
+        int a =adapter.getCount();
+//        adapter=new Adapter_viewPager_m3Record_fragmentContainer(getChildFragmentManager());
+//        viewPager_m3Record_fragmentContainer.setAdapter(adapter);
+
+        tablayout_m3Record_RecordItemChoose.setupWithViewPager(viewPager_m3Record_fragmentContainer);
+        List<RecordEntry> recordEntryList=entryList;
+        for(int i=0;i<recordEntryList.size();i++){
+            TabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
+            tab.setCustomView(R.layout.view_record_tab);
+            TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name);
+            textView.setText(recordEntryList.get(i).getName());
+            if (i==selected)
+                onTabSelected(tab);
+            if(recordEntryList.size()==1)
+                onTabSelected(tab);
+        }
+
+
+    }
+
 
     /*初始化pojoService层的对象*/
     public void init_pojoService() {
@@ -88,6 +122,7 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         dayEntryService=mainActivity.dayEntryService;
         recordEntryService=RecordEntryService.newInstance();
         recordTemplateService=mainActivity.recordTemplateService;
+        entryList=recordEntryService.get_recordEntryList_byStatus(1);
     }
 
     private void init_viewPager(View view) {
@@ -98,7 +133,6 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         viewPager_m3Record_fragmentContainer.setAdapter(adapter);
 
         viewPager_m3Record_fragmentContainer.setOffscreenPageLimit(2);
-
     }
 
     private void init_tabLayout(View view) {
@@ -106,16 +140,18 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         tablayout_m3Record_RecordItemChoose=view.findViewById(R.id.tablayout_m3Record_RecordItemChoose);
         //关联标签栏和ViewPager
         tablayout_m3Record_RecordItemChoose.setupWithViewPager(viewPager_m3Record_fragmentContainer);
-        List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
+        //List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
+        List<RecordEntry> recordEntryList=entryList;
         for(int i=0;i<recordEntryList.size();i++){
             TabLayout.Tab tab=tablayout_m3Record_RecordItemChoose.getTabAt(i);
             tab.setCustomView(R.layout.view_record_tab);
             TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name);
             textView.setText(recordEntryList.get(i).getName());
+            if(i==0)
+                onTabSelected(tab);
             //tab.setText(recordEntryList.get(i).getName());
         }
         tablayout_m3Record_RecordItemChoose.addOnTabSelectedListener(this);
-        tablayout_m3Record_RecordItemChoose.selectTab(tablayout_m3Record_RecordItemChoose.getTabAt(0));
     }
 
 
@@ -125,11 +161,18 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
      * 是viewPager_m3Record_fragmentContainer哪个放实际内容ViewPager的适配器*/
     class Adapter_viewPager_m3Record_fragmentContainer extends FragmentPagerAdapter {
 
+        private List<Fragment_Record_RecorditemContent> mFragments;
         List<RecordEntry> using_recordEntryList;
+        private List<String> tags;
+        FragmentManager fragmentManager;
+
         public Adapter_viewPager_m3Record_fragmentContainer(FragmentManager fm) {
             super(fm);
-            using_recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
-
+            fragmentManager=fm;
+            //using_recordEntryList=recordEntryService.get_recordEntryList_byStatus(1);
+            using_recordEntryList=entryList;
+            this.tags = new ArrayList<>();
+            mFragments=new ArrayList<>();
         }
 
 
@@ -137,6 +180,7 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
         public Fragment getItem(int i) {
             String id=using_recordEntryList.get(i).getId();
             Fragment_Record_RecorditemContent record_recorditemContent=Fragment_Record_RecorditemContent.newInstance(id);
+            mFragments.add(record_recorditemContent);
             return record_recorditemContent;
 
         }
@@ -146,6 +190,10 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
             return using_recordEntryList.size();
         }
 
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            super.destroyItem(container, position, object);
+        }
     }
 
 
@@ -160,6 +208,8 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
 //        TextView textView= tab.getCustomView().findViewById(R.id.tab_record_name_selected);
 //        textView.setText(name);
         View view=tab.getCustomView();
+        if(view==null)
+            return;
         TextView textView=view.findViewById(R.id.tab_record_name);
         textView.setBackgroundResource(R.drawable.tab_selected);
         textView.setTextColor(0xffFFFFFF);
@@ -168,6 +218,8 @@ public class Fragment_Record_OutFrame extends Fragment implements TabLayout.OnTa
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
         View view=tab.getCustomView();
+        if(view==null)
+            return;
         TextView textView=view.findViewById(R.id.tab_record_name);
         textView.setBackgroundResource(R.drawable.tab_normal);
         textView.setTextColor(0xff808080);

@@ -56,28 +56,33 @@
 
 
         //===============先获取到安卓的格式对象========================
-        let formatObj = {
-            choiceList: [
-                {
-                    key: "1111",
-                    textValue: "几乎没有玩"
-                },
-                {
-                    key: "1112",
-                    textValue: "玩了一小会"
-                },
-                {
-                    key: "113",
-                    textValue: "玩了挺长时间"
-                },
-                {
-                    key: "1114",
-                    textValue: "一直玩"
-                },
-            ],
-            type: "checkbox",
-            id: "choiceTemplate",
+        //let jsonFormat = window.androidObject.getAndroidFormat();
+        let jsonFormat = '{"choiceList":[{"key":"1112","textValue":"选项2"}],"type":"checkbox","id":"choiceTemplate"}';
+        //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.
+        if (jsonFormat === "") {
+            defaultFormat = {
+                choiceList: [
+                    {
+                        key: "1111",
+                        textValue: "选项1(可重命名)"
+                    },
+                    {
+                        key: "1112",
+                        textValue: "选项2"
+                    },
+                    {
+                        key: "113",
+                        textValue: "选项3(可以继续添加选项)"
+                    },
+                ],
+                type: "checkbox",
+                id: "choiceTemplate",
+            };
+            jsonFormat = JSON.stringify(defaultFormat);
         };
+
+        let formatObj = JSON.parse(jsonFormat);
+
 
         //==============然后遍历choice中的选项,添加到div中================
         let initChoiceList = function () {

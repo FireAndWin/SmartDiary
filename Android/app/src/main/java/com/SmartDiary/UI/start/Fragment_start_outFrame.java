@@ -100,5 +100,8 @@ public class Fragment_start_outFrame extends Fragment implements On_RecordEntry_
         adapter_start.update_entryList();
         adapter_start.notifyDataSetChanged();
 
+        //4:这里更新记录界面
+        MainActivity mainActivity=(MainActivity)getActivity();
+        mainActivity.update_record_page();
     }
 }

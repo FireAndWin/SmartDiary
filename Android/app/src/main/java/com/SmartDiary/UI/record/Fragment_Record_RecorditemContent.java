@@ -55,6 +55,12 @@ public class Fragment_Record_RecorditemContent extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewHolder.onDestroy();
+    }
+
     public void setViewHolder() {
         //页面对view的处理都交给ViewHolder_Record_RecorditemContent了.
         new ViewHolder_Record_RecorditemContent(getContext(),view,recordEntry_id);

@@ -23,46 +23,46 @@
 <body>
 
 
-    <div id="divChoices" class="weui-cells">
-    </div>
-    <div id="addBtn">
-        <a href="javascript:;" class="weui-btn weui-btn_primary">
-            添加选项
-        </a>
-    </div>
+<div id="divChoices" class="weui-cells">
+</div>
+<div id="addBtn">
+    <a href="javascript:;" class="weui-btn weui-btn_primary">
+        添加选项
+    </a>
+</div>
 
-    <div class="weui-cells__title">选择方式</div>
-    <div class="weui-cells weui-cells_radio">
-        <label class="weui-cell weui-check__label" for="rbtn1">
-            <div class="weui-cell__bd">
-                <p>单选 </p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="radio" class="weui-check" name="radio1" id="rbtn1">
-                <span class="weui-icon-checked"></span>
-            </div>
-        </label>
-        <label class="weui-cell weui-check__label" for="rbtn2">
+<div class="weui-cells__title">选择方式</div>
+<div class="weui-cells weui-cells_radio">
+    <label class="weui-cell weui-check__label" for="rbtn1">
+        <div class="weui-cell__bd">
+            <p>单选 </p>
+        </div>
+        <div class="weui-cell__ft">
+            <input type="radio" class="weui-check" name="radio1" id="rbtn1">
+            <span class="weui-icon-checked"></span>
+        </div>
+    </label>
+    <label class="weui-cell weui-check__label" for="rbtn2">
 
-            <div class="weui-cell__bd">
-                <p>多选</p>
-            </div>
-            <div class="weui-cell__ft">
-                <input type="radio" name="radio1" class="weui-check" id="rbtn2" checked="checked">
-                <span class="weui-icon-checked"></span>
-            </div>
-        </label>
-    </div>
+        <div class="weui-cell__bd">
+            <p>多选</p>
+        </div>
+        <div class="weui-cell__ft">
+            <input type="radio" name="radio1" class="weui-check" id="rbtn2" checked="checked">
+            <span class="weui-icon-checked"></span>
+        </div>
+    </label>
+</div>
 
 
-    <script>
+<script>
 
 
         //===============先获取到安卓的格式对象========================
         window.localStorage.clear();
         let jsonFormat = window.androidObject.getAndroidFormat();
         console.log("初始收到的jsonFormat:", jsonFormat);
-        console.log("初始收到的jsonFormat类型", typeof jsonFormat);
+        console.log("初始收到的jsonFormat类型:", typeof jsonFormat);
         //let jsonFormat = "{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}";
         //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.
         if (jsonFormat === "") {

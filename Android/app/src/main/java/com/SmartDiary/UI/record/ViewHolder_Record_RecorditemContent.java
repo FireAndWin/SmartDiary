@@ -224,6 +224,12 @@ public class ViewHolder_Record_RecorditemContent implements On_RecordEntry_Edit_
         //3.默认设置viewPager_itemData_multiDisplay是在table页，并且默认是"数据"RadioButton被选中
         viewPager_itemData_multiDisplay.setCurrentItem(0);
     }
+
+    //6.销毁时调用,主要是webview
+    public void onDestroy(){
+        webView_record_recordData.destroy();
+        webView_record_table.destroy();
+    }
     //++++++++++++++++++++++内部类,主要是各种Adapter+++++++++++++++++++++
     class Adapter_ViewPager extends PagerAdapter {
 

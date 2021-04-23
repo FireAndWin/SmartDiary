@@ -27,43 +27,39 @@
         </div>
     </div>
     <script>
-        let formatObj = {
-            choiceList: [
-                {
-                    key: "几乎没有玩",
-                    textValue: "几乎没有玩"
-                },
-                {
-                    key: "玩了一小会",
-                    textValue: "玩了一小会"
-                },
-                {
-                    key: "玩了挺长时间",
-                    textValue: "玩了挺长时间"
-                },
-                {
-                    key: "一直玩",
-                    textValue: "一直玩"
-                },
-            ],
-            type: "radio",
-            id: "choiceTemplate",
-        };
+        let JsonFormat = window.androidObject.getAndroidFormat();
+        let formatObj = JSON.parse(JsonFormat);
 
-        let recordValueObj = {
-            numberValueMap: [
-                {
-                    key: "玩了挺长时间",
-                    value: 0,
-                },
+        // let recordValueObj = {
+        //     numberValueMap: [
+        //         {
+        //             key: "玩了挺长时间",
+        //             value: 0,
+        //         },
 
-                {
-                    key: "一直玩",
-                    value: 0,
-                },
-            ],
-            remark: "今天玩得真开心,哈哈哈"
+        //         {
+        //             key: "一直玩",
+        //             value: 0,
+        //         },
+        //     ],
+        //     remark: "今天玩得真开心,哈哈哈"
+        // };
+
+        let JsonRecordValue = window.androidObject.getAndroidRecordValue();
+        if (JsonRecordValue === "") {
+            let defaultValueObj = {
+                numberValueMap: [
+                    {
+                        key: "impossible key",
+                        value: 0,
+                    },
+                ],
+                remark: "今天玩得真开心,哈哈哈"
+            };
+            JsonRecordValue = JSON.stringify(defaultValueObj);
         };
+        let recordValueObj = JSON.parse(JsonRecordValue);
+
 
 
         //===================获取放所有选择的div======================

@@ -48,20 +48,35 @@
             id: "choiceTemplate",
         };
 
-        let recordValueObj = {
-            numberValueMap: [
-                {
-                    key: "玩了挺长时间",
-                    value: 0,
-                },
+        // let recordValueObj = {
+        //     numberValueMap: [
+        //         {
+        //             key: "玩了挺长时间",
+        //             value: 0,
+        //         },
 
-                {
-                    key: "一直玩",
-                    value: 0,
-                },
-            ],
-            remark: "今天玩得真开心,哈哈哈"
+        //         {
+        //             key: "一直玩",
+        //             value: 0,
+        //         },
+        //     ],
+        //     remark: "今天玩得真开心,哈哈哈"
+        // };
+
+        let JsonRecordValue = "";
+        if (JsonRecordValue === "") {
+            let defaultValueObj = {
+                numberValueMap: [
+                    {
+                        key: "impossible key",
+                        value: 0,
+                    },
+                ],
+                remark: "今天玩得真开心,哈哈哈"
+            };
+            JsonRecordValue = JSON.stringify(defaultValueObj);
         };
+        let recordValueObj = JSON.parse(JsonRecordValue);
 
 
         //===================获取放所有选择的div======================

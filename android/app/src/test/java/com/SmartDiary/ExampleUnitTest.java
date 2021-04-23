@@ -1,5 +1,7 @@
 package com.SmartDiary;
 
+import com.SmartDiary.Utils.WebViewUtils.MyStringUtils;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void run(){
+        System.out.println(MyStringUtils.JSON_2_String("{\"choiceList\":[{\"key\":\"1619096245588\",\"textValue\":\"1\"},{\"key\":\"1619096251629\",\"textValue\":\"\"}],\"type\":\"checkbox\",\"id\":\"choiceTemplate\"}"));
     }
 }

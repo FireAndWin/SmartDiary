@@ -43,15 +43,24 @@ public class MainActivity extends AppCompatActivity {
     //================UI相关成员======================
     ViewPager viewPager_main;
     TabLayout tabLayout_main;
+    Adapter_viewPager_main adapter_viewPager_main;
+    //---4个fragme
+    Fragment_Record_OutFrame record_outFrame;
 
     //=================自定义方法============================
+    //让记录页面更新内容
+    public void update_record_page(){
+        record_outFrame.update_view();
+        //int a=1;
+    };
+
     /*初始化UI相关成员
     * */
     public void init_view(){
         //实际用:初始化pojoService层
         init_pojoService();
         viewPager_main=findViewById(R.id.viewPager_main);
-        Adapter_viewPager_main adapter_viewPager_main=new Adapter_viewPager_main(getSupportFragmentManager());
+        adapter_viewPager_main=new Adapter_viewPager_main(getSupportFragmentManager());
         viewPager_main.setAdapter(adapter_viewPager_main);
 
         //初始化标签
@@ -835,6 +844,7 @@ public class MainActivity extends AppCompatActivity {
     class Adapter_viewPager_main extends FragmentPagerAdapter {
         public Adapter_viewPager_main(@NonNull FragmentManager fm) {
             super(fm);
+            record_outFrame=Fragment_Record_OutFrame.newInstance();
         }
 
         @Override
@@ -843,7 +853,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return new Fragment_start_outFrame();
                 case 1:
-                    return Fragment_Record_OutFrame.newInstance();
+                    return record_outFrame;
                 case 2:
                     return Fragment_Check_OutFrame.newInstance("","");
             }
