@@ -150,8 +150,8 @@ Adapter4webView_record_table {
                 "</body>\n" +
                 "</html>";
 
-        webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
-
+        //webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
+        webView_record_table.loadUrl("file:///android_asset/androidTableView/recordTableView.html");
     }
 
     private void load_separate_js(WebView webView_record_table) {

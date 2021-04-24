@@ -108,44 +108,44 @@ public class Dialog_start_chooseTemplate {
                 "<body>\n" +
                 "\n" +
                 "\n" +
-                "<div id=\"divChoices\" class=\"weui-cells\">\n" +
-                "</div>\n" +
-                "<div id=\"addBtn\">\n" +
-                "    <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\">\n" +
-                "        添加选项\n" +
-                "    </a>\n" +
-                "</div>\n" +
+                "    <div id=\"divChoices\" class=\"weui-cells\">\n" +
+                "    </div>\n" +
+                "    <div id=\"addBtn\">\n" +
+                "        <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary\">\n" +
+                "            添加选项\n" +
+                "        </a>\n" +
+                "    </div>\n" +
                 "\n" +
-                "<div class=\"weui-cells__title\">选择方式</div>\n" +
-                "<div class=\"weui-cells weui-cells_radio\">\n" +
-                "    <label class=\"weui-cell weui-check__label\" for=\"rbtn1\">\n" +
-                "        <div class=\"weui-cell__bd\">\n" +
-                "            <p>单选 </p>\n" +
-                "        </div>\n" +
-                "        <div class=\"weui-cell__ft\">\n" +
-                "            <input type=\"radio\" class=\"weui-check\" name=\"radio1\" id=\"rbtn1\">\n" +
-                "            <span class=\"weui-icon-checked\"></span>\n" +
-                "        </div>\n" +
-                "    </label>\n" +
-                "    <label class=\"weui-cell weui-check__label\" for=\"rbtn2\">\n" +
+                "    <div class=\"weui-cells__title\">选择方式</div>\n" +
+                "    <div class=\"weui-cells weui-cells_radio\">\n" +
+                "        <label class=\"weui-cell weui-check__label\" for=\"rbtn1\">\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <p>单选 </p>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__ft\">\n" +
+                "                <input type=\"radio\" class=\"weui-check\" name=\"radio1\" id=\"rbtn1\">\n" +
+                "                <span class=\"weui-icon-checked\"></span>\n" +
+                "            </div>\n" +
+                "        </label>\n" +
+                "        <label class=\"weui-cell weui-check__label\" for=\"rbtn2\">\n" +
                 "\n" +
-                "        <div class=\"weui-cell__bd\">\n" +
-                "            <p>多选</p>\n" +
-                "        </div>\n" +
-                "        <div class=\"weui-cell__ft\">\n" +
-                "            <input type=\"radio\" name=\"radio1\" class=\"weui-check\" id=\"rbtn2\" checked=\"checked\">\n" +
-                "            <span class=\"weui-icon-checked\"></span>\n" +
-                "        </div>\n" +
-                "    </label>\n" +
-                "</div>\n" +
+                "            <div class=\"weui-cell__bd\">\n" +
+                "                <p>多选</p>\n" +
+                "            </div>\n" +
+                "            <div class=\"weui-cell__ft\">\n" +
+                "                <input type=\"radio\" name=\"radio1\" class=\"weui-check\" id=\"rbtn2\" checked=\"checked\">\n" +
+                "                <span class=\"weui-icon-checked\"></span>\n" +
+                "            </div>\n" +
+                "        </label>\n" +
+                "    </div>\n" +
                 "\n" +
                 "\n" +
-                "<script>\n" +
+                "    <script>\n" +
                 "\n" +
                 "\n" +
                 "        //===============先获取到安卓的格式对象========================\n" +
                 "        let jsonFormat = window.androidObject.getAndroidFormat();\n" +
-                "        console.log(\"初始收到的jsonFormat: '\"+jsonFormat);\n" +
+                "        console.log(\"初始收到的jsonFormat: '\" + jsonFormat);\n" +
                 "        console.log(\"初始收到的jsonFormat类型:\", typeof jsonFormat);\n" +
                 "        //let jsonFormat = \"{\\\"choiceList\\\":[{\\\"key\\\":\\\"1619096245588\\\",\\\"textValue\\\":\\\"1\\\"},{\\\"key\\\":\\\"1619096251629\\\",\\\"textValue\\\":\\\"\\\"}],\\\"type\\\":\\\"checkbox\\\",\\\"id\\\":\\\"choiceTemplate\\\"}\";\n" +
                 "        //这里对获取到的格式字符串做个判断,如果格式json是空字符串,就转化为一个默认的格式字符串.\n" +

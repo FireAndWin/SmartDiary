@@ -16,8 +16,8 @@
 </head>
 
 <body>
-    <div id="android_data">安卓传过来的数据</div>
-    <div id="cellEntry_table">表格div</div>
+
+    <div id="cellEntry_table" class="weui-cells"></div>
     <div id="my_interface"></div>
     <script>
 
@@ -59,25 +59,30 @@
             let dateContent = new Date(cellEntry.date).toLocaleString();
             //div_date.setAttribute("choiceKey", keyChoice);
             //添加内容
-            div_date.innerHTML =
-                `<a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">
+            div_date.innerHTML = `
+            <div class="weui-cell__bd">
+                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary">
                     `+ dateContent + `
-                </a>`;
+                </a>
+            </div>`;
 
             //放数据的地方:
             let div_value = document.createElement("div");
-            //div_value.setAttribute("template_id",recordEntry.template_id);
-            div_value.className = "separateJS" + recordEntry.template_id;
+            div_value.setAttribute("class", "weui-cell" + " separateJS" + recordEntry.template_id);
+            div_value.setAttribute("template_id", recordEntry.template_id);
+            //div_value.className = "weui-cell ";// + " separateJS" + recordEntry.template_id;
             div_value.setAttribute("value", cellEntry.value);
             // div_date.style.backgroundColor="#8BC34A";
-            div_value.innerText = cellEntry.value;
+            let valueText = cellEntry.value;
+            div_value.innerHTML = `<div class="weui-cell__bd">
+                `+ valueText + `
+            </div>`;
 
 
             //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑
             div_value.onclick = function () {
                 let this_loop_date = cellEntry.date
                 window.androidObject.callAndroidRecordView(this_loop_date);
-                div_value.style.backgroundColor = "#8BC34A";
             };
 
             div_cell.appendChild(div_date);
