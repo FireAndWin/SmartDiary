@@ -68,14 +68,18 @@
 
             //放数据的地方:
             let div_value = document.createElement("div");
-            div_value.setAttribute("class", "weui-cell" + " separateJS" + recordEntry.template_id);
+            div_value.classList.add("separateJS" + recordEntry.template_id);
+            //div_value.setAttribute("class", "weui-cell" + " separateJS" + recordEntry.template_id);
             div_value.setAttribute("template_id", recordEntry.template_id);
             //div_value.className = "weui-cell ";// + " separateJS" + recordEntry.template_id;
             div_value.setAttribute("value", cellEntry.value);
             // div_date.style.backgroundColor="#8BC34A";
             let valueText = cellEntry.value;
+            // div_value.innerHTML = `<div class="weui-cell__bd">
+            //     `+ valueText + `
+            // </div>`;
             div_value.innerHTML = `<div class="weui-cell__bd">
-                `+ valueText + `
+                `+ div_value.className + `
             </div>`;
 
 
@@ -91,6 +95,8 @@
 
             div_table.appendChild(div_cell);
         }
+
+
 
     </script>
 </body>

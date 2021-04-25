@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 
 import com.SmartDiary.MainActivity;
 import com.SmartDiary.Utils.TimeUtilsMy;
+import com.SmartDiary.Utils.WebViewUtils.MyStringUtils;
 import com.SmartDiary.pojo.CellEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
@@ -186,6 +187,7 @@ Adapter4webView_record_table {
     @JavascriptInterface
     public String getAndroidRecordEntry(){
         RecordEntry recordEntry=RecordEntryService.newInstance().get_recordEntry_byId(recordEntryID);
+        recordEntry.setFormat(MyStringUtils.JSON_2_String(recordEntry.getFormat()));
         String resultJson= JSON.toJSONString(recordEntry);
         return resultJson;
         //return "{\"id\":\"idString\",\"name\":\"记录项名称,比如学习情况\",\"template_id\":\"模板idString\",\"analysis_result\":\"分析结果String\",\"format\":\"格式String\"}";
@@ -211,7 +213,10 @@ Adapter4webView_record_table {
                 continue;
             }
             if(value==""){
-                value="这里的记录值本来为空";
+                value="";
+            }
+            else{
+                value= MyStringUtils.JSON_2_String(value);
             }
             CellEntry cellEntry=new CellEntry(date,value);
             cellEntryList.add(cellEntry);

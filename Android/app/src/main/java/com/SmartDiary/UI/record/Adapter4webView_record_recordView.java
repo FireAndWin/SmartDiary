@@ -1,6 +1,8 @@
 package com.SmartDiary.UI.record;
 
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
@@ -37,7 +39,23 @@ public class Adapter4webView_record_recordView {
         record_view.getSettings().setJavaScriptEnabled(true);
         record_view.addJavascriptInterface(this,"androidObject");
 
-        load_basicHtml();
+//        record_view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch ((event.getAction())){
+//                    case MotionEvent.ACTION_DOWN:
+//                    case MotionEvent.ACTION_UP:
+//                        if(!v.hasFocus()){
+//                            v.requestFocus();
+//                        }
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//        record_view.requestFocus(View.FOCUS_DOWN);
+//        record_view.requestFocusFromTouch() ;
+       load_basicHtml();
     }
 
     private void load_basicHtml() {

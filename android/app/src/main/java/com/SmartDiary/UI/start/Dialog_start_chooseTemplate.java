@@ -873,6 +873,7 @@ public class Dialog_start_chooseTemplate {
         entry.setSeparate_js("");
         entry.setFormat("");
         entry.setEdit_view("");
+        entry.setSeparate_js("");
         entry.setRecord_view("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "\n" +

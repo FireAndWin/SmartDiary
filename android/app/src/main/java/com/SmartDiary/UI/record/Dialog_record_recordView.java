@@ -26,6 +26,7 @@ public class Dialog_record_recordView {
         dialog=builder.create();
         dialog.show();
 
+
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
            @Override
            public void onCancel(DialogInterface dialog) {
