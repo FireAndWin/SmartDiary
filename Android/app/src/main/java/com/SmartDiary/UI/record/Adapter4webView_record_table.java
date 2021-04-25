@@ -162,10 +162,8 @@ Adapter4webView_record_table {
 
         webView_record_table.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-//                webView_record_table.addJavascriptInterface(Adapter_record_tableView.this,"androidObject");
-//                webView_record_table.loadDataWithBaseURL(null, table_view, "text/html", "utf-8", null);
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
                 webView_record_table.evaluateJavascript(separate_js, new ValueCallback<String>() {
                     @Override public void onReceiveValue(String value) {//js与native交互的回调函数
                     }
@@ -212,7 +210,7 @@ Adapter4webView_record_table {
             if(display_mode==0 && (value==""|| value==null)){
                 continue;
             }
-            if(value==""){
+            if(value=="" || value==null){
                 value="";
             }
             else{
@@ -228,6 +226,7 @@ Adapter4webView_record_table {
         return resultJson;
         //return "[{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"},{\"date\":1111100,\"value\":\"睡得很早\"}]";
     }
+
 
     //召唤recordView
     @JavascriptInterface

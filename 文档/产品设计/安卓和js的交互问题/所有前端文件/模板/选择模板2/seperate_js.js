@@ -1,4 +1,4 @@
-let display_divs = document.getElementsByClassName("separateJS12");
+let display_divs = document.getElementsByClassName("separateJS13");
 for (let j in display_divs) {
     let div_a = display_divs[j];
 
@@ -20,7 +20,7 @@ for (let j in display_divs) {
     //div_a.style.backgroundColor = "aqua";
     div_a.innerHTML = "";
 
-    let jsonFormat = window.getFormat("12");
+    let jsonFormat = window.getFormat("13");
     let formatObj = JSON.parse(jsonFormat);
     //span_txt.textContent = jsonFormat;
 
@@ -36,19 +36,15 @@ for (let j in display_divs) {
                 numberValue = item.value;
             };
         });
-        if (numberValue === undefined) {
-            numberValue = formatObj.defaultNumber;
-        };
+        if (numberValue === 1) {
 
-        let choice_item = document.createElement("p");
-        choice_item.textContent = numberText + ":" + numberValue;
-        choice_item.style.fontSize = "1rem";
-        choice_item.style.marginLeft = "1rem";
-        //div_display.appendChild(document.createElement("br"));
-        div_a.appendChild(choice_item);
-
-
-        // let br = document.createElement("div");
+            let choice_item = document.createElement("p");
+            choice_item.textContent = numberText;
+            choice_item.style.fontSize = "1rem";
+            choice_item.style.marginLeft = "1rem";
+            //div_display.appendChild(document.createElement("br"));
+            div_a.appendChild(choice_item);
+        };        // let br = document.createElement("div");
         // br.innerHTML = "<br/>";
         // div_a.appendChild(br);
         //div_a.appendChild(document.createElement("br"));

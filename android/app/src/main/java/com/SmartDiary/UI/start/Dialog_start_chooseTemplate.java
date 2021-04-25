@@ -78,10 +78,67 @@ public class Dialog_start_chooseTemplate {
     public RecordEntry get_chooseTemplate_entry(){
         RecordEntry entry=new RecordEntry();
         entry.setId("choice001");
-        entry.setTemplate_id("11");
+        entry.setTemplate_id("13");
         entry.setName("选择");
         entry.setInfo("可以用来记录一些和选择有关的,是个基本的记录项模板哦");
-        entry.setSeparate_js("");
+        entry.setSeparate_js("let display_divs = document.getElementsByClassName(\"separateJS13\");\n" +
+                "for (let j in display_divs) {\n" +
+                "    let div_a = display_divs[j];\n" +
+                "\n" +
+                "    let jsonRecordValue = div_a.getAttribute(\"value\");\n" +
+                "    if (jsonRecordValue === \"\") {\n" +
+                "        let defaultValueObj = {\n" +
+                "            numberValueMap: [\n" +
+                "                {\n" +
+                "                    key: \"impossible key\",\n" +
+                "                    value: 0,\n" +
+                "                },\n" +
+                "            ],\n" +
+                "            remark: \"  \"\n" +
+                "        };\n" +
+                "        jsonRecordValue = JSON.stringify(defaultValueObj);\n" +
+                "    };\n" +
+                "\n" +
+                "    let recordValueObj = JSON.parse(jsonRecordValue);\n" +
+                "    //div_a.style.backgroundColor = \"aqua\";\n" +
+                "    div_a.innerHTML = \"\";\n" +
+                "\n" +
+                "    let jsonFormat = window.getFormat(\"13\");\n" +
+                "    let formatObj = JSON.parse(jsonFormat);\n" +
+                "    //span_txt.textContent = jsonFormat;\n" +
+                "\n" +
+                "    //==================根据记录值和格式添加元素=====================\n" +
+                "    for (let indexList in formatObj.choiceList) {\n" +
+                "        //获取该数值项的id,名称,值\n" +
+                "        let choice = formatObj.choiceList[indexList];\n" +
+                "        let numberKey = choice.key;\n" +
+                "        let numberText = choice.textValue;\n" +
+                "        let numberValue = formatObj.defaultNumber;\n" +
+                "        recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "            if (item.key === numberKey) {\n" +
+                "                numberValue = item.value;\n" +
+                "            };\n" +
+                "        });\n" +
+                "        if (numberValue === 1) {\n" +
+                "\n" +
+                "            let choice_item = document.createElement(\"p\");\n" +
+                "            choice_item.textContent = numberText;\n" +
+                "            choice_item.style.fontSize = \"1rem\";\n" +
+                "            choice_item.style.marginLeft = \"1rem\";\n" +
+                "            //div_display.appendChild(document.createElement(\"br\"));\n" +
+                "            div_a.appendChild(choice_item);\n" +
+                "        };        // let br = document.createElement(\"div\");\n" +
+                "        // br.innerHTML = \"<br/>\";\n" +
+                "        // div_a.appendChild(br);\n" +
+                "        //div_a.appendChild(document.createElement(\"br\"));\n" +
+                "    };\n" +
+                "\n" +
+                "    span_txt = document.createElement(\"span\");\n" +
+                "    span_txt.textContent = recordValueObj.remark;\n" +
+                "    span_txt.style.fontSize = \"0.8rem\";\n" +
+                "    span_txt.style.marginLeft = \"1rem\";\n" +
+                "    div_a.appendChild(span_txt);\n" +
+                "};\n");
         entry.setFormat("");
         entry.setEdit_view("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -484,10 +541,72 @@ public class Dialog_start_chooseTemplate {
 
         RecordEntry entry=new RecordEntry();
         entry.setId("number001");
-        entry.setTemplate_id("11");
+        entry.setTemplate_id("12");
         entry.setName("数值");
         entry.setInfo("记录数值");
-        entry.setSeparate_js("");
+        entry.setSeparate_js("let display_divs = document.getElementsByClassName(\"separateJS12\");\n" +
+                "for (let j in display_divs) {\n" +
+                "    let div_a = display_divs[j];\n" +
+                "\n" +
+                "    let jsonRecordValue = div_a.getAttribute(\"value\");\n" +
+                "    if (jsonRecordValue === \"\") {\n" +
+                "        let defaultValueObj = {\n" +
+                "            numberValueMap: [\n" +
+                "                {\n" +
+                "                    key: \"impossible key\",\n" +
+                "                    value: 0,\n" +
+                "                },\n" +
+                "            ],\n" +
+                "            remark: \"  \"\n" +
+                "        };\n" +
+                "        jsonRecordValue = JSON.stringify(defaultValueObj);\n" +
+                "    };\n" +
+                "\n" +
+                "    let recordValueObj = JSON.parse(jsonRecordValue);\n" +
+                "    //div_a.style.backgroundColor = \"aqua\";\n" +
+                "    div_a.innerHTML = \"\";\n" +
+                "\n" +
+                "    let jsonFormat = window.getFormat(\"12\");\n" +
+                "    let formatObj = JSON.parse(jsonFormat);\n" +
+                "    //span_txt.textContent = jsonFormat;\n" +
+                "\n" +
+                "    //==================根据记录值和格式添加元素=====================\n" +
+                "    for (let indexList in formatObj.choiceList) {\n" +
+                "        //获取该数值项的id,名称,值\n" +
+                "        let choice = formatObj.choiceList[indexList];\n" +
+                "        let numberKey = choice.key;\n" +
+                "        let numberText = choice.textValue;\n" +
+                "        let numberValue = formatObj.defaultNumber;\n" +
+                "        recordValueObj.numberValueMap.forEach(function (item, index, arr) {\n" +
+                "            if (item.key === numberKey) {\n" +
+                "                numberValue = item.value;\n" +
+                "            };\n" +
+                "        });\n" +
+                "        if (numberValue === undefined) {\n" +
+                "            numberValue = formatObj.defaultNumber;\n" +
+                "        };\n" +
+                "\n" +
+                "        let choice_item = document.createElement(\"p\");\n" +
+                "        choice_item.textContent = numberText + \":\" + numberValue;\n" +
+                "        choice_item.style.fontSize = \"1rem\";\n" +
+                "        choice_item.style.marginLeft = \"1rem\";\n" +
+                "        //div_display.appendChild(document.createElement(\"br\"));\n" +
+                "        div_a.appendChild(choice_item);\n" +
+                "\n" +
+                "\n" +
+                "        // let br = document.createElement(\"div\");\n" +
+                "        // br.innerHTML = \"<br/>\";\n" +
+                "        // div_a.appendChild(br);\n" +
+                "        //div_a.appendChild(document.createElement(\"br\"));\n" +
+                "    };\n" +
+                "\n" +
+                "    span_txt = document.createElement(\"span\");\n" +
+                "    span_txt.textContent = recordValueObj.remark;\n" +
+                "    span_txt.style.fontSize = \"0.8rem\";\n" +
+                "    span_txt.style.marginLeft = \"1rem\";\n" +
+                "    div_a.appendChild(span_txt);\n" +
+                "};\n" +
+                "\n");
         entry.setFormat("");
         entry.setEdit_view("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
@@ -873,7 +992,48 @@ public class Dialog_start_chooseTemplate {
         entry.setSeparate_js("");
         entry.setFormat("");
         entry.setEdit_view("");
-        entry.setSeparate_js("");
+        entry.setSeparate_js("(function () {\n" +
+                "    let display_divs = document.getElementsByClassName(\"separateJS11\");\n" +
+                "    for (let j in display_divs) {\n" +
+                "        let div_a = display_divs[j];\n" +
+                "\n" +
+                "        let jsonRecordValue = div_a.getAttribute(\"value\");\n" +
+                "        if (jsonRecordValue === \"\") {\n" +
+                "            let defaultValueObj = {\n" +
+                "                numberValueMap: [\n" +
+                "                    {\n" +
+                "                        key: \"impossible key\",\n" +
+                "                        value: 0,\n" +
+                "                    },\n" +
+                "                ],\n" +
+                "                remark: \"Null\"\n" +
+                "            };\n" +
+                "            jsonRecordValue = JSON.stringify(defaultValueObj);\n" +
+                "        };\n" +
+                "\n" +
+                "        let recordValueObj = JSON.parse(jsonRecordValue);\n" +
+                "        //div_a.style.backgroundColor = \"aqua\";\n" +
+                "        div_a.innerHTML = \"\";\n" +
+                "\n" +
+                "        span_txt = document.createElement(\"span\");\n" +
+                "        span_txt.textContent = recordValueObj.remark;\n" +
+                "        span_txt.style.fontSize = \"1rem\";\n" +
+                "        span_txt.style.marginLeft = \"1rem\";\n" +
+                "        //div_display.appendChild(document.createElement(\"br\"));\n" +
+                "        div_a.appendChild(span_txt);\n" +
+                "\n" +
+                "\n" +
+                "        gap = document.createElement(\"p\");\n" +
+                "        gap.textContent = \" \";\n" +
+                "        gap.style.fontSize = \"0.8rem\";\n" +
+                "        gap.style.marginLeft = \"1rem\";\n" +
+                "        gap.style.marginBotton = \"1rem\";\n" +
+                "        div_a.appendChild(gap);\n" +
+                "\n" +
+                "    };\n" +
+                "    return \"seperateJs done!\";\n" +
+                "})();\n" +
+                "\n");
         entry.setRecord_view("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "\n" +

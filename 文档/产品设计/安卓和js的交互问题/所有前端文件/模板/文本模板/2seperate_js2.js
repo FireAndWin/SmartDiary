@@ -11,7 +11,7 @@ for (let j in display_divs) {
                     value: 0,
                 },
             ],
-            remark: "  "
+            remark: "Null"
         };
         jsonRecordValue = JSON.stringify(defaultValueObj);
     };
@@ -25,6 +25,5 @@ for (let j in display_divs) {
     span_txt.style.fontSize = "1rem";
     //div_display.appendChild(document.createElement("br"));
     div_a.appendChild(span_txt);
-
 };
 
