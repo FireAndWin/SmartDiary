@@ -14,6 +14,7 @@ import com.SmartDiary.MainActivity;
 import com.SmartDiary.R;
 import com.SmartDiary.UI.record.Dialog_record_recordView;
 import com.SmartDiary.Utils.TimeUtilsMy;
+import com.SmartDiary.Utils.WebViewUtils.MyStringUtils;
 import com.SmartDiary.pojo.DayEntry;
 import com.SmartDiary.pojo.RecordEntry;
 import com.SmartDiary.pojo.RecordTemplate;
@@ -70,7 +71,10 @@ public class Adapter_check_dayEntry {
         for(RecordEntry recordEntry:recordEntryList){
             String value=cellEntryService.get_recordValue_byID_Date(recordEntry.getId(),date);
             if(value==null || value==""){
-                value="NaN";
+                value="";
+            }
+            else{
+                value= MyStringUtils.JSON_2_String(value);
             }
             dayEntry.map.put(String.valueOf(recordEntry.getId()),value);
         }
@@ -83,19 +87,16 @@ public class Adapter_check_dayEntry {
 
     //给webView执行动态js注入;
     private void load_separate_js(WebView webView_check_dayEntryDisplay) {
-        List<RecordEntry> recordEntryList=RecordEntryService.newInstance().getAll();
+        RecordEntryService recordEntryService= RecordEntryService.newInstance();
+        List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
 
         webView_check_dayEntryDisplay.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
                 //遍历记录项,获取分别渲染的js代码,然后动态注入
                 for(RecordEntry recordEntry:recordEntryList){
-                    RecordTemplate template= RecordTemplateService.newInstance().getObject_byID(recordEntry.getTemplate_id());
-                    String separate_js=template.getSeparate_js();
-
-                    webView_check_dayEntryDisplay.evaluateJavascript(separate_js, new ValueCallback<String>() {
+                    webView_check_dayEntryDisplay.evaluateJavascript(recordEntry.getSeparate_js(), new ValueCallback<String>() {
                         @Override public void onReceiveValue(String value) {//js与native交互的回调函数
                         }
                     });
@@ -109,6 +110,10 @@ public class Adapter_check_dayEntry {
     public  String getAndroidRecordEntryList(){
         RecordEntryService recordEntryService= RecordEntryService.newInstance();
         List<RecordEntry> recordEntryList=recordEntryService.get_recordEntryList_byStatus(new int[]{0,1});
+        for (RecordEntry entry :
+                recordEntryList) {
+            entry.setFormat(MyStringUtils.JSON_2_String(entry.getFormat()));
+        }
         String resultJson= JSONArray.toJSONString(recordEntryList);
         //Log.d(TAG, "getAndroidRecordEntryList: "+"857: "+resultJson);
         return resultJson;

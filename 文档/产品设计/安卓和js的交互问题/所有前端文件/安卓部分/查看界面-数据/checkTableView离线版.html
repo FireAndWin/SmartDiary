@@ -38,14 +38,6 @@
                 }
             }
         };
-        window.getAnalysisResult = function (template_id) {
-            for (i in recordEntryList) {
-                let recordEntry = recordEntryList[i];
-                if (recordEntry.template_id === template_id) {
-                    return recordEntry.analysis_result;
-                }
-            }
-        };
 
         //第三步加载数据到dom元素中
         let div_dayEntry_table = document.getElementById("dayEntry_table");
@@ -65,18 +57,16 @@
             //放记录项数据的地方
             let div_value = document.createElement("div");
             //div_value.setAttribute("template_id",recordEntry.template_id);
-            div_value.setAttribute("class", "weui-cell" + " separateJS" + recordEntry.template_id);
+            //div_value.setAttribute("class", "separateJS" + recordEntry.template_id);
+            div_value.classList.add("separateJS" + recordEntry.template_id);
             let record_value = window.androidObject.getAndroidRecordValue_byId(recordEntry.id);
             div_value.setAttribute("value", record_value);
             //div_value.innerText="separateJS"+recordEntry.template_id;;
-            div_value.innerHTML = `<div class="weui-cell__bd">
-                `+ record_value + `
-            </div>`;;
+            div_value.innerHTML = "记录值JSON:" + record_value + "=======格式JSON" + getFormat(recordEntry.template_id);
 
             //绑定事件,单击数据div,调用安卓的recordView的dialog进行编辑
             div_value.onclick = function () {
                 window.androidObject.callAndroidRecordView(recordEntry.id);
-                div_value.style.backgroundColor = "#8BC34A";
             };
 
             //加入到父元素中
@@ -106,7 +96,6 @@
             </div>`;
 
     </script>
-
 </body>
 
 </html>
